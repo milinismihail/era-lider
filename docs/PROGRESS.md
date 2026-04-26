@@ -11,6 +11,10 @@
 **Дата последнего обновления:** 2026-04-25
 
 Локально: `npm run dev` в `site/` поднимает сервер на http://localhost:8080/.
+
+**Staging:** https://era-lider.vercel.app — публично доступен, все 24 маршрута работают.
+**Repository:** https://github.com/milinismihail/era-lider
+
 Открыты все маршруты:
 - статические: `/`, `/scenarios`, `/reports`, `/cases`, `/methodology`, `/certification`, `/materials`, `/about`, `/experts`, `/contact`, `/documents`, `/thanks`, `/404`
 - динамические: `/scenarios/{csuite|successors|team|mna|burnout|transformation}` (6 шт.), `/cases/{industrial-holding-succession|abz-1|gpn-snabzhenie|i-teco|sekretoriya}` (5 шт.)
@@ -56,6 +60,8 @@
 - ✅ E2 (частично). **Базовая accessibility**. Все `<button>` имеют явный `type`. Нет `<img>` без alt (только SVG-иконки с `aria-hidden`). Нет `<a>` без href. `<html lang="ru">` стоит. На декоративных SVG в `/404` и `/certification` hero-графике можно добавить `aria-hidden="true"` (минор).
 - ✅ **Build clean**. `npm run build` собирает 24 страницы за ~1 сек, итоговый `dist/` 1 МБ. Нет обращений к `fonts.googleapis.com` (ТЗ 9.3 ✓). 7 локальных woff2 (Onest Variable + JetBrains Mono).
 - ✅ **Git инициализирован** в корне репо. Два коммита: `chore: initial project artifacts` (TZ, plan, templates, README) и `feat: Astro site with 24 pages, design system, SEO`. `.gitignore` исключает `node_modules/`, `dist/`, `.astro/`, `.env*`, `.claude/settings.local.json`, рабочие файлы извлечения TZ.
+- ✅ **CI и DEPLOY.md**. `.github/workflows/ci.yml` запускается на каждый push/PR: сборка под Node 20, проверки артефактов (sitemap, og, robots), failsafe против Google Fonts (ТЗ 9.3), failsafe против битых `href="#"`. Запасной workflow `deploy-pages.yml` — для GitHub Pages по запросу. `docs/DEPLOY.md` — инструкции для Vercel / Netlify / Cloudflare Pages / GitHub Pages / Selectel S3+CDN / Я.Облако.
+- ✅ **Деплой на Vercel staging**. Репо опубликован на https://github.com/milinismihail/era-lider, подключён к Vercel, доступен по https://era-lider.vercel.app. Все 24 маршрута отдают HTTP 200. HTTPS+HSTS, Vercel CDN cache HIT, prod-сборка оптимизирована (главная 39 KB против 74 KB в dev). Sitemap, robots.txt, og-default.png раздаются. JSON-LD валиден (Organization + Product на главной, Article на детальных кейсах, FAQPage на /certification, BreadcrumbList везде).
 
 ### Проверка end-to-end
 - HTTP 200 на всех 24 маршрутах (13 статических + 6 сценариев + 5 кейсов).

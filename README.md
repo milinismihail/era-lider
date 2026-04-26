@@ -3,6 +3,10 @@
 Сайт продукта **ЭРА** — российской системы оценки руководителей и команд (продукт BITOBE).
 Реестровая запись № 28543 от 23.06.2025.
 
+- **Staging:** https://era-lider.vercel.app
+- **Production:** ожидает развёртывания на Selectel/Я.Облако (см. [docs/DEPLOY.md](docs/DEPLOY.md))
+- **Repository:** https://github.com/milinismihail/era-lider
+
 ## Структура репозитория
 
 ```
