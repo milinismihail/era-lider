@@ -1,0 +1,25 @@
+---
+import type { WallCase } from '../../data/cases.ts';
+
+interface Props {
+  wall: WallCase;
+}
+const { wall } = Astro.props;
+---
+
+<div
+  class:list={['wall-card', wall.mod ? `mod-${wall.mod}` : null]}
+  data-industry={wall.industry}
+  data-scenario={wall.scenario}
+  data-reveal
+>
+  <div class="wall-tag">
+    <span>{wall.tag}</span>
+    <span class="industry">{wall.industryLabel}</span>
+  </div>
+  <p class="wall-quote">{wall.quote}</p>
+  <div class="wall-source">
+    <span class="name">{wall.name}</span>
+    <span class="scenario">{wall.meta}</span>
+  </div>
+</div>

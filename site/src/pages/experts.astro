@@ -1,0 +1,321 @@
+---
+import Base from '../layouts/Base.astro';
+import Chev from '../components/icons/Chev.astro';
+import { activeExperts, architects } from '../data/experts.ts';
+
+const title = 'Эксперты ЭРА · Команда системы';
+const description =
+  'Действующие эксперты ЭРА и архитекторы методологии: разработчики системы, психометристы, executive-коучи. С кем вы работаете на сессиях обратной связи.';
+
+const breadcrumbs = [
+  { name: 'Главная', url: 'https://era-lider.ru/' },
+  { name: 'Эксперты', url: 'https://era-lider.ru/experts' },
+];
+---
+
+<Base title={title} description={description} activeKey="experts" breadcrumbs={breadcrumbs}>
+
+<section class="page-hero">
+  <div class="container">
+    <div class="hero-breadcrumbs">
+      <a href="/">Главная</a>
+      <span class="sep">/</span>
+      <span class="current">Эксперты</span>
+    </div>
+    <div class="page-hero-grid">
+      <div data-reveal>
+        <div class="eyebrow" style="margin-bottom: 28px;">
+          <Chev kind="mark" class="eyebrow-mark" />
+          Команда системы
+        </div>
+        <h1 class="h-hero">
+          За ЭРА — <span class="accent-line">люди</span>, а не только алгоритмы.
+        </h1>
+        <p class="page-hero-lead">
+          С клиентами работают действующие эксперты ЭРА — те, кто проводит обратную связь, ведёт разбор кейсов, участвует в коучинговых сессиях. Методологию системы разработала команда BITOBE с 20-летним опытом развития топ-руководителей.
+        </p>
+      </div>
+      <div class="page-hero-meta" data-reveal>
+        <div class="page-hero-meta-item">
+          <div class="label">Действующих экспертов</div>
+          <div class="value">{activeExperts.length}+</div>
+        </div>
+        <div class="page-hero-meta-item">
+          <div class="label">Архитекторов методологии</div>
+          <div class="value">{architects.length}</div>
+        </div>
+        <div class="page-hero-meta-item">
+          <div class="label">Сертифиц. экспертов</div>
+          <div class="value">50+</div>
+        </div>
+        <div class="page-hero-meta-item">
+          <div class="label">Лет на&nbsp;рынке оценки</div>
+          <div class="value">20+ <span class="dim">лет</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="experts-page">
+  <div class="container">
+
+    <div class="experts-group" data-reveal>
+      <div class="experts-group-head">
+        <div class="experts-group-title">
+          <div class="experts-group-num"><Chev kind="mark" class="chev" />01</div>
+          <div class="experts-group-name">Действующие эксперты ЭРА</div>
+        </div>
+        <div class="experts-group-desc">Ведут разговоры с клиентами, дают обратную связь по отчётам, разбирают кейсы. Каждый эксперт специализируется на конкретных сценариях применения системы.</div>
+      </div>
+
+      <div class="experts-grid">
+        {activeExperts.map((e) => (
+          <div class:list={['expert', 'is-active', `spec-${e.spec}`]}>
+            <div class="expert-photo">
+              <span class="expert-initials">{e.initials}</span>
+              <span class="expert-photo-note">фото</span>
+            </div>
+            <div class="expert-spec"><span class="dot"></span>{e.specLabel}</div>
+            <div class="expert-name-placeholder">[Имя&nbsp;Фамилия]</div>
+            <div class="expert-meta">{e.metaLine} · {e.experience}</div>
+            <p class="expert-quote">{e.quote}</p>
+            <div class="expert-scenarios">
+              <div class="expert-scenarios-label">Сценарии</div>
+              <div class="expert-scenarios-list">
+                {e.scenarios.map((s) => <span class="scenario-tag">{s}</span>)}
+              </div>
+            </div>
+            <a href="/contact" class="expert-cta">
+              Разговор с экспертом
+              <Chev kind="arrow" class="chev" />
+            </a>
+          </div>
+        ))}
+      </div>
+
+      <p class="experts-group-note">
+        Имена и фотографии действующих экспертов утверждаются коммерческим блоком BITOBE до Фазы&nbsp;4 производства контента. На&nbsp;CTA «Разговор с экспертом» выводится действующий эксперт по соответствующему сценарию вашей задачи.
+      </p>
+    </div>
+
+    <div class="experts-group" data-reveal>
+      <div class="experts-group-head">
+        <div class="experts-group-title">
+          <div class="experts-group-num"><Chev kind="mark" class="chev" />02</div>
+          <div class="experts-group-name">Архитекторы методологии</div>
+        </div>
+        <div class="experts-group-desc">Команда BITOBE, разработавшая систему ЭРА: адаптация HEXACO, шкалы мотивации и деструкторов, валидация на российской выборке, сертификационная программа.</div>
+      </div>
+
+      <div class="architects-grid">
+        {architects.map((a) => (
+          <div class="architect-card">
+            <div class="architect-photo">
+              <span class="architect-initials">{a.initials}</span>
+            </div>
+            <div class="architect-num">{a.num} · Разработчик</div>
+            <div class="architect-name">{a.name}</div>
+            <div class="architect-role">{a.role}</div>
+            <div class="architect-bio">{a.bio}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="cta-block" id="cta">
+  <div class="container cta-grid">
+    <div data-reveal>
+      <div class="eyebrow on-dark" style="margin-bottom: 24px;">
+        <Chev kind="mark" class="eyebrow-mark" style="color: var(--white)" />
+        Под вашу задачу
+      </div>
+      <h2 class="h-section">Разговор с&nbsp;экспертом ЭРА — <span class="accent-line" style="color:var(--white);">45 минут</span>.</h2>
+      <p class="lead">Подберём действующего эксперта по специализации вашей задачи: подбор C-level, диагностика команды, выгорание, M&amp;A или трансформация. Обсудим вашу ситуацию и покажем релевантный пример отчёта.</p>
+    </div>
+    <div class="cta-actions" data-reveal>
+      <a href="/contact" class="btn btn-primary">Записаться на разговор <Chev kind="arrow" class="btn-arrow" width="14" height="10" /></a>
+      <a href="/certification" class="btn btn-secondary-inverse">Стать экспертом ЭРА <Chev kind="arrow" class="btn-arrow" width="14" height="10" /></a>
+    </div>
+  </div>
+</section>
+
+<style is:global>
+/* ===== Локальные стили /experts ===== */
+
+.experts-page { padding: var(--section-py) 0; background: var(--white); }
+.experts-group { margin-bottom: 96px; }
+.experts-group:last-child { margin-bottom: 0; }
+.experts-group-head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  padding-bottom: 24px; border-bottom: 1px solid var(--black);
+  margin-bottom: 48px; gap: 32px; flex-wrap: wrap;
+}
+.experts-group-title { display: flex; align-items: baseline; gap: 16px; }
+.experts-group-num {
+  font-family: var(--font-body); font-size: 13px; font-weight: 600;
+  color: var(--black); letter-spacing: 0.1em;
+  display: flex; align-items: center; gap: 10px;
+}
+.experts-group-num .chev { width: 14px; height: 10px; }
+.experts-group-name { font-size: 26px; font-weight: 700; letter-spacing: -0.02em; color: var(--black); }
+.experts-group-desc { font-size: 14px; color: var(--grey); max-width: 480px; line-height: 1.5; }
+.experts-group-note {
+  margin-top: 28px;
+  font-size: 12px; color: var(--grey);
+  line-height: 1.6; max-width: 720px;
+  letter-spacing: 0.02em;
+}
+
+.experts-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+.expert { display: flex; flex-direction: column; }
+.expert-photo {
+  aspect-ratio: 4 / 5; background: var(--grey-soft);
+  position: relative; overflow: hidden;
+  margin-bottom: 20px;
+  display: flex; align-items: flex-end; justify-content: flex-start;
+  padding: 24px;
+  border: 1px solid var(--grey-line);
+}
+.expert-photo::before {
+  content: ""; position: absolute;
+  top: 16px; right: 16px;
+  width: 32px; height: 20px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%230A0A0A'%3E%3Cpath d='M 0 0 L 100 0 L 100 100 L 80 100 L 80 20 L 0 20 Z'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+.expert.is-active .expert-photo { border: none; background: var(--grey-soft); }
+.expert.is-active .expert-photo::after {
+  content: ""; position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 6px;
+}
+.expert.is-active.spec-pers  .expert-photo::after { background: var(--accent-pers); }
+.expert.is-active.spec-mot   .expert-photo::after { background: var(--accent-mot); }
+.expert.is-active.spec-destr .expert-photo::after { background: var(--accent-destr); }
+
+.expert-initials { font-weight: 700; font-size: 32px; color: var(--grey); letter-spacing: -0.02em; }
+.expert-photo-note {
+  position: absolute; bottom: 16px; right: 16px;
+  font-size: 9px; letter-spacing: 0.2em;
+  color: var(--grey); text-transform: uppercase; font-weight: 500;
+}
+
+.expert-spec {
+  font-size: 11px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--black);
+  font-weight: 600; margin-bottom: 12px;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.expert-spec .dot { display: inline-block; width: 8px; height: 8px; }
+.expert.spec-pers  .expert-spec .dot { background: var(--accent-pers); }
+.expert.spec-mot   .expert-spec .dot { background: var(--accent-mot); }
+.expert.spec-destr .expert-spec .dot { background: var(--accent-destr); }
+
+.expert-name-placeholder {
+  font-size: 18px; font-weight: 600;
+  letter-spacing: -0.015em; color: var(--grey);
+  margin-bottom: 4px;
+}
+.expert-meta {
+  font-size: 13px; color: var(--grey);
+  margin-bottom: 18px; letter-spacing: 0.02em;
+  line-height: 1.4;
+}
+.expert-quote {
+  font-size: 15px; line-height: 1.5;
+  color: var(--grey-deep);
+  padding-left: 16px;
+  border-left: 2px solid var(--black);
+  margin-bottom: 24px;
+}
+.expert.spec-pers  .expert-quote { border-left-color: var(--accent-pers); }
+.expert.spec-mot   .expert-quote { border-left-color: var(--accent-mot); }
+.expert.spec-destr .expert-quote { border-left-color: var(--accent-destr); }
+
+.expert-scenarios {
+  padding-top: 16px;
+  border-top: 1px solid var(--grey-line);
+  margin-bottom: 20px;
+}
+.expert-scenarios-label {
+  font-size: 10px; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--grey);
+  font-weight: 600; margin-bottom: 10px;
+}
+.expert-scenarios-list { display: flex; flex-wrap: wrap; gap: 6px; }
+.scenario-tag {
+  font-size: 12px; padding: 4px 10px;
+  background: var(--grey-soft); color: var(--black);
+  font-weight: 500; letter-spacing: -0.005em;
+}
+
+.expert-cta {
+  font-size: 12px; color: var(--black);
+  font-weight: 600; letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--black);
+  padding-bottom: 4px;
+  display: inline-flex; align-items: center; gap: 10px;
+  align-self: flex-start;
+  transition: gap 0.2s ease;
+  margin-top: auto;
+}
+.expert-cta:hover { gap: 14px; }
+.expert-cta .chev { width: 12px; height: 8px; }
+
+@media (max-width: 900px) { .experts-grid { grid-template-columns: 1fr; gap: 40px; } }
+
+/* Architects */
+.architects-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+.architect-card {
+  display: flex; flex-direction: column;
+  background: var(--grey-soft);
+  padding: 32px;
+  border-top: 4px solid var(--black);
+  position: relative;
+}
+.architect-photo {
+  aspect-ratio: 1/1; max-width: 80px;
+  background: var(--white);
+  border: 1px solid var(--grey-line);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 24px;
+}
+.architect-initials {
+  font-weight: 700; font-size: 24px;
+  color: var(--black); letter-spacing: -0.01em;
+}
+.architect-num {
+  font-family: var(--font-mono);
+  font-size: 11px; font-weight: 500;
+  color: var(--grey); letter-spacing: 0.08em;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--grey-line);
+}
+.architect-name {
+  font-size: 19px; font-weight: 600;
+  letter-spacing: -0.015em; color: var(--black);
+  margin-bottom: 6px; line-height: 1.25;
+}
+.architect-role {
+  font-size: 12px; color: var(--grey);
+  letter-spacing: 0.04em;
+  line-height: 1.45; margin-bottom: 16px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+.architect-bio { font-size: 13px; color: var(--grey-deep); line-height: 1.55; }
+
+@media (max-width: 900px) { .architects-grid { grid-template-columns: 1fr; gap: 24px; } }
+
+.page-hero-meta-item .value .dim { color: var(--grey); font-weight: 400; font-size: 0.78em; }
+</style>
+
+</Base>

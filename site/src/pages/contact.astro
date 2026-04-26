@@ -1,0 +1,505 @@
+---
+import Base from '../layouts/Base.astro';
+import Chev from '../components/icons/Chev.astro';
+
+const title = 'Контакты и заявка · ЭРА';
+const description =
+  'Свяжитесь с экспертом ЭРА: подписка на материалы, презентация с ценами, демо-сессия, разбор кейса с экспертом. Email era@bitobe.ru, Telegram @era_lider.';
+
+const breadcrumbs = [
+  { name: 'Главная', url: 'https://era-lider.ru/' },
+  { name: 'Контакты и заявка', url: 'https://era-lider.ru/contact' },
+];
+
+interface FunnelStep {
+  num: string;
+  label: string;
+  title: string;
+  desc: string;
+  cta: string;
+  recommend?: string;
+  source: string;
+}
+
+const funnelSteps: FunnelStep[] = [
+  {
+    num: '01',
+    label: 'Подписка',
+    title: 'Email-рассылка и&nbsp;Telegram-канал',
+    desc: 'Раз в месяц — подборка исследований, разборов и кейсов от действующих экспертов ЭРА. Telegram @era_lider — короткие разборы 2–3 раза в неделю. Без рекламы. Отписка в один клик.',
+    cta: 'Подписаться',
+    source: 'subscribe',
+  },
+  {
+    num: '02',
+    label: 'Контент-магнит',
+    title: 'Бенчмарк по&nbsp;вашей отрасли',
+    desc: 'White paper или отраслевой бенчмарк под конкретную задачу: выгорание топ-менеджеров, профили HiPo в промышленности, мотивация лидеров и т. п. Нужна почта и компания — пришлём PDF с бенчмарком.',
+    cta: 'Запросить материал',
+    source: 'magnet',
+  },
+  {
+    num: '03',
+    label: 'Презентация и цены',
+    title: 'PDF-презентация ЭРА с&nbsp;ориентировочными ценами',
+    desc: 'Описание методологии, примеры всех пяти форматов отчётов, диапазон цен под объём вашей команды. Высылается на email в течение рабочего дня. Полный квалификационный набор.',
+    cta: 'Получить презентацию',
+    recommend: 'Рекомендуем',
+    source: 'pricing',
+  },
+  {
+    num: '04',
+    label: 'Демо-сессия',
+    title: '45 минут Zoom с&nbsp;действующим экспертом ЭРА',
+    desc: 'Покажем платформу в работе, разберём пример отчёта, ответим на технические вопросы по интеграции и нормативам. Без презентаций — рабочая демонстрация системы.',
+    cta: 'Записаться на демо',
+    source: 'demo',
+  },
+  {
+    num: '05',
+    label: 'Разбор кейса',
+    title: '60-минутная сессия с&nbsp;экспертом по&nbsp;вашей задаче',
+    desc: 'Подберём релевантный пример отчёта под ваш сценарий (подбор C-level / диагностика команды / выгорание / M&A / трансформация). Покажем на конкретике, как ЭРА работает в вашем контексте. Без обязательств.',
+    cta: 'Записаться на разбор',
+    source: 'case-review',
+  },
+];
+---
+
+<Base title={title} description={description} activeKey="contact" breadcrumbs={breadcrumbs}>
+
+<section class="page-hero">
+  <div class="container">
+    <div class="hero-breadcrumbs">
+      <a href="/">Главная</a>
+      <span class="sep">/</span>
+      <span class="current">Контакты и заявка</span>
+    </div>
+    <div class="page-hero-grid">
+      <div data-reveal>
+        <div class="eyebrow" style="margin-bottom: 28px;">
+          <Chev kind="mark" class="eyebrow-mark" />
+          Связаться с экспертом
+        </div>
+        <h1 class="h-hero">
+          Пять ступеней — от&nbsp;первого касания до&nbsp;<span class="accent-line">разговора по делу</span>.
+        </h1>
+        <p class="page-hero-lead">
+          Не «оставьте заявку и подождём ответа». Чёткая система: на каком этапе вы сейчас и какой формат коммуникации соответствует вашему уровню готовности. Каждая ступень — отдельный CTA, без обязательств перейти к следующему шагу.
+        </p>
+      </div>
+      <div class="page-hero-meta" data-reveal>
+        <div class="page-hero-meta-item">
+          <div class="label">Ступеней воронки</div>
+          <div class="value">5</div>
+        </div>
+        <div class="page-hero-meta-item">
+          <div class="label">Время ответа</div>
+          <div class="value">≤ 1 <span class="dim">рабочий день</span></div>
+        </div>
+        <div class="page-hero-meta-item">
+          <div class="label">Формат сессии</div>
+          <div class="value">Zoom <span class="dim">45–60 мин</span></div>
+        </div>
+        <div class="page-hero-meta-item">
+          <div class="label">Команда</div>
+          <div class="value">3+ <span class="dim">эксперта</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="funnel">
+  <div class="container">
+    <div class="funnel-header" data-reveal>
+      <div>
+        <div class="eyebrow"><Chev kind="mark" class="eyebrow-mark" />Ступени вовлечения</div>
+        <h2 class="h-section">Выберите формат, подходящий вашему этапу.</h2>
+      </div>
+      <p class="lead">От лёгкой подписки до содержательной 60-минутной сессии. Не нужно «начинать сверху» — каждый шаг работает самостоятельно.</p>
+    </div>
+
+    <div class="funnel-list">
+      {funnelSteps.map((step) => (
+        <article class="funnel-step" data-reveal>
+          <div class="funnel-step-meta">
+            <div class="funnel-step-num">{step.num}</div>
+            <div class="funnel-step-label">{step.label}</div>
+            {step.recommend && <div class="funnel-step-recommend">{step.recommend}</div>}
+          </div>
+          <div class="funnel-step-body">
+            <h3 set:html={step.title}></h3>
+            <p>{step.desc}</p>
+          </div>
+          <div class="funnel-step-cta">
+            <a href={`#form-${step.source}`} class="btn btn-secondary">
+              {step.cta}
+              <Chev kind="arrow" class="btn-arrow" width="14" height="10" />
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<section class="contact-form-section" id="form-pricing">
+  <div class="container">
+    <div class="contact-form-wrap" data-reveal>
+      <div class="contact-form-intro">
+        <div class="eyebrow"><Chev kind="mark" class="eyebrow-mark" />Заявка</div>
+        <h2 class="h-section">Получите презентацию с&nbsp;ценами на email.</h2>
+        <p>Ответим в течение рабочего дня. Пришлём PDF с описанием методологии, примерами отчётов и ориентировочными ценами под объём вашей команды.</p>
+
+        <div class="contact-direct">
+          <div class="contact-direct-label">Связаться напрямую</div>
+          <ul class="contact-direct-list">
+            <li>
+              <span class="contact-key">Email</span>
+              <a href="mailto:era@bitobe.ru" class="contact-val">era@bitobe.ru</a>
+            </li>
+            <li>
+              <span class="contact-key">Telegram</span>
+              <a href="https://t.me/era_lider" target="_blank" rel="noopener" class="contact-val">@era_lider</a>
+            </li>
+            <li>
+              <span class="contact-key">Сайт BITOBE</span>
+              <a href="https://bitobe.ru" target="_blank" rel="noopener" class="contact-val">bitobe.ru ↗</a>
+            </li>
+            <li>
+              <span class="contact-key">Адрес</span>
+              <span class="contact-val">Санкт-Петербург</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <form class="contact-form" id="contact-form">
+        <div class="form-row">
+          <label for="name">Имя и фамилия</label>
+          <input type="text" id="name" name="name" placeholder="Иванов Иван" required />
+        </div>
+        <div class="form-row">
+          <label for="company">Компания</label>
+          <input type="text" id="company" name="company" placeholder="Название организации" required />
+        </div>
+        <div class="form-row">
+          <label for="role">Роль</label>
+          <input type="text" id="role" name="role" placeholder="CEO / HR-директор / другое" />
+        </div>
+        <div class="form-row">
+          <label for="email">Корпоративная почта</label>
+          <input type="email" id="email" name="email" placeholder="name@company.ru" required />
+        </div>
+        <div class="form-row">
+          <label for="message">Кратко о задаче <span class="optional">(необязательно)</span></label>
+          <textarea id="message" name="message" placeholder="С какой задачей вы рассматриваете ЭРА? Подбор C-level, диагностика команды, выгорание..." rows="4"></textarea>
+        </div>
+        <div class="form-row form-step-select">
+          <label>Что вам нужно</label>
+          <div class="form-step-buttons">
+            <label class="step-radio">
+              <input type="radio" name="step" value="pricing" checked />
+              <span>Презентация и цены</span>
+            </label>
+            <label class="step-radio">
+              <input type="radio" name="step" value="demo" />
+              <span>Демо-сессия 45 мин</span>
+            </label>
+            <label class="step-radio">
+              <input type="radio" name="step" value="case-review" />
+              <span>Разбор кейса 60 мин</span>
+            </label>
+            <label class="step-radio">
+              <input type="radio" name="step" value="magnet" />
+              <span>Бенчмарк по отрасли</span>
+            </label>
+            <label class="step-radio">
+              <input type="radio" name="step" value="subscribe" />
+              <span>Подписка на материалы</span>
+            </label>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary form-submit-btn">
+          Отправить заявку
+          <Chev kind="arrow" class="btn-arrow" width="14" height="10" />
+        </button>
+        <div class="form-footnote">
+          Нажимая кнопку, вы соглашаетесь с политикой обработки персональных данных и условиями получения материалов ЭРА.
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  if (form) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = form.querySelector('button[type=submit]') as HTMLButtonElement | null;
+      if (!btn) return;
+      const original = btn.innerHTML;
+      const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT;
+
+      btn.disabled = true;
+
+      try {
+        if (endpoint) {
+          const data = new FormData(form);
+          data.append('source', 'contact');
+          data.append('utm', window.location.search || '');
+          await fetch(endpoint, { method: 'POST', body: data, headers: { Accept: 'application/json' } });
+          window.location.href = '/thanks';
+          return;
+        }
+      } catch (err) {
+        console.error('Contact form error', err);
+      }
+
+      btn.innerHTML = 'Отправлено ✓';
+      btn.style.background = '#6B6B6B';
+      btn.style.color = '#FFFFFF';
+      setTimeout(() => {
+        window.location.href = '/thanks';
+      }, 1200);
+    });
+  }
+
+  // Smooth scroll on funnel-step CTA — отправляет к форме и выбирает radio с нужным source
+  document.querySelectorAll<HTMLAnchorElement>('.funnel-step-cta a[href^="#form-"]').forEach((a) => {
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      const stepKey = a.getAttribute('href')?.replace('#form-', '');
+      if (stepKey) {
+        const radio = document.querySelector<HTMLInputElement>(`input[name="step"][value="${stepKey}"]`);
+        if (radio) radio.checked = true;
+      }
+      document.getElementById('form-pricing')?.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+</script>
+
+<style is:global>
+/* ===== Локальные стили /contact ===== */
+
+/* Funnel */
+.funnel { padding: var(--section-py) 0; background: var(--white); }
+.funnel-header {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 80px; align-items: end;
+  margin-bottom: 56px;
+}
+.funnel-header h2 { margin-top: 20px; }
+.funnel-header .lead {
+  font-size: 16px; line-height: 1.6;
+  color: var(--grey); max-width: 460px;
+}
+@media (max-width: 900px) { .funnel-header { grid-template-columns: 1fr; gap: 24px; } }
+
+.funnel-list {
+  display: flex; flex-direction: column;
+  background: var(--white);
+  border-top: 2px solid var(--black);
+}
+.funnel-step {
+  display: grid;
+  grid-template-columns: 200px 1fr 220px;
+  gap: 32px;
+  padding: 32px 0;
+  border-bottom: 1px solid var(--grey-line);
+  align-items: start;
+  transition: background 0.2s ease;
+}
+.funnel-step:hover { background: var(--grey-soft); }
+.funnel-step:last-child { border-bottom: none; }
+
+.funnel-step-meta {
+  display: flex; flex-direction: column;
+  gap: 8px;
+}
+.funnel-step-num {
+  font-family: var(--font-mono);
+  font-size: 24px; font-weight: 600;
+  color: var(--black); letter-spacing: 0.04em;
+  line-height: 1;
+}
+.funnel-step-label {
+  font-size: 11px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--grey);
+  font-weight: 600;
+}
+.funnel-step-recommend {
+  font-size: 10px; letter-spacing: 0.15em;
+  text-transform: uppercase;
+  background: var(--black); color: var(--white);
+  padding: 4px 8px;
+  font-weight: 600;
+  align-self: flex-start;
+}
+
+.funnel-step-body h3 {
+  font-size: 22px; font-weight: 700;
+  letter-spacing: -0.018em; line-height: 1.2;
+  color: var(--black); margin-bottom: 12px;
+}
+.funnel-step-body p {
+  font-size: 15px; line-height: 1.6;
+  color: var(--grey-deep);
+  max-width: 640px;
+}
+
+.funnel-step-cta { display: flex; align-items: flex-start; }
+.funnel-step-cta .btn { padding: 14px 22px; font-size: 13px; }
+
+@media (max-width: 980px) {
+  .funnel-step { grid-template-columns: 1fr; gap: 16px; padding: 28px 16px; }
+  .funnel-step-meta { flex-direction: row; align-items: baseline; gap: 16px; }
+}
+
+/* Contact form */
+.contact-form-section {
+  padding: var(--section-py) 0;
+  background: var(--black);
+  color: var(--white);
+  position: relative;
+  overflow: hidden;
+}
+.contact-form-section::before {
+  content: ""; position: absolute;
+  top: 0; right: 0;
+  width: 140px; height: 140px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%23FFFFFF'%3E%3Cpath d='M 0 0 L 100 0 L 100 100 L 80 100 L 80 20 L 0 20 Z'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+.contact-form-wrap {
+  display: grid; grid-template-columns: 48% 52%;
+  gap: 80px; align-items: start;
+  position: relative;
+}
+.contact-form-intro .eyebrow { color: var(--white); opacity: 0.7; margin-bottom: 24px; }
+.contact-form-intro h2 { color: var(--white); margin-bottom: 24px; }
+.contact-form-intro > p {
+  font-size: 17px; line-height: 1.6;
+  color: rgba(255,255,255,0.72);
+  margin-bottom: 40px; max-width: 460px;
+}
+
+.contact-direct {
+  padding-top: 32px;
+  border-top: 1px solid rgba(255,255,255,0.15);
+  max-width: 460px;
+}
+.contact-direct-label {
+  font-size: 11px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: rgba(255,255,255,0.55);
+  font-weight: 600; margin-bottom: 16px;
+}
+.contact-direct-list {
+  list-style: none;
+  display: flex; flex-direction: column;
+  gap: 14px;
+}
+.contact-direct-list li {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.contact-direct-list li:last-child { border-bottom: none; padding-bottom: 0; }
+.contact-key {
+  font-size: 11px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: rgba(255,255,255,0.55);
+  font-weight: 500; padding-top: 2px;
+}
+.contact-val {
+  color: var(--white); font-size: 15px;
+  font-weight: 500;
+}
+.contact-direct-list a.contact-val { border-bottom: 1px solid rgba(255,255,255,0.4); padding-bottom: 2px; }
+.contact-direct-list a.contact-val:hover { border-bottom-color: var(--white); }
+
+/* Form */
+.contact-form {
+  background: rgba(255,255,255,0.04);
+  padding: 44px;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.contact-form .form-row {
+  display: flex; flex-direction: column;
+  gap: 8px; margin-bottom: 20px;
+}
+.contact-form .form-row label {
+  font-size: 11px; letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+  font-weight: 500;
+}
+.contact-form .form-row label .optional {
+  text-transform: none; letter-spacing: 0;
+  color: rgba(255,255,255,0.35);
+  font-size: 11px; font-weight: 400;
+}
+.contact-form input, .contact-form textarea {
+  width: 100%; background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255,255,255,0.25);
+  color: var(--white); font-family: inherit;
+  font-size: 15px; padding: 8px 0;
+  transition: border-color 0.2s ease; outline: none;
+  resize: vertical;
+}
+.contact-form textarea {
+  border: 1px solid rgba(255,255,255,0.25);
+  padding: 12px;
+  min-height: 90px;
+}
+.contact-form input::placeholder, .contact-form textarea::placeholder { color: rgba(255,255,255,0.3); }
+.contact-form input:focus, .contact-form textarea:focus { border-bottom-color: var(--white); border-color: var(--white); }
+
+.form-step-select { margin-bottom: 24px; }
+.form-step-buttons { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.step-radio {
+  position: relative; cursor: pointer;
+}
+.step-radio input { position: absolute; opacity: 0; pointer-events: none; }
+.step-radio span {
+  display: inline-block;
+  padding: 8px 14px;
+  border: 1px solid rgba(255,255,255,0.25);
+  font-size: 13px;
+  color: rgba(255,255,255,0.7);
+  transition: all 0.2s ease;
+}
+.step-radio:hover span { border-color: rgba(255,255,255,0.5); color: var(--white); }
+.step-radio input:checked + span {
+  background: var(--white);
+  color: var(--black);
+  border-color: var(--white);
+  font-weight: 600;
+}
+
+.form-submit-btn {
+  width: 100%;
+  margin-top: 12px;
+  justify-content: space-between;
+  padding: 18px 24px;
+  background: var(--white); color: var(--black);
+}
+.form-submit-btn:hover { background: rgba(255,255,255,0.88); }
+.form-footnote {
+  font-size: 11px; color: rgba(255,255,255,0.4);
+  margin-top: 20px; line-height: 1.5;
+  letter-spacing: 0.02em;
+}
+
+@media (max-width: 980px) {
+  .contact-form-wrap { grid-template-columns: 1fr; gap: 40px; }
+  .contact-form { padding: 32px 24px; }
+}
+
+.page-hero-meta-item .value .dim { color: var(--grey); font-weight: 400; font-size: 0.78em; }
+</style>
+
+</Base>

@@ -1,0 +1,32 @@
+---
+import { scenarios } from '../../data/scenarios.ts';
+---
+
+<nav class="scenarios-nav" id="scenarios-nav">
+  <div class="container scenarios-nav-inner">
+    {scenarios.map((s, i) => (
+      <a href={`#${s.slug}`} class={i === 0 ? 'active' : undefined}>
+        <span class="num">{s.num}</span>{s.navLabel}
+      </a>
+    ))}
+  </div>
+</nav>
+
+<script>
+  const navLinks = document.querySelectorAll<HTMLAnchorElement>('.scenarios-nav-inner a');
+  const sections = document.querySelectorAll<HTMLElement>('.scenario[id]');
+  const setActive = (id: string) => {
+    navLinks.forEach((l) => {
+      l.classList.toggle('active', l.getAttribute('href') === '#' + id);
+    });
+  };
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) setActive((e.target as HTMLElement).id);
+      });
+    },
+    { rootMargin: '-30% 0px -60% 0px' }
+  );
+  sections.forEach((s) => io.observe(s));
+</script>

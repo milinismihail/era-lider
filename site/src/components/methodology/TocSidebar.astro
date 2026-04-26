@@ -1,0 +1,33 @@
+---
+import Chev from '../icons/Chev.astro';
+import { tocSections } from '../../data/methodology.ts';
+---
+
+<aside class="toc">
+  <div class="toc-label">
+    <Chev kind="mark" class="chev" />
+    Разделы
+  </div>
+  <ol>
+    {tocSections.map((s, i) => (
+      <li>
+        <a href={`#${s.id}`} class={i === 0 ? 'active' : undefined} set:html={s.title}></a>
+      </li>
+    ))}
+  </ol>
+</aside>
+
+<script>
+  const sections = document.querySelectorAll<HTMLElement>('.content > section[id]');
+  const tocLinks = document.querySelectorAll<HTMLAnchorElement>('.toc a');
+  const setActive = (id: string) => {
+    tocLinks.forEach((l) => l.classList.toggle('active', l.getAttribute('href') === '#' + id));
+  };
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => { if (e.isIntersecting) setActive((e.target as HTMLElement).id); });
+    },
+    { rootMargin: '-30% 0px -60% 0px' }
+  );
+  sections.forEach((s) => io.observe(s));
+</script>

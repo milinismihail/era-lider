@@ -1,0 +1,54 @@
+---
+import Chev from '../icons/Chev.astro';
+import type { Scenario } from '../../data/scenarios.ts';
+
+interface Props {
+  scenario: Scenario;
+  total: number;
+}
+
+const { scenario, total } = Astro.props;
+const totalStr = String(total).padStart(2, '0');
+---
+
+<section class:list={['scenario', `mod-${scenario.mod}`]} id={scenario.slug}>
+  <div class="container scenario-grid">
+    <div class="scenario-left" data-reveal>
+      <div class="scenario-num"><Chev kind="mark" class="chev" />{scenario.num}<span class="total">/ {totalStr}</span></div>
+      <h2 class="h-section">{scenario.title}</h2>
+      <p class="scenario-question">{scenario.question}</p>
+      <div class="scenario-meta">
+        {scenario.meta.map((m) => (
+          <div class="scenario-meta-item">
+            <div class="label">{m.label}</div>
+            <div class="value" set:html={m.value}></div>
+          </div>
+        ))}
+      </div>
+      <a href="/contact" class="scenario-btn">Разбор кейса с&nbsp;экспертом <Chev kind="arrow" class="chev" /></a>
+    </div>
+
+    <div class="scenario-right" data-reveal>
+      {scenario.blocks.map((b) => (
+        <div class="scenario-block">
+          <div class="scenario-block-label"><Chev kind="mark" class="chev" />{b.label}</div>
+          {b.title && <h3>{b.title}</h3>}
+          <p set:html={b.text}></p>
+          {b.bullets && (
+            <ul>
+              {b.bullets.map((bul) => <li set:html={bul}></li>)}
+            </ul>
+          )}
+        </div>
+      ))}
+
+      {scenario.testimonial && (
+        <div class="scenario-testimonial">
+          <div class="scenario-testimonial-label">{scenario.testimonial.label}</div>
+          <p>{scenario.testimonial.text}</p>
+          <div class="scenario-testimonial-source">{scenario.testimonial.source}</div>
+        </div>
+      )}
+    </div>
+  </div>
+</section>

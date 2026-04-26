@@ -1,0 +1,59 @@
+---
+import Chev from '../icons/Chev.astro';
+import {
+  footerProductLinks,
+  footerCompanyLinks,
+  footerContacts,
+  footerLegalLinks,
+} from '../../data/nav.ts';
+---
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col footer-brand">
+        <a href="/" class="logo">
+          <Chev kind="7" class="logo-mark" />
+          ЭРА<span class="logo-sub">BITOBE</span>
+        </a>
+        <p>Система оценки руководителей. Продукт семейства BITOBE. Санкт-Петербург, 2026.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Продукт</h4>
+        <ul>
+          {footerProductLinks.map((link) => (
+            <li><a href={link.href}>{link.label}</a></li>
+          ))}
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Компания</h4>
+        <ul>
+          {footerCompanyLinks.map((link) => (
+            <li><a href={link.href}>{link.label}</a></li>
+          ))}
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Контакты</h4>
+        <ul>
+          {footerContacts.map((c) => (
+            <li>
+              <a href={c.href} target={c.external ? '_blank' : undefined} rel={c.external ? 'noopener' : undefined}>
+                {c.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>
+        {footerLegalLinks.map((link) => (
+          <a href={link.href}>{link.label}</a>
+        ))}
+      </div>
+      <div>© ЭРА / BITOBE, 2026 · Реестр РПО №&nbsp;28543</div>
+    </div>
+  </div>
+</footer>

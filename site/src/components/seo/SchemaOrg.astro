@@ -1,0 +1,159 @@
+---
+export interface BreadcrumbItem {
+  name: string;
+  url: string;
+}
+
+export interface SchemaFaqItem {
+  question: string;
+  answer: string;
+}
+
+export interface SchemaProduct {
+  name: string;
+  description: string;
+}
+
+export interface SchemaArticle {
+  headline: string;
+  description: string;
+  datePublished?: string;
+  author?: string;
+}
+
+export type SchemaType = 'WebPage' | 'Product' | 'Article' | 'FAQPage';
+
+interface Props {
+  url: string;
+  title: string;
+  description: string;
+  type?: SchemaType;
+  breadcrumbs?: BreadcrumbItem[];
+  faqs?: SchemaFaqItem[];
+  product?: SchemaProduct;
+  article?: SchemaArticle;
+}
+
+const {
+  url,
+  title,
+  description,
+  type = 'WebPage',
+  breadcrumbs,
+  faqs,
+  product,
+  article,
+} = Astro.props;
+
+const SITE_URL = (Astro.site ?? new URL('https://era-lider.ru')).origin;
+const ORG_ID = `${SITE_URL}/#organization`;
+
+interface SchemaNode {
+  '@type': string;
+  [key: string]: unknown;
+}
+
+const organization: SchemaNode = {
+  '@type': 'Organization',
+  '@id': ORG_ID,
+  name: 'ЭРА · BITOBE',
+  alternateName: 'ЭРА',
+  url: SITE_URL,
+  logo: `${SITE_URL}/favicon.svg`,
+  description:
+    'Российская система оценки руководителей и команд. Реестровая запись № 28543 от 23.06.2025.',
+  email: 'era@bitobe.ru',
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Санкт-Петербург',
+    addressCountry: 'RU',
+  },
+  parentOrganization: {
+    '@type': 'Organization',
+    name: 'BITOBE',
+    url: 'https://bitobe.ru',
+  },
+  sameAs: ['https://t.me/era_lider', 'https://bitobe.ru'],
+};
+
+const graph: SchemaNode[] = [organization];
+
+if (type === 'Article' && article) {
+  graph.push({
+    '@type': 'Article',
+    headline: article.headline,
+    description: article.description,
+    url,
+    author: {
+      '@type': 'Organization',
+      name: article.author ?? 'BITOBE',
+    },
+    publisher: { '@id': ORG_ID },
+    ...(article.datePublished ? { datePublished: article.datePublished } : {}),
+  });
+} else if (type === 'Product' && product) {
+  graph.push({
+    '@type': 'Product',
+    name: product.name,
+    description: product.description,
+    url,
+    brand: { '@type': 'Brand', name: 'ЭРА' },
+    manufacturer: { '@id': ORG_ID },
+    category: 'ПО для оценки и тестирования персонала',
+  });
+} else if (type === 'FAQPage' && faqs && faqs.length) {
+  graph.push({
+    '@type': 'FAQPage',
+    url,
+    mainEntity: faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: f.answer,
+      },
+    })),
+  });
+} else {
+  graph.push({
+    '@type': 'WebPage',
+    url,
+    name: title,
+    description,
+    inLanguage: 'ru-RU',
+    isPartOf: { '@id': ORG_ID },
+  });
+}
+
+if (breadcrumbs && breadcrumbs.length) {
+  graph.push({
+    '@type': 'BreadcrumbList',
+    itemListElement: breadcrumbs.map((b, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: b.name,
+      item: b.url,
+    })),
+  });
+}
+
+const ldJson = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@graph': graph,
+});
+
+// Удаляем HTML-entities из текстов JSON-LD (FAQ может содержать &nbsp; и т. п.)
+function decodeEntities(str: string): string {
+  return str
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&mdash;/g, '—')
+    .replace(/&ndash;/g, '–')
+    .replace(/&laquo;/g, '«')
+    .replace(/&raquo;/g, '»')
+    .replace(/&amp;/g, '&');
+}
+
+const ldJsonClean = decodeEntities(ldJson);
+---
+
+<script type="application/ld+json" set:html={ldJsonClean}></script>

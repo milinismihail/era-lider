@@ -1,0 +1,544 @@
+---
+import Base from '../layouts/Base.astro';
+import Chev from '../components/icons/Chev.astro';
+
+const title = 'Что такое ЭРА · Российская система оценки руководителей';
+const description =
+  'ЭРА — российский стандарт оценки руководителей и команд. Философия продукта, что измеряем, чем отличаемся от Hogan, Zetic, BASE!PRO, ЭКОПСИ.';
+
+const schemaProduct = {
+  name: 'ЭРА · Система оценки руководителей',
+  description:
+    'Что такое ЭРА: философия, три модуля (HEXACO + 16 мотиваторов + 11 деструкторов), отличия от Hogan/Zetic/BASE!PRO/ЭКОПСИ.',
+};
+
+const breadcrumbs = [
+  { name: 'Главная', url: 'https://era-lider.ru/' },
+  { name: 'Что такое ЭРА', url: 'https://era-lider.ru/about' },
+];
+
+interface ComparisonRow {
+  feature: string;
+  era: string;
+  hogan: string;
+  zetic: string;
+  basepro: string;
+  ecopsy: string;
+  highlight?: boolean;
+}
+
+const comparisonRows: ComparisonRow[] = [
+  {
+    feature: 'Модель личности',
+    era: 'HEXACO (6 факторов)',
+    hogan: 'HPI / Big Five (5 факторов)',
+    zetic: 'Big Five + собств. шкалы',
+    basepro: 'Big Five + DSM-5',
+    ecopsy: 'Комбинированный',
+    highlight: true,
+  },
+  {
+    feature: 'Реестр РПО',
+    era: '№ 28543 от 23.06.2025',
+    hogan: 'Нет (международный)',
+    zetic: 'Не акцентируют',
+    basepro: 'Серверы РФ, ФЗ-152',
+    ecopsy: 'Да',
+  },
+  {
+    feature: 'Российская нормативная база',
+    era: '5 127 профилей',
+    hogan: 'Глобальные нормы',
+    zetic: '100 000 респондентов',
+    basepro: '3 600 валидированных',
+    ecopsy: '500 000+ оценённых',
+  },
+  {
+    feature: 'Корреляции с HPI/HDS/MVPI',
+    era: 'r до 0.83 (открыто)',
+    hogan: '—',
+    zetic: 'Не публикуют детально',
+    basepro: 'r до 0.81 (открыто)',
+    ecopsy: 'Внутренние данные',
+  },
+  {
+    feature: 'Командный профиль',
+    era: 'Есть',
+    hogan: 'Через 360°',
+    zetic: 'Сильная сторона',
+    basepro: 'Есть',
+    ecopsy: 'В составе АЦ',
+  },
+  {
+    feature: 'Интеграция с развитием',
+    era: '20 лет коучинга BITOBE',
+    hogan: 'Через дистрибьюторов',
+    zetic: 'ИИ-ИПР, ИИ-ассессмент',
+    basepro: 'Ограниченно',
+    ecopsy: 'Полный цикл',
+  },
+  {
+    feature: 'Сертификация инхаус-экспертов',
+    era: '4-дневный семинар',
+    hogan: 'Через дистрибьюторов',
+    zetic: 'Не на сайте',
+    basepro: 'Нет',
+    ecopsy: 'Есть, академия',
+  },
+  {
+    feature: 'Прозрачность цены',
+    era: 'Калькулятор + диапазоны',
+    hogan: '«Уточнить»',
+    zetic: '«Обсудить»',
+    basepro: '«Запросить»',
+    ecopsy: 'Индивидуально',
+  },
+];
+
+interface Differentiator {
+  num: string;
+  title: string;
+  text: string;
+  link?: { label: string; href: string };
+}
+
+const differentiators: Differentiator[] = [
+  {
+    num: '01',
+    title: 'Шесть факторов вместо пяти',
+    text:
+      'HEXACO добавляет к Big Five фактор Честности-Смирения — критически важный в российской управленческой культуре. Прямой предиктор этичности решений, контрпродуктивного поведения и коррупционных рисков.',
+    link: { label: 'Раздел методологии', href: '/methodology#hexaco' },
+  },
+  {
+    num: '02',
+    title: 'Российская норма, а не локализованная',
+    text:
+      'Все перцентили и сравнения — на нормативной базе российских руководителей (5 127 профилей, 8 отраслей, 2020–2025 годы). Не «международный middle management», а «российский руководитель направления в индустрии Х».',
+    link: { label: 'Нормативная база', href: '/methodology#normative' },
+  },
+  {
+    num: '03',
+    title: 'Открытая доказательная база',
+    text:
+      'Корреляции с HPI/HDS/MVPI до r = 0.83. α-Кронбаха от 0.72 до 0.91. Все цифры публикуются открыто, методический отчёт — 86 страниц по запросу.',
+    link: { label: 'Валидность и надёжность', href: '/methodology#validity' },
+  },
+  {
+    num: '04',
+    title: 'Не «отчёт», а вход в развитие',
+    text:
+      'За оценкой — 20 лет коучинговой практики BITOBE: обратная связь, ИПР, командные сессии, программы целевого развития. Отчёт работает как старт системы, а не как папка в архиве.',
+    link: { label: 'Сценарии применения', href: '/scenarios' },
+  },
+  {
+    num: '05',
+    title: 'Реестр РПО и хранение данных в РФ',
+    text:
+      'Реестровая запись № 28543 от 23.06.2025. Все серверы и резервные копии — в российских дата-центрах. Соответствие 152-ФЗ, ГОСТ Р 71009-2023, готовность к проверкам службы безопасности клиента.',
+    link: { label: 'Документация', href: '/documents' },
+  },
+  {
+    num: '06',
+    title: 'Сертификация инхаус-экспертов клиента',
+    text:
+      'HR-методологи и психологи клиента могут пройти 4-дневный сертификационный семинар и проводить оценку самостоятельно. Долгосрочное снижение стоимости работы с инструментом + независимость от внешнего подрядчика.',
+    link: { label: 'Программа сертификации', href: '/certification' },
+  },
+];
+---
+
+<Base
+  title={title}
+  description={description}
+  activeKey="about"
+  schemaType="Product"
+  schemaProduct={schemaProduct}
+  breadcrumbs={breadcrumbs}
+>
+
+<section class="page-hero">
+  <div class="container">
+    <div class="hero-breadcrumbs">
+      <a href="/">Главная</a>
+      <span class="sep">/</span>
+      <span class="current">Что такое ЭРА</span>
+    </div>
+    <div class="page-hero-grid">
+      <div data-reveal>
+        <div class="eyebrow" style="margin-bottom: 28px;">
+          <Chev kind="mark" class="eyebrow-mark" />
+          О продукте
+        </div>
+        <h1 class="h-hero">
+          Российский стандарт оценки <span class="accent-line">для решений, где нельзя ошибиться</span>.
+        </h1>
+        <p class="page-hero-lead">
+          ЭРА — это не «ещё один тест». Это система оценки руководителей и команд, за которой стоит 20-летняя практика BITOBE по развитию первых лиц крупнейших российских компаний. Включена в Единый реестр российского ПО, валидирована на российской выборке, сопоставлена с ведущими мировыми инструментами.
+        </p>
+      </div>
+      <div class="page-hero-meta" data-reveal>
+        <div class="page-hero-meta-item">
+          <div class="label">Реестр РПО</div>
+          <div class="value">№ 28543</div>
+        </div>
+        <div class="page-hero-meta-item">
+          <div class="label">База норм</div>
+          <div class="value">5&nbsp;127 <span class="dim">профилей</span></div>
+        </div>
+        <div class="page-hero-meta-item">
+          <div class="label">Опросников</div>
+          <div class="value">3 <span class="dim">в&nbsp;системе</span></div>
+        </div>
+        <div class="page-hero-meta-item">
+          <div class="label">Сценариев применения</div>
+          <div class="value">6</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="philosophy">
+  <div class="container">
+    <div class="philosophy-grid" data-reveal>
+      <div class="philosophy-text">
+        <div class="eyebrow"><Chev kind="mark" class="eyebrow-mark" />Философия продукта</div>
+        <h2 class="h-section">Оценка — это карта <span class="accent-line">предсказуемых реакций</span>, а не диагностика личности.</h2>
+        <p>
+          Принципиальная разница между ассессмент-инструментами лежит не в технологии тестирования, а в том, что именно измеряется. ЭРА построена на концепции identity vs. reputation Хогана с важным уточнением: для управленческих решений значение имеет не то, как человек видит себя, а то, как его поведение предсказуемо считывается другими.
+        </p>
+        <p>
+          Это значит, что опросники ЭРА ориентированы не на фиксацию внутренних переживаний, а на предикцию наблюдаемого поведения в рабочем контексте — в том числе под давлением, в условиях многозадачности, при конфликте интересов.
+        </p>
+      </div>
+      <div class="philosophy-aside">
+        <div class="philosophy-quote">
+          <p>«Оценка руководителя — это не диагностика личности. Это карта предсказуемых реакций. Что он сделает, когда будет тяжело, а не что о себе думает, когда всё хорошо.»</p>
+          <div class="q-src">Н. Боровикова · руководитель методологии ЭРА</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="what-we-measure">
+  <div class="container">
+    <div class="wm-header" data-reveal>
+      <div class="eyebrow"><Chev kind="mark" class="eyebrow-mark" />Что измеряем</div>
+      <h2 class="h-section">Три модуля — три измерения руководителя.</h2>
+    </div>
+
+    <div class="wm-grid">
+      <div class="wm-card mod-pers" data-reveal>
+        <div class="wm-card-num">01 · Личность</div>
+        <h3>HEXACO — шесть факторов поведения в норме</h3>
+        <p>Что и как делает руководитель, когда ситуация стабильна. Шесть измерений: Честность-Смирение, Эмоциональность, Экстраверсия, Доброжелательность, Добросовестность, Открытость опыту.</p>
+        <a href="/methodology#hexaco" class="wm-link">Подробнее <Chev kind="arrow" class="chev" /></a>
+      </div>
+
+      <div class="wm-card mod-mot" data-reveal>
+        <div class="wm-card-num">02 · Мотивация</div>
+        <h3>16 драйверов — что включает руководителя</h3>
+        <p>Не «что мотивирует вообще», а конкретно что для этого человека важно: власть, автономия, достижение, признание, развитие, материальное благополучие, справедливость и ещё девять шкал.</p>
+        <a href="/methodology#motivation" class="wm-link">Подробнее <Chev kind="arrow" class="chev" /></a>
+      </div>
+
+      <div class="wm-card mod-destr" data-reveal>
+        <div class="wm-card-num">03 · Деструкторы</div>
+        <h3>11 паттернов — что происходит под давлением</h3>
+        <p>Стресс-поведение — не патология, а нормальная реакция на перегрузку. Прогноз: в какой форме руководитель будет «ломаться», когда ресурс стрессоустойчивости исчерпан.</p>
+        <a href="/methodology#destructors" class="wm-link">Подробнее <Chev kind="arrow" class="chev" /></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="differentiators">
+  <div class="container">
+    <div class="diff-header" data-reveal>
+      <div>
+        <div class="eyebrow"><Chev kind="mark" class="eyebrow-mark" />Чем отличается ЭРА</div>
+        <h2 class="h-section">Шесть отличий от&nbsp;типового ассессмент-инструмента.</h2>
+      </div>
+      <p class="lead">Не «лучше всех» в каждой графе, а уникальное сочетание: российская норма + открытая доказательная база + интеграция с коучинговой практикой BITOBE + реестр РПО.</p>
+    </div>
+
+    <div class="diff-grid">
+      {differentiators.map((d) => (
+        <div class="diff-card" data-reveal>
+          <div class="diff-num">{d.num}</div>
+          <h3>{d.title}</h3>
+          <p>{d.text}</p>
+          {d.link && (
+            <a href={d.link.href} class="diff-link">{d.link.label} <Chev kind="arrow" class="chev" /></a>
+          )}
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<section class="comparison">
+  <div class="container">
+    <div class="comparison-header" data-reveal>
+      <div class="eyebrow"><Chev kind="mark" class="eyebrow-mark" />Сравнение с конкурентами</div>
+      <h2 class="h-section">ЭРА vs Hogan / Zetic / BASE!PRO / ЭКОПСИ.</h2>
+      <p class="lead">Без маркетинговой натяжки: где ЭРА сильнее, где сопоставима, где у конкурентов есть преимущества. Для тех, кто реально выбирает инструмент.</p>
+    </div>
+
+    <div class="comparison-wrap" data-reveal>
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th class="feature-col">Параметр</th>
+            <th class="era-col">ЭРА</th>
+            <th>Hogan</th>
+            <th>Zetic</th>
+            <th>BASE!PRO</th>
+            <th>ЭКОПСИ Linkis</th>
+          </tr>
+        </thead>
+        <tbody>
+          {comparisonRows.map((row) => (
+            <tr>
+              <td class="feature-cell">{row.feature}</td>
+              <td class:list={['era-cell', row.highlight ? 'highlight' : null]}>{row.era}</td>
+              <td>{row.hogan}</td>
+              <td>{row.zetic}</td>
+              <td>{row.basepro}</td>
+              <td>{row.ecopsy}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <p class="comparison-note">
+      Для крупного корпоративного заказчика выбор обычно идёт между ЭРА и ЭКОПСИ (институциональная глубина) или ЭРА и Zetic (технологичный фокус). С Hogan ситуация особая — формально не присутствует на рынке РФ, но используется как точка отсчёта для всех альтернатив. BASE!PRO — точечно сильны на дизайне и прозрачной валидности, но без институциональной поддержки крупного бренда.
+    </p>
+  </div>
+</section>
+
+<section class="cta-block" id="cta">
+  <div class="container cta-grid">
+    <div data-reveal>
+      <div class="eyebrow on-dark" style="margin-bottom: 24px;">
+        <Chev kind="mark" class="eyebrow-mark" style="color: var(--white)" />
+        Следующий шаг
+      </div>
+      <h2 class="h-section">Презентация ЭРА — <span class="accent-line" style="color:var(--white);">PDF + диалог</span>.</h2>
+      <p class="lead">PDF с описанием системы и примерами отчётов + 45-минутный разговор с действующим экспертом ЭРА. Покажем, как система работает в вашей задаче.</p>
+    </div>
+    <div class="cta-actions" data-reveal>
+      <a href="/contact" class="btn btn-primary">Получить презентацию <Chev kind="arrow" class="btn-arrow" width="14" height="10" /></a>
+      <a href="/methodology" class="btn btn-secondary-inverse">Перейти к&nbsp;методологии <Chev kind="arrow" class="btn-arrow" width="14" height="10" /></a>
+    </div>
+  </div>
+</section>
+
+<style is:global>
+/* ===== Локальные стили /about ===== */
+
+/* Philosophy */
+.philosophy { padding: var(--section-py) 0; background: var(--white); }
+.philosophy-grid {
+  display: grid; grid-template-columns: 60% 40%;
+  gap: 80px; align-items: start;
+}
+.philosophy-text h2 { margin: 20px 0 28px; }
+.philosophy-text p {
+  font-size: 17px; line-height: 1.65;
+  color: var(--black); margin-bottom: 20px;
+}
+.philosophy-aside { padding-top: 40px; }
+.philosophy-quote {
+  background: var(--grey-soft);
+  padding: 32px;
+  border-left: 3px solid var(--black);
+}
+.philosophy-quote p {
+  font-size: 18px; line-height: 1.55;
+  color: var(--black); font-weight: 500;
+  margin-bottom: 16px;
+}
+.philosophy-quote .q-src {
+  font-size: 11px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--grey);
+  font-weight: 600;
+  display: flex; align-items: center; gap: 8px;
+}
+.philosophy-quote .q-src::before {
+  content: ""; width: 20px; height: 1px; background: var(--black);
+}
+@media (max-width: 980px) {
+  .philosophy-grid { grid-template-columns: 1fr; gap: 40px; }
+  .philosophy-aside { padding-top: 0; }
+}
+
+/* What we measure */
+.what-we-measure { padding: var(--section-py) 0; background: var(--grey-soft); }
+.wm-header { max-width: 720px; margin-bottom: 56px; }
+.wm-header h2 { margin-top: 20px; }
+
+.wm-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.wm-card {
+  background: var(--white);
+  padding: 36px 32px 32px;
+  position: relative;
+  border-top: 6px solid var(--black);
+  display: flex; flex-direction: column;
+}
+.wm-card.mod-pers  { border-top-color: var(--accent-pers); }
+.wm-card.mod-mot   { border-top-color: var(--accent-mot); }
+.wm-card.mod-destr { border-top-color: var(--accent-destr); }
+.wm-card-num {
+  font-size: 11px; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--grey);
+  font-weight: 600; margin-bottom: 24px;
+}
+.wm-card h3 {
+  font-size: 22px; font-weight: 700;
+  letter-spacing: -0.02em; line-height: 1.2;
+  color: var(--black); margin-bottom: 14px;
+}
+.wm-card p {
+  font-size: 14px; line-height: 1.55;
+  color: var(--grey); margin-bottom: 24px; flex: 1;
+}
+.wm-link {
+  font-size: 12px; color: var(--black);
+  font-weight: 600; letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--black);
+  padding-bottom: 4px;
+  display: inline-flex; align-items: center; gap: 10px;
+  align-self: flex-start;
+  transition: gap 0.2s ease;
+}
+.wm-link:hover { gap: 14px; }
+.wm-link .chev { width: 12px; height: 8px; }
+@media (max-width: 900px) { .wm-grid { grid-template-columns: 1fr; } }
+
+/* Differentiators */
+.differentiators { padding: var(--section-py) 0; background: var(--white); }
+.diff-header {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 80px; align-items: end;
+  margin-bottom: 56px;
+}
+.diff-header h2 { margin-top: 20px; }
+.diff-header .lead {
+  font-size: 16px; line-height: 1.6;
+  color: var(--grey); max-width: 460px;
+}
+@media (max-width: 900px) { .diff-header { grid-template-columns: 1fr; gap: 24px; } }
+
+.diff-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--grey-line);
+  border: 1px solid var(--grey-line);
+}
+.diff-card {
+  background: var(--white);
+  padding: 36px 32px 32px;
+  position: relative;
+  display: flex; flex-direction: column;
+}
+.diff-card::before {
+  content: ""; position: absolute;
+  top: 0; left: 0;
+  width: 36px; height: 4px;
+  background: var(--black);
+}
+.diff-num {
+  font-family: var(--font-mono);
+  font-size: 11px; color: var(--grey);
+  letter-spacing: 0.08em; font-weight: 500;
+  margin-bottom: 16px; padding-top: 14px;
+}
+.diff-card h3 {
+  font-size: 19px; font-weight: 600;
+  letter-spacing: -0.015em; line-height: 1.25;
+  color: var(--black); margin-bottom: 14px;
+}
+.diff-card p {
+  font-size: 14px; line-height: 1.55;
+  color: var(--grey); margin-bottom: 20px; flex: 1;
+}
+.diff-link {
+  font-size: 11px; color: var(--black);
+  font-weight: 600; letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--black);
+  padding-bottom: 3px;
+  display: inline-flex; align-items: center; gap: 8px;
+  align-self: flex-start;
+  transition: gap 0.2s ease;
+}
+.diff-link:hover { gap: 12px; }
+.diff-link .chev { width: 12px; height: 8px; }
+@media (max-width: 900px) { .diff-grid { grid-template-columns: 1fr; } }
+
+/* Comparison */
+.comparison { padding: var(--section-py) 0; background: var(--grey-soft); }
+.comparison-header { max-width: 760px; margin-bottom: 56px; }
+.comparison-header h2 { margin-top: 20px; margin-bottom: 24px; }
+.comparison-header .lead {
+  font-size: 16px; line-height: 1.6;
+  color: var(--grey-deep);
+}
+
+.comparison-wrap {
+  background: var(--white);
+  border: 1px solid var(--grey-line);
+  overflow-x: auto;
+}
+.comparison-table {
+  width: 100%; border-collapse: collapse;
+  font-size: 14px; min-width: 880px;
+}
+.comparison-table th, .comparison-table td {
+  padding: 16px 20px;
+  text-align: left;
+  border-bottom: 1px solid var(--grey-line);
+  vertical-align: top;
+}
+.comparison-table thead th {
+  font-size: 11px; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--grey);
+  font-weight: 600;
+  border-bottom: 2px solid var(--black);
+  background: var(--grey-soft);
+}
+.comparison-table thead .era-col {
+  background: var(--black); color: var(--white);
+}
+.comparison-table .feature-col { width: 26%; }
+.comparison-table .feature-cell {
+  font-weight: 600; color: var(--black);
+  font-size: 14px;
+  background: var(--grey-soft);
+}
+.comparison-table .era-cell {
+  background: rgba(168, 179, 217, 0.18);
+  color: var(--black); font-weight: 500;
+}
+.comparison-table .era-cell.highlight {
+  background: rgba(168, 179, 217, 0.4);
+  font-weight: 600;
+}
+.comparison-table tbody td { color: var(--grey); }
+.comparison-table tbody tr:last-child td { border-bottom: none; }
+
+.comparison-note {
+  margin-top: 24px;
+  font-size: 13px; color: var(--grey);
+  line-height: 1.6; max-width: 800px;
+}
+
+.page-hero-meta-item .value .dim { color: var(--grey); font-weight: 400; font-size: 0.78em; }
+</style>
+
+</Base>

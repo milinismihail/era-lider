@@ -1,0 +1,21 @@
+---
+import Chev from '../icons/Chev.astro';
+
+interface Props {
+  num: string;
+  kicker: string;
+  kickerMod?: 'pers' | 'mot' | 'destr';
+  title?: string;
+}
+const { num, kicker, kickerMod } = Astro.props;
+---
+
+<div class="section-head">
+  <div class="section-num">{num}</div>
+  <div class="section-title">
+    <div class:list={['kicker', kickerMod ? `mod-${kickerMod}` : null]}>
+      <Chev kind="mark" class="chev" />{kicker}
+    </div>
+    <slot />
+  </div>
+</div>

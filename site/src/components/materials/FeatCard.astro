@@ -1,0 +1,24 @@
+---
+import Chev from '../icons/Chev.astro';
+import type { FeaturedMaterial } from '../../data/materials.ts';
+
+interface Props { item: FeaturedMaterial }
+const { item } = Astro.props;
+const isExternal = /^https?:\/\//.test(item.link.href);
+---
+
+<a
+  href={item.link.href}
+  target={isExternal ? '_blank' : undefined}
+  rel={isExternal ? 'noopener' : undefined}
+  class:list={['feat-card', item.mod ? `mod-${item.mod}` : null, item.large ? 'large' : null]}
+  data-reveal
+>
+  <div class="feat-tag"><span class="dot"></span>{item.typeLabel}</div>
+  <h3 class="feat-title" set:html={item.title}></h3>
+  <p class="feat-desc">{item.desc}</p>
+  <div class="feat-meta">
+    {item.meta.map((m) => <span set:html={m}></span>)}
+  </div>
+  <span class="feat-link">{item.link.label} <Chev kind="arrow" class="chev" /></span>
+</a>

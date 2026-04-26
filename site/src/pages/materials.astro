@@ -1,0 +1,440 @@
+---
+import Base from '../layouts/Base.astro';
+import Chev from '../components/icons/Chev.astro';
+import FeatCard from '../components/materials/FeatCard.astro';
+import MaterialRow from '../components/materials/MaterialRow.astro';
+import MaterialsFilter from '../components/materials/MaterialsFilter.astro';
+import { featuredMaterials, materialsList } from '../data/materials.ts';
+
+const title = 'Исследования и материалы · ЭРА';
+const description =
+  'Открытые материалы ЭРА: white papers, отраслевые бенчмарки, методические статьи, разборы экспертов из Telegram @era_lider, подкаст BITOBE о лидерстве.';
+
+const breadcrumbs = [
+  { name: 'Главная', url: 'https://era-lider.ru/' },
+  { name: 'Исследования и материалы', url: 'https://era-lider.ru/materials' },
+];
+---
+
+<Base title={title} description={description} activeKey="materials" breadcrumbs={breadcrumbs}>
+
+<section class="page-hero">
+  <div class="container">
+    <div class="hero-breadcrumbs">
+      <a href="/">Главная</a>
+      <span class="sep">/</span>
+      <span class="current">Исследования и материалы</span>
+    </div>
+    <div class="page-hero-grid">
+      <div data-reveal>
+        <div class="eyebrow" style="margin-bottom: 28px;">
+          <Chev kind="mark" class="eyebrow-mark" />
+          Открытые материалы
+        </div>
+        <h1 class="h-hero">
+          Что мы пишем для&nbsp;тех, кто работает <span class="accent-line">с&nbsp;оценкой</span>.
+        </h1>
+        <p class="page-hero-lead">
+          White papers по методологии, отраслевые бенчмарки, разборы кейсов от&nbsp;действующих экспертов, статьи blog.bitobe.ru с&nbsp;тегом ЭРА. Всё в&nbsp;открытом доступе — для&nbsp;HR, психометристов, методологов и&nbsp;лиц, принимающих решение о&nbsp;запуске оценки.
+        </p>
+      </div>
+      <div class="page-hero-meta" data-reveal>
+        <div class="page-hero-meta-item">
+          <div class="label">Публикаций</div>
+          <div class="value">{materialsList.length}+</div>
+        </div>
+        <div class="page-hero-meta-item">
+          <div class="label">Бенчмарков</div>
+          <div class="value">8 <span class="dim">отраслей</span></div>
+        </div>
+        <div class="page-hero-meta-item">
+          <div class="label">Telegram-канал</div>
+          <div class="value">@era_lider</div>
+        </div>
+        <div class="page-hero-meta-item">
+          <div class="label">Обновляется</div>
+          <div class="value">2&nbsp;раза <span class="dim">в&nbsp;месяц</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="featured">
+  <div class="container">
+    <div class="featured-header" data-reveal>
+      <div>
+        <div class="eyebrow"><Chev kind="mark" class="eyebrow-mark" />Главное</div>
+        <h2 class="h-section">Три материала, с&nbsp;которых стоит начать.</h2>
+      </div>
+      <p class="lead">Ключевые публикации ЭРА: методический отчёт, флагманский бенчмарк по выгоранию топ-менеджеров и базовая статья о роли личностных опросников в&nbsp;принятии управленческих решений.</p>
+    </div>
+
+    <div class="featured-grid">
+      {featuredMaterials.map((f) => <FeatCard item={f} />)}
+    </div>
+  </div>
+</section>
+
+<MaterialsFilter />
+
+<section class="materials">
+  <div class="container">
+    <div class="materials-list" id="materials-list">
+      {materialsList.map((m) => <MaterialRow item={m} />)}
+    </div>
+    <div class="empty-state" id="materials-empty">По выбранному типу материалов пока нет публикаций. Попробуйте сбросить фильтр.</div>
+  </div>
+</section>
+
+<section class="telegram-block">
+  <div class="container telegram-grid">
+    <div data-reveal>
+      <div class="eyebrow on-dark"><Chev kind="mark" class="eyebrow-mark" style="color: var(--white)" />Telegram-канал</div>
+      <h2 class="h-section">Короткие разборы от&nbsp;действующих <span class="accent-line" style="color:var(--white);">экспертов</span>.</h2>
+      <p>В Telegram-канале @era_lider действующие эксперты ЭРА регулярно публикуют короткие разборы реальных рабочих ситуаций (с соблюдением конфиденциальности): что показывают профили в типичных управленческих коллизиях, как читать сложные сочетания шкал, почему интерпретация без контекста — это ошибка. Эти материалы потом пересобираются в статьи и записи в этом разделе.</p>
+      <a href="https://t.me/era_lider" target="_blank" rel="noopener" class="telegram-handle">
+        <span class="at">@</span>era_lider
+        <Chev kind="arrow" width="14" height="10" />
+      </a>
+    </div>
+
+    <div class="telegram-meta" data-reveal>
+      <div class="telegram-meta-item">
+        <div class="label">Формат</div>
+        <div class="value">Короткие разборы 200–500 слов</div>
+      </div>
+      <div class="telegram-meta-item">
+        <div class="label">Авторы</div>
+        <div class="value">Действующие эксперты ЭРА</div>
+      </div>
+      <div class="telegram-meta-item">
+        <div class="label">Регулярность</div>
+        <div class="value">2–3 публикации в неделю</div>
+      </div>
+      <div class="telegram-meta-item">
+        <div class="label">Темы</div>
+        <div class="value">Кейсы, шкалы, методология, наблюдения из&nbsp;практики</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="subscribe">
+  <div class="container">
+    <div class="subscribe-card" data-reveal>
+      <div>
+        <div class="eyebrow" style="margin-bottom: 16px;"><Chev kind="mark" class="eyebrow-mark" />Email-рассылка</div>
+        <h2 class="h-section">Исследования, разборы и&nbsp;кейсы — в&nbsp;почту.</h2>
+        <p>Раз в&nbsp;месяц присылаем подборку: новые white papers, бенчмарки по&nbsp;отраслям, ключевые материалы из&nbsp;Telegram-канала, события (вебинары, семинары, открытые сессии). Без рекламы, только содержательный контент. Отписка — в один клик.</p>
+      </div>
+      <form class="subscribe-form" id="subscribe-form">
+        <input type="email" name="email" class="subscribe-input" placeholder="name@company.ru" required />
+        <button type="submit" class="btn btn-primary">
+          Подписаться
+          <Chev kind="arrow" class="btn-arrow" width="14" height="10" />
+        </button>
+        <div class="subscribe-footnote">
+          Нажимая кнопку, вы соглашаетесь с&nbsp;политикой обработки персональных данных и условиями получения рассылки. Письма приходят с&nbsp;адреса era@bitobe.ru.
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section class="cta-block" id="cta">
+  <div class="container cta-grid">
+    <div data-reveal>
+      <div class="eyebrow on-dark" style="margin-bottom: 24px;">
+        <Chev kind="mark" class="eyebrow-mark" style="color: var(--white)" />
+        Под вашу задачу
+      </div>
+      <h2 class="h-section">Нужен <span class="accent-line" style="color:var(--white);">бенчмарк</span> по&nbsp;вашей отрасли?</h2>
+      <p class="lead">Если в открытых материалах нет нужного среза — пришлите запрос. Раз в полгода мы готовим заказные обезличенные бенчмарки под конкретную отраслевую или задачную выборку.</p>
+    </div>
+    <div class="cta-actions" data-reveal>
+      <a href="/contact" class="btn btn-primary">Запросить бенчмарк <Chev kind="arrow" class="btn-arrow" width="14" height="10" /></a>
+      <a href="/methodology" class="btn btn-secondary-inverse">Перейти к&nbsp;методологии <Chev kind="arrow" class="btn-arrow" width="14" height="10" /></a>
+    </div>
+  </div>
+</section>
+
+<script>
+  const form = document.getElementById('subscribe-form') as HTMLFormElement | null;
+  if (form) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = form.querySelector('button[type=submit]') as HTMLButtonElement | null;
+      if (!btn) return;
+      const original = btn.innerHTML;
+      const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT;
+
+      btn.disabled = true;
+
+      try {
+        if (endpoint) {
+          const data = new FormData(form);
+          data.append('source', 'materials/subscribe');
+          await fetch(endpoint, { method: 'POST', body: data, headers: { Accept: 'application/json' } });
+        }
+      } catch (err) {
+        console.error('Subscribe error', err);
+      }
+
+      btn.innerHTML = 'Подписка оформлена ✓';
+      btn.style.background = '#6B6B6B';
+      btn.style.color = '#FFFFFF';
+      setTimeout(() => {
+        btn.innerHTML = original;
+        btn.style.background = '';
+        btn.style.color = '';
+        btn.disabled = false;
+        form.reset();
+      }, 2400);
+    });
+  }
+</script>
+
+<style is:global>
+/* ===== Локальные стили /materials ===== */
+
+/* Filters (sticky) */
+.filters {
+  position: sticky; top: 70px; z-index: 50;
+  background: var(--white);
+  border-bottom: 1px solid var(--grey-line);
+  padding: 18px 0;
+}
+.filters-row { display: flex; align-items: center; gap: 32px; flex-wrap: wrap; }
+.filters-label {
+  font-size: 11px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--grey);
+  font-weight: 600; display: flex;
+  align-items: center; gap: 8px; margin-right: 8px;
+}
+.filters-label .chev { width: 14px; height: 9px; color: var(--black); }
+.filter-group { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+.filter-btn {
+  padding: 6px 0; font-size: 13px; font-weight: 500;
+  color: var(--grey-deep); background: none; border: none;
+  border-bottom: 1px solid transparent; cursor: pointer;
+  font-family: inherit; transition: all 0.2s ease;
+}
+.filter-btn:hover { color: var(--black); }
+.filter-btn.active { color: var(--black); border-bottom-color: var(--black); font-weight: 600; }
+@media (max-width: 760px) { .filters { top: 64px; } }
+
+/* Featured */
+.featured { padding: clamp(64px, 9vw, 100px) 0; background: var(--white); }
+.featured-header {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 80px; align-items: end; margin-bottom: 56px;
+}
+.featured-header h2 { margin-top: 20px; }
+.featured-header .lead { color: var(--grey); font-size: 16px; line-height: 1.6; max-width: 460px; }
+@media (max-width: 900px) { .featured-header { grid-template-columns: 1fr; gap: 24px; } }
+
+.featured-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 24px; }
+.feat-card {
+  background: var(--grey-soft);
+  padding: 36px 32px 32px;
+  display: flex; flex-direction: column;
+  border-top: 4px solid var(--black);
+  position: relative;
+  transition: transform 0.25s ease;
+  cursor: pointer; min-height: 380px;
+  color: inherit;
+}
+.feat-card:hover { transform: translateY(-3px); }
+.feat-card.mod-pers  { border-top-color: var(--accent-pers); }
+.feat-card.mod-mot   { border-top-color: var(--accent-mot); }
+.feat-card.mod-destr { border-top-color: var(--accent-destr); }
+.feat-card::after {
+  content: ""; position: absolute;
+  top: -4px; right: 0;
+  width: 44px; height: 28px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%230A0A0A'%3E%3Cpath d='M 0 0 L 100 0 L 100 100 L 80 100 L 80 20 L 0 20 Z'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+.feat-tag {
+  font-size: 11px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--grey);
+  font-weight: 600; padding-top: 14px;
+  margin-bottom: 14px;
+  display: flex; align-items: center; gap: 8px;
+}
+.feat-tag .dot { width: 8px; height: 8px; background: var(--black); }
+.feat-card.mod-pers  .feat-tag .dot { background: var(--accent-pers); }
+.feat-card.mod-mot   .feat-tag .dot { background: var(--accent-mot); }
+.feat-card.mod-destr .feat-tag .dot { background: var(--accent-destr); }
+.feat-title {
+  font-size: clamp(22px, 1.8vw, 26px);
+  font-weight: 700; letter-spacing: -0.02em;
+  line-height: 1.2; color: var(--black);
+  margin-bottom: 16px;
+}
+.feat-card.large .feat-title { font-size: clamp(28px, 2.2vw, 34px); }
+.feat-desc { font-size: 14px; line-height: 1.55; color: var(--grey); margin-bottom: 20px; flex: 1; }
+.feat-meta {
+  font-family: var(--font-mono); font-size: 11px; color: var(--grey);
+  letter-spacing: 0.04em; display: flex; gap: 16px;
+  padding-top: 16px; border-top: 1px solid var(--grey-line);
+  margin-bottom: 16px; flex-wrap: wrap;
+}
+.feat-link {
+  font-size: 12px; color: var(--black);
+  font-weight: 600; letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--black);
+  padding-bottom: 3px; display: inline-flex;
+  align-items: center; gap: 8px; align-self: flex-start;
+  transition: gap 0.2s ease;
+}
+.feat-card:hover .feat-link { gap: 12px; }
+.feat-link .chev { width: 12px; height: 8px; }
+@media (max-width: 980px) { .featured-grid { grid-template-columns: 1fr; } }
+
+/* Materials list */
+.materials { padding: 0 0 var(--section-py); background: var(--white); }
+.materials-list { margin-top: 32px; border-top: 2px solid var(--black); }
+.material {
+  display: grid;
+  grid-template-columns: 100px 130px 1fr 100px 36px;
+  gap: 24px;
+  padding: 22px 8px;
+  border-bottom: 1px solid var(--grey-line);
+  align-items: start;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  color: inherit;
+}
+.material:hover { background: var(--grey-soft); }
+.material.is-hidden { display: none; }
+.material-year {
+  font-family: var(--font-mono);
+  font-size: 13px; color: var(--black);
+  font-weight: 600; padding-top: 2px;
+  letter-spacing: 0.04em;
+}
+.material-type {
+  font-size: 10px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--grey);
+  font-weight: 600; padding-top: 4px;
+  display: flex; align-items: center; gap: 6px;
+}
+.material-type .dot { width: 7px; height: 7px; background: var(--black); flex-shrink: 0; }
+.material[data-type="paper"] .dot { background: var(--accent-pers); }
+.material[data-type="benchmark"] .dot { background: var(--accent-mot); }
+.material[data-type="article"] .dot { background: var(--black); }
+.material[data-type="podcast"] .dot { background: var(--accent-destr); }
+.material[data-type="telegram"] .dot { background: var(--black); }
+.material-info .title {
+  font-size: 16px; color: var(--black);
+  line-height: 1.4; font-weight: 500;
+  letter-spacing: -0.005em; margin-bottom: 4px;
+}
+.material-info .meta { font-size: 13px; color: var(--grey); line-height: 1.45; }
+.material-info .meta .source { font-weight: 500; }
+.material-pages {
+  font-family: var(--font-mono);
+  font-size: 11px; color: var(--grey);
+  font-weight: 500; padding-top: 4px;
+  text-align: right; letter-spacing: 0.04em;
+}
+.material-arrow { color: var(--grey); padding-top: 4px; transition: all 0.2s ease; }
+.material-arrow svg { width: 14px; height: 10px; }
+.material:hover .material-arrow { color: var(--black); transform: translate(3px, -3px); }
+@media (max-width: 760px) {
+  .material { grid-template-columns: 80px 1fr 24px; gap: 16px; }
+  .material-type, .material-pages { display: none; }
+}
+
+/* Telegram block */
+.telegram-block {
+  background: var(--black); color: var(--white);
+  padding: var(--section-py) 0;
+  position: relative; overflow: hidden;
+}
+.telegram-block::before {
+  content: ""; position: absolute;
+  top: 40px; right: 40px;
+  width: 80px; height: 80px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%23FFFFFF'%3E%3Cpath d='M 0 0 L 100 0 L 100 100 L 80 100 L 80 20 L 0 20 Z'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+.telegram-grid {
+  display: grid; grid-template-columns: 60% 40%;
+  gap: 80px; align-items: center; position: relative;
+}
+.telegram-grid .eyebrow { color: var(--white); opacity: 0.85; margin-bottom: 24px; }
+.telegram-grid h2 { color: var(--white); margin-bottom: 24px; }
+.telegram-grid p {
+  font-size: 17px; line-height: 1.6;
+  color: rgba(255,255,255,0.72);
+  margin-bottom: 32px; max-width: 560px;
+}
+.telegram-handle {
+  font-family: var(--font-mono);
+  font-size: 22px; color: var(--white);
+  font-weight: 500;
+  display: inline-flex; align-items: baseline;
+  gap: 14px; padding: 16px 24px;
+  border: 1px solid rgba(255,255,255,0.3);
+}
+.telegram-handle .at { color: rgba(255,255,255,0.5); }
+.telegram-handle svg { margin-left: auto; color: var(--white); flex-shrink: 0; }
+.telegram-meta { display: grid; grid-template-columns: 1fr; gap: 16px; }
+.telegram-meta-item {
+  padding: 20px 24px;
+  background: rgba(255,255,255,0.06);
+  border-left: 3px solid var(--white);
+}
+.telegram-meta-item .label {
+  font-size: 11px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: rgba(255,255,255,0.55);
+  font-weight: 600; margin-bottom: 8px;
+}
+.telegram-meta-item .value {
+  font-size: 16px; color: var(--white);
+  font-weight: 500; line-height: 1.4;
+}
+@media (max-width: 980px) { .telegram-grid { grid-template-columns: 1fr; gap: 32px; } }
+
+/* Subscribe */
+.subscribe { padding: var(--section-py) 0; background: var(--grey-soft); }
+.subscribe-card {
+  background: var(--white);
+  padding: 56px clamp(32px, 5vw, 64px);
+  border-top: 4px solid var(--black);
+  position: relative;
+  display: grid; grid-template-columns: 60% 40%;
+  gap: 56px; align-items: center;
+}
+.subscribe-card::after {
+  content: ""; position: absolute;
+  top: -4px; right: 0;
+  width: 80px; height: 56px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%230A0A0A'%3E%3Cpath d='M 0 0 L 100 0 L 100 100 L 80 100 L 80 20 L 0 20 Z'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+.subscribe-card h2 { margin-bottom: 16px; }
+.subscribe-card p { font-size: 16px; line-height: 1.6; color: var(--grey); max-width: 480px; }
+.subscribe-form { display: flex; flex-direction: column; gap: 14px; }
+.subscribe-input {
+  width: 100%; background: transparent;
+  border: none; border-bottom: 1px solid var(--grey-line);
+  color: var(--black); font-family: inherit;
+  font-size: 16px; padding: 12px 0;
+  outline: none; transition: border-color 0.2s ease;
+}
+.subscribe-input::placeholder { color: var(--grey); }
+.subscribe-input:focus { border-bottom-color: var(--black); }
+.subscribe-form .btn { justify-content: space-between; padding: 16px 24px; }
+.subscribe-footnote { font-size: 11px; color: var(--grey); margin-top: 14px; line-height: 1.5; }
+@media (max-width: 900px) { .subscribe-card { grid-template-columns: 1fr; gap: 32px; padding: 40px 28px; } }
+
+/* Empty */
+.empty-state { padding: 60px 32px; text-align: center; font-size: 14px; color: var(--grey); display: none; }
+.empty-state.is-shown { display: block; }
+
+.page-hero-meta-item .value .dim { color: var(--grey); font-weight: 400; font-size: 0.78em; }
+</style>
+
+</Base>

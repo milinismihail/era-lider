@@ -1,0 +1,39 @@
+---
+import Chev from '../icons/Chev.astro';
+---
+
+<nav class="filters" id="filters">
+  <div class="container filters-row">
+    <div class="filters-label"><Chev kind="mark" class="chev" />Тип материала</div>
+    <div class="filter-group" data-filter-group="type">
+      <button class="filter-btn active" data-filter="all" type="button">Все материалы</button>
+      <button class="filter-btn" data-filter="paper" type="button">White papers</button>
+      <button class="filter-btn" data-filter="benchmark" type="button">Бенчмарки</button>
+      <button class="filter-btn" data-filter="article" type="button">Статьи</button>
+      <button class="filter-btn" data-filter="podcast" type="button">Подкасты</button>
+      <button class="filter-btn" data-filter="telegram" type="button">Telegram-разборы</button>
+    </div>
+  </div>
+</nav>
+
+<script>
+  const materials = document.querySelectorAll<HTMLElement>('.material');
+  const empty = document.getElementById('materials-empty');
+
+  document.querySelectorAll<HTMLButtonElement>('.filters .filter-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const parent = btn.parentElement;
+      parent?.querySelectorAll('.filter-btn').forEach((b) => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const filter = btn.dataset.filter;
+      let visible = 0;
+      materials.forEach((m) => {
+        const v = filter === 'all' || m.dataset.type === filter;
+        m.classList.toggle('is-hidden', !v);
+        if (v) visible++;
+      });
+      empty?.classList.toggle('is-shown', visible === 0);
+    });
+  });
+</script>

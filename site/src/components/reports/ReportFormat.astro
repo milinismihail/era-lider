@@ -1,0 +1,39 @@
+---
+import Chev from '../icons/Chev.astro';
+import type { ReportFormat } from '../../data/reports.ts';
+
+interface Props {
+  report: ReportFormat;
+}
+const { report } = Astro.props;
+---
+
+<div class:list={['format', report.reverse ? 'reverse' : null]} data-reveal>
+  <div class="format-preview">
+    <slot name="preview" />
+  </div>
+
+  <div class="format-info">
+    <div class="format-num"><Chev kind="mark" class="chev" />{report.num}<span class="total">{report.total}</span></div>
+    <h2 class="h-section">{report.title}</h2>
+    <p class="lead">{report.lead}</p>
+    <div class="format-grid">
+      {report.grid.map((g) => (
+        <div class="format-grid-item">
+          <div class="label">{g.label}</div>
+          <div class="value" set:html={g.value}></div>
+        </div>
+      ))}
+    </div>
+    <ul class="format-features">
+      {report.features.map((f) => (<li set:html={f}></li>))}
+    </ul>
+    {report.link && (
+      <div class="format-actions">
+        <a href={report.link.href} class="format-link">
+          {report.link.label} <Chev kind="arrow" class="chev" />
+        </a>
+      </div>
+    )}
+  </div>
+</div>

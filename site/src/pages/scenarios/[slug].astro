@@ -1,0 +1,630 @@
+---
+import Base from '../../layouts/Base.astro';
+import Chev from '../../components/icons/Chev.astro';
+import { scenarios, type Scenario } from '../../data/scenarios.ts';
+import { reports, type ReportSlug } from '../../data/reports.ts';
+import { flagshipCases } from '../../data/cases.ts';
+
+export async function getStaticPaths() {
+  return scenarios.map((scenario) => ({
+    params: { slug: scenario.slug },
+    props: { scenario },
+  }));
+}
+
+interface Props { scenario: Scenario }
+const { scenario } = Astro.props;
+
+// Релевантные форматы отчётов под сценарий
+const scenarioReports: Record<string, ReportSlug[]> = {
+  csuite: ['individual-full', 'summary', 'role-profile'],
+  successors: ['individual-full', 'role-profile'],
+  team: ['team', 'individual-full'],
+  mna: ['summary', 'compatibility-360', 'team'],
+  burnout: ['individual-full', 'team'],
+  transformation: ['team', 'role-profile', 'individual-full'],
+};
+
+// Подходящие кейсы по slug
+const scenarioCaseSlugs: Record<string, string[]> = {
+  csuite: ['industrial-holding-succession'],
+  successors: ['industrial-holding-succession', 'abz-1'],
+  team: ['gpn-snabzhenie'],
+  mna: ['industrial-holding-succession'],
+  burnout: ['i-teco'],
+  transformation: ['sekretoriya'],
+};
+
+const relevantReports = (scenarioReports[scenario.slug] ?? [])
+  .map((s) => reports.find((r) => r.slug === s))
+  .filter(Boolean) as typeof reports;
+
+const relatedCases = (scenarioCaseSlugs[scenario.slug] ?? [])
+  .map((s) => flagshipCases.find((c) => c.slug === s))
+  .filter(Boolean) as typeof flagshipCases;
+
+// Prev/next по позиции в массиве
+const currentIdx = scenarios.findIndex((s) => s.slug === scenario.slug);
+const prevScenario = currentIdx > 0 ? scenarios[currentIdx - 1] : scenarios[scenarios.length - 1];
+const nextScenario = currentIdx < scenarios.length - 1 ? scenarios[currentIdx + 1] : scenarios[0];
+
+const title = `${scenario.title.replace(/\.$/, '')} · Сценарий применения ЭРА`;
+const description = scenario.question;
+
+const breadcrumbs = [
+  { name: 'Главная', url: 'https://era-lider.ru/' },
+  { name: 'Сценарии', url: 'https://era-lider.ru/scenarios' },
+  { name: scenario.navLabel, url: `https://era-lider.ru/scenarios/${scenario.slug}` },
+];
+---
+
+<Base
+  title={title}
+  description={description}
+  activeKey="scenarios"
+  breadcrumbs={breadcrumbs}
+>
+
+<section class:list={['scenario-detail-hero', `mod-${scenario.mod}`]}>
+  <div class="container">
+    <div class="hero-breadcrumbs">
+      <a href="/">Главная</a>
+      <span class="sep">/</span>
+      <a href="/scenarios">Сценарии</a>
+      <span class="sep">/</span>
+      <span class="current">{scenario.navLabel}</span>
+    </div>
+
+    <div class="scd-hero-grid">
+      <div data-reveal>
+        <div class="scd-num">
+          <Chev kind="mark" class="chev" />Сценарий {scenario.num} <span class="total">/ 06</span>
+        </div>
+        <h1 class="h-hero">{scenario.title}</h1>
+        <p class="scd-question">{scenario.question}</p>
+      </div>
+
+      <div class="scd-meta-card" data-reveal>
+        <div class="scd-meta-label">Параметры сценария</div>
+        <div class="scd-meta-grid">
+          {scenario.meta.map((m) => (
+            <div class="scd-meta-item">
+              <div class="label">{m.label}</div>
+              <div class="value" set:html={m.value}></div>
+            </div>
+          ))}
+        </div>
+        <a href="/contact" class="btn btn-primary scd-meta-cta">
+          Разбор кейса с экспертом
+          <Chev kind="arrow" class="btn-arrow" width="14" height="10" />
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="scd-blocks">
+  <div class="container">
+    <div class="scd-blocks-list">
+      {scenario.blocks.map((b, i) => (
+        <article class:list={['scd-block', `mod-${scenario.mod}`]} data-reveal>
+          <div class="scd-block-num">0{i + 1}</div>
+          <div class="scd-block-body">
+            <div class="scd-block-label"><Chev kind="mark" class="chev" />{b.label}</div>
+            {b.title && <h2 class="h-sub">{b.title}</h2>}
+            <p set:html={b.text}></p>
+            {b.bullets && (
+              <ul>
+                {b.bullets.map((bul) => <li set:html={bul}></li>)}
+              </ul>
+            )}
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+{scenario.testimonial && (
+  <section class="scd-testimonial">
+    <div class="container">
+      <div class:list={['scd-testimonial-card', `mod-${scenario.mod}`]} data-reveal>
+        <div class="scd-testimonial-label">{scenario.testimonial.label}</div>
+        <blockquote>{scenario.testimonial.text}</blockquote>
+        <div class="scd-testimonial-source">{scenario.testimonial.source}</div>
+      </div>
+    </div>
+  </section>
+)}
+
+{relevantReports.length > 0 && (
+  <section class="scd-reports">
+    <div class="container">
+      <div class="scd-section-head" data-reveal>
+        <div>
+          <div class="eyebrow"><Chev kind="mark" class="eyebrow-mark" />Релевантные отчёты</div>
+          <h2 class="h-section">Какие форматы отчёта используем в&nbsp;этом сценарии.</h2>
+        </div>
+        <p class="lead">В каждом проекте — свой комплект отчётов. Под этот сценарий типично используются {relevantReports.length} {relevantReports.length === 1 ? 'формат' : 'формата'}.</p>
+      </div>
+      <div class="scd-reports-grid">
+        {relevantReports.map((r) => (
+          <a href={`/reports#${r.slug}`} class="scd-report-card" data-reveal>
+            <div class="scd-report-num">{r.num}{r.total}</div>
+            <h3>{r.title}</h3>
+            <p>{r.lead}</p>
+            <span class="scd-report-link">Подробнее <Chev kind="arrow" class="chev" /></span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+)}
+
+{relatedCases.length > 0 && (
+  <section class="scd-cases">
+    <div class="container">
+      <div class="scd-section-head" data-reveal>
+        <div>
+          <div class="eyebrow"><Chev kind="mark" class="eyebrow-mark" />Из практики ЭРА</div>
+          <h2 class="h-section">Кейсы по&nbsp;этому сценарию.</h2>
+        </div>
+        <p class="lead">Реальные проекты, в которых ЭРА работала на эту задачу. Обезличенный формат — методика, цитаты и&nbsp;результаты — достоверны.</p>
+      </div>
+      <div class="scd-cases-grid">
+        {relatedCases.map((c) => (
+          <a href={`/cases/${c.slug}`} class:list={['scd-case-card', `flagship-mod-${c.mod}`]} data-reveal>
+            <div class="scd-case-header">
+              <div class="scd-case-logo" set:html={c.company.logo}></div>
+              <div>
+                <div class="scd-case-name">{c.company.name}</div>
+                <div class="scd-case-industry">{c.company.industry}</div>
+              </div>
+            </div>
+            <h3>{c.title}</h3>
+            <div class="scd-case-results">
+              {c.results.slice(0, 2).map((r) => (
+                <div class="scd-case-result">
+                  <div class="num">{r.num}</div>
+                  <div class="desc" set:html={r.desc}></div>
+                </div>
+              ))}
+            </div>
+            <span class="scd-case-link">Подробнее о&nbsp;кейсе <Chev kind="arrow" class="chev" /></span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+)}
+
+<section class="scd-prev-next">
+  <div class="container">
+    <div class="scd-pn-grid">
+      <a href={`/scenarios/${prevScenario.slug}`} class="scd-pn-card" data-reveal>
+        <div class="scd-pn-label"><Chev kind="arrow" class="chev rotate" />Предыдущий сценарий</div>
+        <div class="scd-pn-num">{prevScenario.num}</div>
+        <h3>{prevScenario.title}</h3>
+      </a>
+      <a href={`/scenarios/${nextScenario.slug}`} class="scd-pn-card" data-reveal>
+        <div class="scd-pn-label">Следующий сценарий <Chev kind="arrow" class="chev" /></div>
+        <div class="scd-pn-num">{nextScenario.num}</div>
+        <h3>{nextScenario.title}</h3>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="cta-block" id="cta">
+  <div class="container cta-grid">
+    <div data-reveal>
+      <div class="eyebrow on-dark" style="margin-bottom: 24px;">
+        <Chev kind="mark" class="eyebrow-mark" style="color: var(--white)" />
+        Под вашу задачу
+      </div>
+      <h2 class="h-section">Разберём <span class="accent-line" style="color:var(--white);">ваш сценарий</span> на&nbsp;60-минутной сессии.</h2>
+      <p class="lead">Покажем релевантный пример отчёта под ваш контекст. Обсудим, как ЭРА встраивается в вашу задачу — без обязательств, только содержательный разговор с действующим экспертом.</p>
+    </div>
+    <div class="cta-actions" data-reveal>
+      <a href="/contact" class="btn btn-primary">Записаться на разбор кейса <Chev kind="arrow" class="btn-arrow" width="14" height="10" /></a>
+      <a href="/scenarios" class="btn btn-secondary-inverse">Все сценарии <Chev kind="arrow" class="btn-arrow" width="14" height="10" /></a>
+    </div>
+  </div>
+</section>
+
+<style is:global>
+/* ===== Локальные стили /scenarios/[slug] ===== */
+
+.scenario-detail-hero {
+  background: var(--white);
+  padding: 160px 0 80px;
+  position: relative;
+  border-bottom: 1px solid var(--grey-line);
+}
+.scenario-detail-hero.mod-pers  { background: linear-gradient(180deg, var(--white) 0%, rgba(168,179,217,0.08) 100%); }
+.scenario-detail-hero.mod-mot   { background: linear-gradient(180deg, var(--white) 0%, rgba(165,192,165,0.10) 100%); }
+.scenario-detail-hero.mod-destr { background: linear-gradient(180deg, var(--white) 0%, rgba(194,178,153,0.10) 100%); }
+
+.scenario-detail-hero .hero-breadcrumbs {
+  font-size: 12px;
+  color: var(--grey);
+  margin-bottom: 36px;
+  letter-spacing: 0.04em;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.scenario-detail-hero .hero-breadcrumbs a { color: var(--grey-deep); transition: color 0.2s ease; }
+.scenario-detail-hero .hero-breadcrumbs a:hover { color: var(--black); }
+.scenario-detail-hero .hero-breadcrumbs .sep { color: var(--grey-line); }
+.scenario-detail-hero .hero-breadcrumbs .current { color: var(--black); font-weight: 500; }
+
+.scd-hero-grid {
+  display: grid; grid-template-columns: 60% 40%;
+  gap: 80px; align-items: end;
+}
+.scd-num {
+  display: flex; align-items: center; gap: 12px;
+  font-family: var(--font-mono); font-size: 13px; font-weight: 600;
+  color: var(--black); letter-spacing: 0.08em;
+  margin-bottom: 28px; text-transform: uppercase;
+}
+.scd-num .chev { width: 16px; height: 11px; color: var(--black); }
+.mod-pers  .scd-num .chev { color: var(--accent-pers); }
+.mod-mot   .scd-num .chev { color: var(--accent-mot); }
+.mod-destr .scd-num .chev { color: var(--accent-destr); }
+.scd-num .total { color: var(--grey); font-weight: 400; }
+
+.scenario-detail-hero h1 { margin-bottom: 28px; max-width: 720px; }
+.scd-question {
+  font-size: 19px; line-height: 1.55;
+  color: var(--grey-deep);
+  padding-left: 20px;
+  border-left: 3px solid var(--black);
+  font-weight: 400;
+  max-width: 620px;
+}
+.mod-pers  .scd-question { border-left-color: var(--accent-pers); }
+.mod-mot   .scd-question { border-left-color: var(--accent-mot); }
+.mod-destr .scd-question { border-left-color: var(--accent-destr); }
+
+.scd-meta-card {
+  background: var(--white);
+  border: 1px solid var(--black);
+  padding: 28px 32px;
+  position: relative;
+}
+.scd-meta-card::before {
+  content: ""; position: absolute;
+  top: 0; right: 0;
+  width: 28px; height: 18px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%230A0A0A'%3E%3Cpath d='M 0 0 L 100 0 L 100 100 L 80 100 L 80 20 L 0 20 Z'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+.scd-meta-label {
+  font-size: 11px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--grey);
+  font-weight: 600; margin-bottom: 20px;
+}
+.scd-meta-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 16px 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--grey-line);
+  margin-bottom: 20px;
+}
+.scd-meta-item .label {
+  font-size: 10px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--grey);
+  margin-bottom: 4px; font-weight: 500;
+}
+.scd-meta-item .value {
+  font-size: 14px; font-weight: 600;
+  color: var(--black); line-height: 1.3;
+}
+.scd-meta-cta {
+  width: 100%;
+  justify-content: space-between;
+  padding: 14px 18px;
+  font-size: 13px;
+}
+
+@media (max-width: 980px) {
+  .scenario-detail-hero { padding: 120px 0 60px; }
+  .scd-hero-grid { grid-template-columns: 1fr; gap: 32px; align-items: start; }
+}
+
+/* Blocks */
+.scd-blocks { padding: var(--section-py) 0; background: var(--white); }
+.scd-blocks-list {
+  display: flex; flex-direction: column;
+  gap: 24px;
+}
+.scd-block {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 32px;
+  padding: 40px 36px 36px;
+  background: var(--grey-soft);
+  border-left: 4px solid var(--black);
+}
+.scd-block.mod-pers  { border-left-color: var(--accent-pers); }
+.scd-block.mod-mot   { border-left-color: var(--accent-mot); }
+.scd-block.mod-destr { border-left-color: var(--accent-destr); }
+
+.scd-block-num {
+  font-family: var(--font-mono);
+  font-size: 28px; font-weight: 600;
+  color: var(--black);
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+.scd-block-label {
+  font-size: 11px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--grey);
+  font-weight: 600; margin-bottom: 14px;
+  display: flex; align-items: center; gap: 8px;
+}
+.scd-block-label .chev { width: 14px; height: 9px; color: var(--black); }
+.scd-block-body h2 { margin-bottom: 16px; }
+.scd-block-body p {
+  font-size: 16px; line-height: 1.65;
+  color: var(--grey-deep);
+}
+.scd-block-body ul {
+  list-style: none;
+  margin-top: 16px;
+}
+.scd-block-body ul li {
+  padding: 12px 0 12px 24px;
+  position: relative;
+  border-bottom: 1px solid var(--grey-line);
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--grey-deep);
+}
+.scd-block-body ul li:last-child { border-bottom: none; }
+.scd-block-body ul li::before {
+  content: ""; position: absolute;
+  left: 0; top: 20px;
+  width: 12px; height: 1.5px;
+  background: var(--black);
+}
+.scd-block-body ul li strong { color: var(--black); font-weight: 600; }
+
+@media (max-width: 760px) {
+  .scd-block { grid-template-columns: 1fr; gap: 16px; padding: 32px 24px 28px; }
+}
+
+/* Testimonial */
+.scd-testimonial { padding: 0 0 var(--section-py); background: var(--white); }
+.scd-testimonial-card {
+  background: var(--black);
+  color: var(--white);
+  padding: 48px 56px;
+  position: relative;
+  overflow: hidden;
+}
+.scd-testimonial-card::before {
+  content: ""; position: absolute;
+  top: 32px; right: 32px;
+  width: 56px; height: 36px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%23FFFFFF' fill-opacity='0.18'%3E%3Cpath d='M 0 0 L 100 0 L 100 100 L 80 100 L 80 20 L 0 20 Z'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+.scd-testimonial-card.mod-pers  { border-top: 4px solid var(--accent-pers); }
+.scd-testimonial-card.mod-mot   { border-top: 4px solid var(--accent-mot); }
+.scd-testimonial-card.mod-destr { border-top: 4px solid var(--accent-destr); }
+.scd-testimonial-label {
+  font-size: 11px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: rgba(255,255,255,0.55);
+  font-weight: 600; margin-bottom: 24px;
+}
+.scd-testimonial-card blockquote {
+  font-size: clamp(20px, 2.2vw, 26px);
+  line-height: 1.4;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  margin-bottom: 24px;
+  max-width: 880px;
+}
+.scd-testimonial-source {
+  font-size: 13px; color: rgba(255,255,255,0.65);
+  letter-spacing: 0.04em;
+  display: flex; align-items: center; gap: 8px;
+}
+.scd-testimonial-source::before {
+  content: ""; width: 24px; height: 1px; background: var(--white);
+}
+@media (max-width: 760px) { .scd-testimonial-card { padding: 36px 28px; } }
+
+/* Section head reused */
+.scd-section-head {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 80px; align-items: end;
+  margin-bottom: 56px;
+}
+.scd-section-head h2 { margin-top: 20px; }
+.scd-section-head .lead {
+  font-size: 16px; line-height: 1.6;
+  color: var(--grey); max-width: 460px;
+}
+@media (max-width: 900px) { .scd-section-head { grid-template-columns: 1fr; gap: 24px; } }
+
+/* Reports */
+.scd-reports { padding: var(--section-py) 0; background: var(--grey-soft); }
+.scd-reports-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--grey-line);
+  border: 1px solid var(--grey-line);
+}
+.scd-report-card {
+  background: var(--white);
+  padding: 32px 28px 28px;
+  display: flex; flex-direction: column;
+  position: relative;
+  color: inherit;
+  transition: transform 0.25s ease;
+}
+.scd-report-card::before {
+  content: ""; position: absolute;
+  top: 0; left: 0;
+  width: 36px; height: 4px;
+  background: var(--black);
+}
+.scd-report-card:hover { transform: translateY(-3px); }
+.scd-report-num {
+  font-family: var(--font-mono);
+  font-size: 11px; color: var(--grey);
+  font-weight: 500; letter-spacing: 0.05em;
+  margin-bottom: 14px; padding-top: 14px;
+}
+.scd-report-card h3 {
+  font-size: 19px; font-weight: 600;
+  letter-spacing: -0.015em; line-height: 1.25;
+  color: var(--black); margin-bottom: 12px;
+}
+.scd-report-card p {
+  font-size: 14px; line-height: 1.55;
+  color: var(--grey); flex: 1; margin-bottom: 18px;
+}
+.scd-report-link {
+  font-size: 11px; color: var(--black);
+  font-weight: 600; letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--black);
+  padding-bottom: 3px;
+  display: inline-flex; align-items: center; gap: 8px;
+  align-self: flex-start;
+  transition: gap 0.2s ease;
+}
+.scd-report-card:hover .scd-report-link { gap: 12px; }
+.scd-report-link .chev { width: 12px; height: 8px; }
+@media (max-width: 900px) { .scd-reports-grid { grid-template-columns: 1fr; } }
+
+/* Related cases */
+.scd-cases { padding: var(--section-py) 0; background: var(--white); }
+.scd-cases-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+.scd-case-card {
+  background: var(--grey-soft);
+  padding: 36px 32px;
+  display: flex; flex-direction: column;
+  border-top: 4px solid var(--black);
+  position: relative;
+  color: inherit;
+  transition: transform 0.25s ease;
+}
+.scd-case-card.flagship-mod-pers  { border-top-color: var(--accent-pers); }
+.scd-case-card.flagship-mod-mot   { border-top-color: var(--accent-mot); }
+.scd-case-card.flagship-mod-destr { border-top-color: var(--accent-destr); }
+.scd-case-card:hover { transform: translateY(-3px); }
+.scd-case-card::after {
+  content: ""; position: absolute;
+  top: -4px; right: 0;
+  width: 44px; height: 28px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%230A0A0A'%3E%3Cpath d='M 0 0 L 100 0 L 100 100 L 80 100 L 80 20 L 0 20 Z'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+.scd-case-header {
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: 24px;
+  padding-top: 16px;
+}
+.scd-case-logo {
+  width: 56px; height: 56px;
+  background: var(--white);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 13px;
+  letter-spacing: 0.04em; color: var(--black);
+  border: 1px solid var(--grey-line);
+  text-align: center; line-height: 1.1;
+  flex-shrink: 0;
+}
+.scd-case-name { font-weight: 600; font-size: 15px; color: var(--black); letter-spacing: -0.01em; }
+.scd-case-industry { font-size: 11px; color: var(--grey); letter-spacing: 0.12em; text-transform: uppercase; font-weight: 500; margin-top: 4px; }
+.scd-case-card h3 {
+  font-size: 19px; font-weight: 700;
+  letter-spacing: -0.015em; line-height: 1.25;
+  color: var(--black); margin-bottom: 24px;
+  flex: 1;
+}
+.scd-case-results {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  padding-top: 20px;
+  border-top: 1px solid var(--grey-line);
+  margin-bottom: 18px;
+}
+.scd-case-result .num {
+  font-size: 24px; font-weight: 700;
+  letter-spacing: -0.025em; line-height: 1;
+  color: var(--black); margin-bottom: 6px;
+}
+.scd-case-result .desc {
+  font-size: 11px; color: var(--grey);
+  line-height: 1.4;
+}
+.scd-case-link {
+  font-size: 11px; color: var(--black);
+  font-weight: 600; letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--black);
+  padding-bottom: 3px;
+  display: inline-flex; align-items: center; gap: 8px;
+  align-self: flex-start;
+  transition: gap 0.2s ease;
+}
+.scd-case-card:hover .scd-case-link { gap: 12px; }
+.scd-case-link .chev { width: 12px; height: 8px; }
+@media (max-width: 900px) { .scd-cases-grid { grid-template-columns: 1fr; } }
+
+/* Prev/next */
+.scd-prev-next { padding: 0 0 var(--section-py); background: var(--white); }
+.scd-pn-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  padding-top: 32px;
+  border-top: 1px solid var(--grey-line);
+}
+.scd-pn-card {
+  background: var(--grey-soft);
+  padding: 32px;
+  color: inherit;
+  display: flex; flex-direction: column;
+  transition: background 0.2s ease;
+}
+.scd-pn-card:hover { background: var(--black); color: var(--white); }
+.scd-pn-card:hover h3 { color: var(--white); }
+.scd-pn-card:hover .scd-pn-num { color: rgba(255,255,255,0.5); }
+.scd-pn-card:hover .scd-pn-label { color: rgba(255,255,255,0.7); }
+.scd-pn-card:last-child { text-align: right; align-items: flex-end; }
+.scd-pn-label {
+  font-size: 11px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--grey);
+  font-weight: 600; margin-bottom: 16px;
+  display: flex; align-items: center; gap: 8px;
+}
+.scd-pn-label .chev { width: 12px; height: 8px; color: currentColor; }
+.scd-pn-label .chev.rotate { transform: scaleX(-1); }
+.scd-pn-num {
+  font-family: var(--font-mono);
+  font-size: 32px; font-weight: 600;
+  color: var(--grey-line); letter-spacing: 0.04em;
+  line-height: 1; margin-bottom: 12px;
+  transition: color 0.2s ease;
+}
+.scd-pn-card h3 {
+  font-size: 20px; font-weight: 700;
+  letter-spacing: -0.015em; line-height: 1.25;
+  color: var(--black);
+  transition: color 0.2s ease;
+}
+@media (max-width: 760px) {
+  .scd-pn-grid { grid-template-columns: 1fr; }
+  .scd-pn-card:last-child { text-align: left; align-items: flex-start; }
+}
+</style>
+
+</Base>

@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /thanks
+Disallow: /404
+
+Sitemap: https://era-lider.ru/sitemap-index.xml

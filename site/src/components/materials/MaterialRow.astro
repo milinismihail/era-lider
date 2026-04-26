@@ -1,0 +1,25 @@
+---
+import Chev from '../icons/Chev.astro';
+import type { MaterialItem } from '../../data/materials.ts';
+
+interface Props { item: MaterialItem }
+const { item } = Astro.props;
+const isExternal = /^https?:\/\//.test(item.href);
+---
+
+<a
+  href={item.href}
+  target={isExternal ? '_blank' : undefined}
+  rel={isExternal ? 'noopener' : undefined}
+  class="material"
+  data-type={item.type}
+>
+  <div class="material-year">{item.year}</div>
+  <div class="material-type"><span class="dot"></span>{item.typeLabel}</div>
+  <div class="material-info">
+    <div class="title">{item.title}</div>
+    <div class="meta"><span class="source">{item.source}</span> · {item.meta}</div>
+  </div>
+  <div class="material-pages" set:html={item.pages}></div>
+  <div class="material-arrow"><Chev kind="arrow" /></div>
+</a>

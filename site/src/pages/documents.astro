@@ -1,0 +1,365 @@
+---
+import Base from '../layouts/Base.astro';
+import Chev from '../components/icons/Chev.astro';
+import { documents, docCategories } from '../data/documents.ts';
+
+const title = 'Документация · ЭРА';
+const description =
+  'Реестр документов ЭРА: свидетельство РПО, политики 152-ФЗ, функциональные характеристики ПО, руководство пользователя, сертификаты соответствия.';
+
+const breadcrumbs = [
+  { name: 'Главная', url: 'https://era-lider.ru/' },
+  { name: 'Документация', url: 'https://era-lider.ru/documents' },
+];
+---
+
+<Base title={title} description={description} activeKey="documents" breadcrumbs={breadcrumbs}>
+
+<section class="page-hero">
+  <div class="container">
+    <div class="hero-breadcrumbs">
+      <a href="/">Главная</a>
+      <span class="sep">/</span>
+      <span class="current">Документация</span>
+    </div>
+    <div class="page-hero-grid">
+      <div data-reveal>
+        <div class="eyebrow" style="margin-bottom: 28px;">
+          <Chev kind="mark" class="eyebrow-mark" />
+          Реестр документов
+        </div>
+        <h1 class="h-hero">
+          Документы для&nbsp;<span class="accent-line">службы безопасности</span> и&nbsp;юристов клиента.
+        </h1>
+        <p class="page-hero-lead">
+          Свидетельство РПО, политики обработки ПДн, функциональные характеристики системы, сертификаты соответствия. Прямые ссылки на PDF без форм и регистраций — для тендерных процедур и проверок безопасности.
+        </p>
+      </div>
+      <div class="page-hero-meta" data-reveal>
+        <div class="page-hero-meta-item">
+          <div class="label">Документов</div>
+          <div class="value">{documents.length}</div>
+        </div>
+        <div class="page-hero-meta-item">
+          <div class="label">Реестр РПО</div>
+          <div class="value">№ 28543</div>
+        </div>
+        <div class="page-hero-meta-item">
+          <div class="label">Соответствие</div>
+          <div class="value">152-ФЗ <span class="dim">+ ГОСТ</span></div>
+        </div>
+        <div class="page-hero-meta-item">
+          <div class="label">Серверы</div>
+          <div class="value">Только <span class="dim">в РФ</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="docs-section">
+  <div class="container">
+    <div class="docs-header" data-reveal>
+      <div>
+        <div class="eyebrow"><Chev kind="mark" class="eyebrow-mark" />Полный список</div>
+        <h2 class="h-section">Все документы — открыто, без формы.</h2>
+      </div>
+      <p class="lead">Если нужного документа нет в списке (внутренний регламент, расширенная политика безопасности, кастомное соглашение) — пришлите запрос на era@bitobe.ru, ответим в течение рабочего дня.</p>
+    </div>
+
+    <nav class="docs-filters" id="docs-filters">
+      <div class="docs-filters-label"><Chev kind="mark" class="chev" />Категория</div>
+      <div class="docs-filter-group">
+        {docCategories.map((c, i) => (
+          <button class={`docs-filter-btn${i === 0 ? ' active' : ''}`} data-filter={c.key} type="button">
+            {c.label}
+          </button>
+        ))}
+      </div>
+    </nav>
+
+    <div class="docs-list" id="docs-list">
+      {documents.map((doc) => (
+        <a class="doc-row" href={doc.href} data-category={doc.category} target="_blank" rel="noopener">
+          <div class="doc-cat">
+            <span class="doc-cat-dot" data-cat={doc.category}></span>
+            {doc.categoryLabel}
+          </div>
+          <div class="doc-info">
+            <div class="doc-title">{doc.title}</div>
+            <div class="doc-desc">{doc.desc}</div>
+          </div>
+          <div class="doc-meta">
+            <div class="doc-format">{doc.format}</div>
+            <div class="doc-size">{doc.size}</div>
+            <div class="doc-date">{doc.date}</div>
+          </div>
+          <div class="doc-arrow"><Chev kind="arrow" /></div>
+        </a>
+      ))}
+    </div>
+
+    <div class="docs-empty" id="docs-empty">По выбранной категории документов нет — попробуйте сбросить фильтр.</div>
+  </div>
+</section>
+
+<section class="docs-rpo">
+  <div class="container">
+    <div class="rpo-card" data-reveal>
+      <div class="rpo-badge">
+        <div class="top">Единый реестр</div>
+        <div class="mid">Российского<br>программного<br>обеспечения</div>
+        <div class="num">№ 28543 · 23.06.2025</div>
+      </div>
+      <div class="rpo-body">
+        <h3>Включены в реестр РПО. Серверы — в&nbsp;РФ.</h3>
+        <p>Реестровая запись № 28543 от 23.06.2025. Классификатор — ПО для оценки и тестирования персонала. Все серверы и резервные копии в российских дата-центрах. Соответствие 152-ФЗ о персональных данных. Методология сертифицирована по ГОСТ Р 71009-2023.</p>
+      </div>
+      <div class="rpo-actions">
+        <a href="/docs/era-rpo-svidetelstvo.pdf" target="_blank" rel="noopener">Свидетельство РПО <Chev kind="arrow" class="chev" /></a>
+        <a href="/docs/era-privacy-policy.pdf" target="_blank" rel="noopener">Политика 152-ФЗ <Chev kind="arrow" class="chev" /></a>
+        <a href="/docs/era-tech-spec.pdf" target="_blank" rel="noopener">Функциональные характеристики <Chev kind="arrow" class="chev" /></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-block" id="cta">
+  <div class="container cta-grid">
+    <div data-reveal>
+      <div class="eyebrow on-dark" style="margin-bottom: 24px;">
+        <Chev kind="mark" class="eyebrow-mark" style="color: var(--white)" />
+        Для безопасников и тендеров
+      </div>
+      <h2 class="h-section">Нужен <span class="accent-line" style="color:var(--white);">кастомный документ</span>?</h2>
+      <p class="lead">Выписки, расширенные политики безопасности, кастомные NDA, регламенты под внутренние требования службы безопасности клиента — пришлите запрос, подготовим в рабочем порядке.</p>
+    </div>
+    <div class="cta-actions" data-reveal>
+      <a href="mailto:era@bitobe.ru?subject=Запрос%20документов%20для%20тендера" class="btn btn-primary">Запросить документы <Chev kind="arrow" class="btn-arrow" width="14" height="10" /></a>
+      <a href="/contact" class="btn btn-secondary-inverse">Связаться с экспертом <Chev kind="arrow" class="btn-arrow" width="14" height="10" /></a>
+    </div>
+  </div>
+</section>
+
+<script>
+  const filterButtons = document.querySelectorAll<HTMLButtonElement>('.docs-filter-btn');
+  const docs = document.querySelectorAll<HTMLElement>('.doc-row');
+  const empty = document.getElementById('docs-empty');
+
+  filterButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      filterButtons.forEach((b) => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filter;
+      let visible = 0;
+      docs.forEach((doc) => {
+        const v = filter === 'all' || doc.dataset.category === filter;
+        doc.classList.toggle('is-hidden', !v);
+        if (v) visible++;
+      });
+      empty?.classList.toggle('is-shown', visible === 0);
+    });
+  });
+</script>
+
+<style is:global>
+/* ===== Локальные стили /documents ===== */
+
+.docs-section { padding: var(--section-py) 0; background: var(--white); }
+.docs-header {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 80px; align-items: end;
+  margin-bottom: 40px;
+}
+.docs-header h2 { margin-top: 20px; }
+.docs-header .lead {
+  font-size: 16px; line-height: 1.6;
+  color: var(--grey); max-width: 460px;
+}
+@media (max-width: 900px) { .docs-header { grid-template-columns: 1fr; gap: 24px; } }
+
+/* Filter */
+.docs-filters {
+  display: flex; align-items: center;
+  gap: 24px;
+  padding: 16px 0;
+  border-top: 1px solid var(--grey-line);
+  border-bottom: 1px solid var(--grey-line);
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+.docs-filters-label {
+  font-size: 11px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--grey);
+  font-weight: 600;
+  display: flex; align-items: center; gap: 8px;
+}
+.docs-filters-label .chev { width: 14px; height: 9px; color: var(--black); }
+.docs-filter-group { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+.docs-filter-btn {
+  padding: 6px 0; font-size: 13px; font-weight: 500;
+  color: var(--grey-deep);
+  background: none; border: none;
+  border-bottom: 1px solid transparent;
+  cursor: pointer; font-family: inherit;
+  transition: all 0.2s ease;
+}
+.docs-filter-btn:hover { color: var(--black); }
+.docs-filter-btn.active { color: var(--black); border-bottom-color: var(--black); font-weight: 600; }
+
+/* List */
+.docs-list { border-top: 2px solid var(--black); }
+.doc-row {
+  display: grid;
+  grid-template-columns: 160px 1fr 160px 24px;
+  gap: 24px;
+  padding: 24px 12px;
+  border-bottom: 1px solid var(--grey-line);
+  align-items: start;
+  transition: background 0.2s ease;
+  color: inherit;
+}
+.doc-row:hover { background: var(--grey-soft); }
+.doc-row.is-hidden { display: none; }
+
+.doc-cat {
+  font-size: 11px; letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--grey); font-weight: 600;
+  padding-top: 4px;
+  display: flex; align-items: center; gap: 8px;
+}
+.doc-cat-dot {
+  display: inline-block;
+  width: 8px; height: 8px;
+  background: var(--black);
+  flex-shrink: 0;
+}
+.doc-cat-dot[data-cat="registry"] { background: var(--accent-pers); }
+.doc-cat-dot[data-cat="privacy"]  { background: var(--accent-mot); }
+.doc-cat-dot[data-cat="tech"]     { background: var(--black); }
+.doc-cat-dot[data-cat="standard"] { background: var(--accent-destr); }
+
+.doc-title {
+  font-size: 16px; color: var(--black);
+  font-weight: 600; line-height: 1.35;
+  letter-spacing: -0.01em;
+  margin-bottom: 6px;
+}
+.doc-desc {
+  font-size: 13px; color: var(--grey);
+  line-height: 1.5; max-width: 720px;
+}
+
+.doc-meta {
+  display: flex; flex-direction: column;
+  gap: 4px;
+  text-align: right;
+  padding-top: 4px;
+}
+.doc-format {
+  font-family: var(--font-mono);
+  font-size: 12px; font-weight: 600;
+  color: var(--black); letter-spacing: 0.04em;
+}
+.doc-size, .doc-date {
+  font-size: 11px; color: var(--grey);
+  font-family: var(--font-mono);
+  letter-spacing: 0.02em;
+}
+
+.doc-arrow {
+  color: var(--grey);
+  padding-top: 4px;
+  transition: all 0.2s ease;
+}
+.doc-arrow svg { width: 14px; height: 10px; }
+.doc-row:hover .doc-arrow { color: var(--black); transform: translate(3px, -3px); }
+
+@media (max-width: 760px) {
+  .doc-row {
+    grid-template-columns: 1fr 24px;
+    gap: 12px;
+    padding: 20px 8px;
+  }
+  .doc-cat, .doc-meta { grid-column: 1; text-align: left; }
+  .doc-meta { flex-direction: row; gap: 12px; padding-top: 0; }
+}
+
+.docs-empty {
+  padding: 60px 32px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--grey);
+  display: none;
+}
+.docs-empty.is-shown { display: block; }
+
+/* RPO highlight */
+.docs-rpo { padding: 0 0 var(--section-py); background: var(--white); }
+.rpo-card {
+  background: var(--grey-soft);
+  padding: 64px clamp(32px, 5vw, 64px);
+  display: grid; grid-template-columns: auto 1fr auto;
+  gap: 48px; align-items: center;
+  position: relative;
+  border-top: 4px solid var(--black);
+}
+.rpo-card::after {
+  content: ""; position: absolute;
+  top: -4px; right: 0;
+  width: 80px; height: 80px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%230A0A0A'%3E%3Cpath d='M 0 0 L 100 0 L 100 100 L 80 100 L 80 20 L 0 20 Z'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+.rpo-badge {
+  display: flex; flex-direction: column;
+  padding: 24px 28px;
+  border: 2px solid var(--black);
+  color: var(--black); background: var(--white);
+}
+.rpo-badge .top {
+  font-size: 10px; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--grey);
+  margin-bottom: 8px; font-weight: 600;
+}
+.rpo-badge .mid {
+  font-size: 16px; font-weight: 700;
+  letter-spacing: -0.01em; margin-bottom: 10px;
+  line-height: 1.15;
+}
+.rpo-badge .num {
+  font-size: 13px; font-weight: 600;
+  color: var(--black); letter-spacing: 0.04em;
+  padding-top: 10px;
+  border-top: 1px solid var(--grey-line);
+}
+.rpo-body h3 {
+  font-size: clamp(22px, 2.4vw, 30px);
+  font-weight: 700; letter-spacing: -0.02em;
+  line-height: 1.2; color: var(--black);
+  margin-bottom: 14px;
+}
+.rpo-body p {
+  font-size: 14px; line-height: 1.6;
+  color: var(--grey); max-width: 580px;
+}
+.rpo-actions { display: flex; flex-direction: column; gap: 10px; }
+.rpo-actions a {
+  font-size: 12px; color: var(--black);
+  border-bottom: 1px solid var(--black);
+  padding: 6px 0;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  font-weight: 500; letter-spacing: 0.05em;
+  text-transform: uppercase;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.rpo-actions a .chev { width: 10px; height: 7px; }
+.rpo-actions a:hover { color: var(--grey); border-bottom-color: var(--grey); }
+
+@media (max-width: 900px) { .rpo-card { grid-template-columns: 1fr; gap: 32px; padding: 48px 28px; } }
+
+.page-hero-meta-item .value .dim { color: var(--grey); font-weight: 400; font-size: 0.78em; }
+</style>
+
+</Base>

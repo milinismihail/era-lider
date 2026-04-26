@@ -1,0 +1,159 @@
+---
+import Base from '../layouts/Base.astro';
+import Chev from '../components/icons/Chev.astro';
+
+const title = 'Заявка отправлена · ЭРА';
+const description = 'Спасибо! Мы получили вашу заявку и свяжемся в течение рабочего дня.';
+---
+
+<Base title={title} description={description}>
+
+<section class="status-page">
+  <div class="container status-grid">
+    <div class="status-content" data-reveal>
+      <div class="eyebrow" style="margin-bottom: 28px;">
+        <Chev kind="mark" class="eyebrow-mark" />
+        Заявка получена
+      </div>
+      <div class="status-check">
+        <svg viewBox="0 0 60 60" aria-hidden="true">
+          <path d="M 12 30 L 25 43 L 48 18" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="square"/>
+        </svg>
+      </div>
+      <h1 class="h-hero">Спасибо! Мы получили вашу заявку.</h1>
+      <p class="status-lead">
+        Свяжемся в течение рабочего дня по указанной почте. Если задача срочная — напишите напрямую на <a href="mailto:era@bitobe.ru">era@bitobe.ru</a> или в Telegram <a href="https://t.me/era_lider" target="_blank" rel="noopener">@era_lider</a>.
+      </p>
+      <div class="status-actions">
+        <a href="/" class="btn btn-primary">На главную <Chev kind="arrow" class="btn-arrow" width="14" height="10" /></a>
+        <a href="/materials" class="btn btn-secondary">Изучить материалы</a>
+      </div>
+
+      <div class="status-next">
+        <div class="status-next-label">Что дальше</div>
+        <ol class="status-next-list">
+          <li>
+            <span class="num">01</span>
+            <div>
+              <strong>В течение часа</strong> — автоматическое подтверждение на email с ID вашей заявки.
+            </div>
+          </li>
+          <li>
+            <span class="num">02</span>
+            <div>
+              <strong>В течение рабочего дня</strong> — менеджер свяжется по почте или телефону для уточнения задачи.
+            </div>
+          </li>
+          <li>
+            <span class="num">03</span>
+            <div>
+              <strong>1–3 рабочих дня</strong> — назначение сессии с действующим экспертом ЭРА (если выбран этот формат).
+            </div>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="status-graphic" data-reveal>
+      <svg class="chev-main" viewBox="0 0 100 100"><use href="#chev-7"/></svg>
+      <svg class="chev-sub" viewBox="0 0 100 100"><use href="#chev-7"/></svg>
+      <svg class="chev-tiny" viewBox="0 0 100 100"><use href="#chev-7"/></svg>
+    </div>
+  </div>
+</section>
+
+<style is:global>
+.status-page {
+  padding: 160px 0 var(--section-py);
+  background: var(--white);
+  min-height: 80vh;
+}
+.status-grid {
+  display: grid; grid-template-columns: 60% 40%;
+  gap: 80px; align-items: center;
+}
+.status-check {
+  width: 80px; height: 80px;
+  border: 3px solid var(--black);
+  background: var(--white);
+  color: var(--black);
+  margin-bottom: 28px;
+  display: flex; align-items: center; justify-content: center;
+}
+.status-check svg { width: 50px; height: 50px; display: block; }
+
+.status-page h1 { margin-bottom: 24px; max-width: 580px; }
+.status-lead {
+  font-size: 18px; line-height: 1.55;
+  color: var(--grey-deep);
+  max-width: 560px;
+  margin-bottom: 40px;
+}
+.status-lead a {
+  color: var(--black);
+  font-weight: 500;
+  border-bottom: 1px solid var(--black);
+  padding-bottom: 1px;
+}
+.status-actions {
+  display: flex; gap: 12px; flex-wrap: wrap;
+  margin-bottom: 56px;
+}
+
+.status-next {
+  padding-top: 32px;
+  border-top: 1px solid var(--grey-line);
+  max-width: 720px;
+}
+.status-next-label {
+  font-size: 11px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--grey);
+  font-weight: 600; margin-bottom: 24px;
+}
+.status-next-list {
+  list-style: none;
+  display: flex; flex-direction: column;
+  gap: 16px;
+}
+.status-next-list li {
+  display: grid;
+  grid-template-columns: 50px 1fr;
+  gap: 20px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--grey-line);
+  align-items: start;
+}
+.status-next-list li:last-child { border-bottom: none; }
+.status-next-list .num {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--black);
+  letter-spacing: 0.04em;
+  padding-top: 2px;
+}
+.status-next-list strong { color: var(--black); font-weight: 600; }
+.status-next-list div { font-size: 15px; color: var(--grey-deep); line-height: 1.55; }
+
+.status-graphic {
+  position: relative; aspect-ratio: 1/1;
+  width: 100%; max-width: 380px;
+  justify-self: end;
+}
+.status-graphic .chev-main { width: 100%; height: 100%; color: var(--black); }
+.status-graphic .chev-sub {
+  position: absolute; top: 8%; right: -8%;
+  width: 42%; height: 42%; color: var(--accent-mot);
+}
+.status-graphic .chev-tiny {
+  position: absolute; bottom: 6%; left: -3%;
+  width: 24%; height: 24%; color: var(--accent-pers);
+}
+
+@media (max-width: 980px) {
+  .status-grid { grid-template-columns: 1fr; gap: 40px; }
+  .status-graphic { max-width: 240px; order: -1; }
+}
+</style>
+
+</Base>

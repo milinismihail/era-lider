@@ -1,0 +1,29 @@
+---
+import type { FaqItem } from '../../data/certification.ts';
+
+interface Props { items: FaqItem[] }
+const { items } = Astro.props;
+---
+
+<div class="faq-list" data-reveal>
+  {items.map((item) => (
+    <div class="faq-item">
+      <button class="faq-q" type="button">
+        <span set:html={item.q}></span>
+        <span class="icon"></span>
+      </button>
+      <div class="faq-a">
+        <div class="faq-a-inner" set:html={item.a}></div>
+      </div>
+    </div>
+  ))}
+</div>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('.faq-q').forEach((q) => {
+    q.addEventListener('click', () => {
+      const item = q.closest('.faq-item');
+      item?.classList.toggle('is-open');
+    });
+  });
+</script>

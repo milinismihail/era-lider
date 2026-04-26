@@ -1,0 +1,14 @@
+---
+interface Props {
+  kind: '7' | 'arrow' | 'mark';
+  class?: string;
+  width?: string | number;
+  height?: string | number;
+}
+const { kind, class: className, width, height } = Astro.props;
+const id = `chev-${kind}`;
+---
+
+<svg class={className} width={width} height={height} aria-hidden="true">
+  <use href={`#${id}`}></use>
+</svg>

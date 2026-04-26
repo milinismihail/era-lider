@@ -1,0 +1,61 @@
+---
+import Chev from '../icons/Chev.astro';
+import type { FlagshipCase } from '../../data/cases.ts';
+
+interface Props {
+  flagship: FlagshipCase;
+}
+const { flagship } = Astro.props;
+---
+
+<article
+  class:list={['flagship', `flagship-mod-${flagship.mod}`]}
+  data-industry={flagship.industry}
+  data-scenario={flagship.scenario}
+  data-reveal
+>
+  <div class="flagship-meta">
+    <div class="flagship-num"><Chev kind="mark" class="chev" />{flagship.num}</div>
+    <div class="flagship-company">
+      <div class="flagship-logo" set:html={flagship.company.logo}></div>
+      <div class="flagship-company-info">
+        <div class="name">{flagship.company.name}</div>
+        <div class="industry">{flagship.company.industry}</div>
+      </div>
+    </div>
+    <div class="flagship-tags">
+      {flagship.tags.map((t) => (
+        <div class="flagship-tags-row">
+          <span class="label">{t.label}</span>
+          <span class="value" set:html={t.value}></span>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <div class="flagship-body">
+    <h3>{flagship.title}</h3>
+    <p class="summary">{flagship.summary}</p>
+    <div class="flagship-quote">
+      {flagship.quote}
+      <span class="flagship-quote-source">{flagship.quoteSource}</span>
+    </div>
+    <div class="flagship-results">
+      {flagship.results.map((r) => (
+        <div class="flagship-result">
+          <div class="num">{r.num}</div>
+          <div class="desc" set:html={r.desc}></div>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  {flagship.action && (
+    <div class="flagship-actions">
+      <a href={flagship.action.href} class="btn btn-secondary">
+        {flagship.action.label}
+        <Chev kind="arrow" class="btn-arrow" width="14" height="10" />
+      </a>
+    </div>
+  )}
+</article>

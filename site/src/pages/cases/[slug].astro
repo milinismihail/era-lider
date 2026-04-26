@@ -1,0 +1,654 @@
+---
+import Base from '../../layouts/Base.astro';
+import Chev from '../../components/icons/Chev.astro';
+import { flagshipCases, type FlagshipCase } from '../../data/cases.ts';
+import { scenarios } from '../../data/scenarios.ts';
+
+export async function getStaticPaths() {
+  return flagshipCases.map((c) => ({
+    params: { slug: c.slug },
+    props: { flagship: c },
+  }));
+}
+
+interface Props { flagship: FlagshipCase }
+const { flagship } = Astro.props;
+
+// Маппинг сценария кейса на slug сценариев из data/scenarios.ts
+const caseToScenarios: Record<string, string[]> = {
+  csuite: ['csuite', 'successors'],
+  team: ['team'],
+  dev: ['successors', 'burnout'],
+  transform: ['transformation'],
+};
+
+const relatedScenarios = (caseToScenarios[flagship.scenario] ?? [])
+  .map((s) => scenarios.find((sc) => sc.slug === s))
+  .filter(Boolean) as typeof scenarios;
+
+// Prev/next кейсы
+const currentIdx = flagshipCases.findIndex((c) => c.slug === flagship.slug);
+const prevCase = currentIdx > 0 ? flagshipCases[currentIdx - 1] : flagshipCases[flagshipCases.length - 1];
+const nextCase = currentIdx < flagshipCases.length - 1 ? flagshipCases[currentIdx + 1] : flagshipCases[0];
+
+// Близкие кейсы (того же сценария или модуля), исключая текущий
+const similarCases = flagshipCases
+  .filter((c) => c.slug !== flagship.slug && (c.scenario === flagship.scenario || c.mod === flagship.mod))
+  .slice(0, 2);
+
+const title = `${flagship.company.name} · Кейс ЭРА`;
+const description = flagship.title;
+
+const schemaArticle = {
+  headline: flagship.title,
+  description: flagship.summary,
+  author: 'BITOBE',
+};
+
+const breadcrumbs = [
+  { name: 'Главная', url: 'https://era-lider.ru/' },
+  { name: 'Кейсы', url: 'https://era-lider.ru/cases' },
+  { name: flagship.company.name, url: `https://era-lider.ru/cases/${flagship.slug}` },
+];
+---
+
+<Base
+  title={title}
+  description={description}
+  activeKey="cases"
+  schemaType="Article"
+  schemaArticle={schemaArticle}
+  breadcrumbs={breadcrumbs}
+>
+
+<section class:list={['case-detail-hero', `flagship-mod-${flagship.mod}`]}>
+  <div class="container">
+    <div class="hero-breadcrumbs">
+      <a href="/">Главная</a>
+      <span class="sep">/</span>
+      <a href="/cases">Кейсы</a>
+      <span class="sep">/</span>
+      <span class="current">{flagship.company.name}</span>
+    </div>
+
+    <div class="cd-hero-meta">
+      <div class="cd-num">
+        <Chev kind="mark" class="chev" />Кейс {flagship.num}
+      </div>
+      <div class="cd-company">
+        <div class="cd-company-logo" set:html={flagship.company.logo}></div>
+        <div class="cd-company-info">
+          <div class="name">{flagship.company.name}</div>
+          <div class="industry">{flagship.company.industry}</div>
+        </div>
+      </div>
+    </div>
+
+    <h1 class="h-hero" data-reveal>{flagship.title}</h1>
+
+    <p class="cd-summary" data-reveal>{flagship.summary}</p>
+
+    <div class="cd-tags" data-reveal>
+      {flagship.tags.map((t) => (
+        <div class="cd-tag">
+          <span class="cd-tag-label">{t.label}</span>
+          <span class="cd-tag-value" set:html={t.value}></span>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<section class="cd-quote-section">
+  <div class="container">
+    <div class:list={['cd-quote-card', `flagship-mod-${flagship.mod}`]} data-reveal>
+      <div class="cd-quote-label">Цитата из проекта</div>
+      <blockquote>{flagship.quote}</blockquote>
+      <div class="cd-quote-source">{flagship.quoteSource}</div>
+    </div>
+  </div>
+</section>
+
+<section class="cd-results-section">
+  <div class="container">
+    <div class="cd-section-head" data-reveal>
+      <div>
+        <div class="eyebrow"><Chev kind="mark" class="eyebrow-mark" />Результат</div>
+        <h2 class="h-section">Что получилось.</h2>
+      </div>
+      <p class="lead">Цифры результата, измеренные на горизонте проекта. Часть данных раскрывается под NDA — здесь приведены метрики, согласованные к публикации.</p>
+    </div>
+
+    <div class="cd-results-grid" data-reveal>
+      {flagship.results.map((r, i) => (
+        <div class:list={['cd-result-card', i === 0 ? 'is-primary' : null]}>
+          <div class="cd-result-num">0{i + 1}</div>
+          <div class="cd-result-value">{r.num}</div>
+          <div class="cd-result-desc" set:html={r.desc}></div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+{flagship.action && (
+  <section class="cd-action-section">
+    <div class="container">
+      <div class="cd-action-card" data-reveal>
+        <div>
+          <div class="cd-action-label">Подтверждающий документ</div>
+          <h3>Полный текст письма от&nbsp;клиента или методический разбор</h3>
+          <p>Для тендерных и&nbsp;проверочных процедур — оригинал благодарственного письма или развёрнутый методический разбор кейса (в&nbsp;объёме, согласованном с&nbsp;клиентом).</p>
+        </div>
+        <a href={flagship.action.href} target={/^https?:\/\//.test(flagship.action.href) ? '_blank' : undefined} rel={/^https?:\/\//.test(flagship.action.href) ? 'noopener' : undefined} class="btn btn-primary">
+          {flagship.action.label}
+          <Chev kind="arrow" class="btn-arrow" width="14" height="10" />
+        </a>
+      </div>
+    </div>
+  </section>
+)}
+
+{relatedScenarios.length > 0 && (
+  <section class="cd-scenarios-section">
+    <div class="container">
+      <div class="cd-section-head" data-reveal>
+        <div>
+          <div class="eyebrow"><Chev kind="mark" class="eyebrow-mark" />Близкие сценарии</div>
+          <h2 class="h-section">Какие задачи мы&nbsp;решали с&nbsp;ЭРА в&nbsp;этом контексте.</h2>
+        </div>
+        <p class="lead">Сценарии применения, типичные для подобных задач. На&nbsp;каждой странице — методика, мета-параметры и связанные кейсы.</p>
+      </div>
+
+      <div class="cd-scenarios-grid">
+        {relatedScenarios.map((s) => (
+          <a href={`/scenarios/${s.slug}`} class:list={['cd-scenario-card', `mod-${s.mod}`]} data-reveal>
+            <div class="cd-scenario-num">{s.num}</div>
+            <h3>{s.title}</h3>
+            <p>{s.question}</p>
+            <span class="cd-scenario-link">К сценарию <Chev kind="arrow" class="chev" /></span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+)}
+
+{similarCases.length > 0 && (
+  <section class="cd-similar-section">
+    <div class="container">
+      <div class="cd-section-head" data-reveal>
+        <div>
+          <div class="eyebrow"><Chev kind="mark" class="eyebrow-mark" />Похожие кейсы</div>
+          <h2 class="h-section">Из той же области.</h2>
+        </div>
+        <p class="lead">Ещё пара кейсов, в которых ЭРА работала на близкие управленческие задачи или в смежных отраслях.</p>
+      </div>
+
+      <div class="cd-similar-grid">
+        {similarCases.map((c) => (
+          <a href={`/cases/${c.slug}`} class:list={['cd-similar-card', `flagship-mod-${c.mod}`]} data-reveal>
+            <div class="cd-similar-header">
+              <div class="cd-similar-logo" set:html={c.company.logo}></div>
+              <div>
+                <div class="cd-similar-name">{c.company.name}</div>
+                <div class="cd-similar-industry">{c.company.industry}</div>
+              </div>
+            </div>
+            <h3>{c.title}</h3>
+            <span class="cd-similar-link">Подробнее о&nbsp;кейсе <Chev kind="arrow" class="chev" /></span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+)}
+
+<section class="cd-prev-next">
+  <div class="container">
+    <div class="cd-pn-grid">
+      <a href={`/cases/${prevCase.slug}`} class="cd-pn-card" data-reveal>
+        <div class="cd-pn-label"><Chev kind="arrow" class="chev rotate" />Предыдущий кейс</div>
+        <div class="cd-pn-company">{prevCase.company.name}</div>
+        <h3>{prevCase.title}</h3>
+      </a>
+      <a href={`/cases/${nextCase.slug}`} class="cd-pn-card" data-reveal>
+        <div class="cd-pn-label">Следующий кейс <Chev kind="arrow" class="chev" /></div>
+        <div class="cd-pn-company">{nextCase.company.name}</div>
+        <h3>{nextCase.title}</h3>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="cta-block" id="cta">
+  <div class="container cta-grid">
+    <div data-reveal>
+      <div class="eyebrow on-dark" style="margin-bottom: 24px;">
+        <Chev kind="mark" class="eyebrow-mark" style="color: var(--white)" />
+        Под вашу задачу
+      </div>
+      <h2 class="h-section">Свежий кейс по&nbsp;<span class="accent-line" style="color:var(--white);">вашему сценарию</span> — на&nbsp;звонке.</h2>
+      <p class="lead">Не подборка для маркетинга, а реальная практика. Покажем релевантный пример с цифрами — обезличенный, под вашу отрасль и ваш сценарий.</p>
+    </div>
+    <div class="cta-actions" data-reveal>
+      <a href="/contact" class="btn btn-primary">Записаться на разбор кейса <Chev kind="arrow" class="btn-arrow" width="14" height="10" /></a>
+      <a href="/cases" class="btn btn-secondary-inverse">Все кейсы <Chev kind="arrow" class="btn-arrow" width="14" height="10" /></a>
+    </div>
+  </div>
+</section>
+
+<style is:global>
+/* ===== Локальные стили /cases/[slug] ===== */
+
+.case-detail-hero {
+  padding: 160px 0 80px;
+  background: var(--white);
+  border-bottom: 1px solid var(--grey-line);
+  position: relative;
+}
+.case-detail-hero.flagship-mod-pers  { background: linear-gradient(180deg, var(--white) 0%, rgba(168,179,217,0.08) 100%); }
+.case-detail-hero.flagship-mod-mot   { background: linear-gradient(180deg, var(--white) 0%, rgba(165,192,165,0.10) 100%); }
+.case-detail-hero.flagship-mod-destr { background: linear-gradient(180deg, var(--white) 0%, rgba(194,178,153,0.10) 100%); }
+
+.case-detail-hero .hero-breadcrumbs {
+  font-size: 12px;
+  color: var(--grey);
+  margin-bottom: 36px;
+  letter-spacing: 0.04em;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.case-detail-hero .hero-breadcrumbs a { color: var(--grey-deep); transition: color 0.2s ease; }
+.case-detail-hero .hero-breadcrumbs a:hover { color: var(--black); }
+.case-detail-hero .hero-breadcrumbs .sep { color: var(--grey-line); }
+.case-detail-hero .hero-breadcrumbs .current { color: var(--black); font-weight: 500; }
+
+.cd-hero-meta {
+  display: flex; align-items: center; gap: 32px;
+  flex-wrap: wrap;
+  margin-bottom: 36px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--grey-line);
+}
+.cd-num {
+  display: flex; align-items: center; gap: 12px;
+  font-family: var(--font-mono); font-size: 13px; font-weight: 600;
+  color: var(--black); letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.cd-num .chev { width: 16px; height: 11px; color: var(--black); }
+.flagship-mod-pers  .cd-num .chev { color: var(--accent-pers); }
+.flagship-mod-mot   .cd-num .chev { color: var(--accent-mot); }
+.flagship-mod-destr .cd-num .chev { color: var(--accent-destr); }
+
+.cd-company {
+  display: flex; align-items: center; gap: 14px;
+}
+.cd-company-logo {
+  width: 56px; height: 56px;
+  background: var(--white); color: var(--black);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 13px;
+  letter-spacing: 0.04em;
+  border: 1px solid var(--grey-line);
+  text-align: center; line-height: 1.1;
+  flex-shrink: 0;
+}
+.cd-company-info .name {
+  font-weight: 600; font-size: 17px;
+  color: var(--black); letter-spacing: -0.01em;
+  line-height: 1.25;
+}
+.cd-company-info .industry {
+  font-size: 12px; color: var(--grey);
+  letter-spacing: 0.12em; text-transform: uppercase;
+  font-weight: 500; margin-top: 4px;
+}
+
+.case-detail-hero h1 {
+  margin-bottom: 32px;
+  max-width: 880px;
+}
+
+.cd-summary {
+  font-size: 19px; line-height: 1.6;
+  color: var(--grey-deep);
+  max-width: 760px;
+  margin-bottom: 40px;
+}
+
+.cd-tags {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  padding-top: 32px;
+  border-top: 1px solid var(--grey-line);
+}
+.cd-tag-label {
+  display: block;
+  font-size: 11px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--grey);
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+.cd-tag-value {
+  font-size: 15px; font-weight: 600;
+  color: var(--black);
+  line-height: 1.3;
+}
+
+@media (max-width: 980px) {
+  .case-detail-hero { padding: 120px 0 60px; }
+  .cd-tags { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+}
+@media (max-width: 560px) {
+  .cd-tags { grid-template-columns: 1fr; }
+}
+
+/* Quote section */
+.cd-quote-section { padding: var(--section-py) 0; background: var(--white); }
+.cd-quote-card {
+  background: var(--black);
+  color: var(--white);
+  padding: 56px clamp(32px, 5vw, 72px);
+  position: relative;
+  overflow: hidden;
+}
+.cd-quote-card::before {
+  content: ""; position: absolute;
+  top: 32px; right: 32px;
+  width: 64px; height: 40px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%23FFFFFF' fill-opacity='0.18'%3E%3Cpath d='M 0 0 L 100 0 L 100 100 L 80 100 L 80 20 L 0 20 Z'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+.cd-quote-card.flagship-mod-pers  { border-top: 4px solid var(--accent-pers); }
+.cd-quote-card.flagship-mod-mot   { border-top: 4px solid var(--accent-mot); }
+.cd-quote-card.flagship-mod-destr { border-top: 4px solid var(--accent-destr); }
+.cd-quote-label {
+  font-size: 11px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: rgba(255,255,255,0.55);
+  font-weight: 600; margin-bottom: 28px;
+}
+.cd-quote-card blockquote {
+  font-size: clamp(22px, 2.4vw, 30px);
+  line-height: 1.4;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  margin-bottom: 28px;
+  max-width: 920px;
+}
+.cd-quote-source {
+  font-size: 13px; color: rgba(255,255,255,0.65);
+  letter-spacing: 0.04em;
+  display: flex; align-items: center; gap: 8px;
+}
+.cd-quote-source::before {
+  content: ""; width: 24px; height: 1px; background: var(--white);
+}
+@media (max-width: 760px) { .cd-quote-card { padding: 40px 28px; } }
+
+/* Results section */
+.cd-results-section { padding: var(--section-py) 0; background: var(--grey-soft); }
+
+.cd-section-head {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 80px; align-items: end;
+  margin-bottom: 56px;
+}
+.cd-section-head h2 { margin-top: 20px; }
+.cd-section-head .lead {
+  font-size: 16px; line-height: 1.6;
+  color: var(--grey); max-width: 460px;
+}
+@media (max-width: 900px) { .cd-section-head { grid-template-columns: 1fr; gap: 24px; } }
+
+.cd-results-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--grey-line);
+  border: 1px solid var(--grey-line);
+}
+.cd-result-card {
+  background: var(--white);
+  padding: 36px 28px 32px;
+  display: flex; flex-direction: column;
+  position: relative;
+  min-height: 220px;
+}
+.cd-result-card.is-primary { background: var(--black); color: var(--white); }
+.cd-result-card::before {
+  content: ""; position: absolute;
+  top: 0; left: 0;
+  width: 36px; height: 4px;
+  background: var(--black);
+}
+.cd-result-card.is-primary::before { background: var(--white); }
+
+.cd-result-num {
+  font-family: var(--font-mono);
+  font-size: 11px; color: var(--grey);
+  letter-spacing: 0.08em; font-weight: 500;
+  margin-bottom: 24px; padding-top: 14px;
+}
+.cd-result-card.is-primary .cd-result-num { color: rgba(255,255,255,0.55); }
+
+.cd-result-value {
+  font-size: clamp(40px, 4.5vw, 60px);
+  font-weight: 700; letter-spacing: -0.04em;
+  line-height: 0.95;
+  color: var(--black);
+  margin-bottom: 16px;
+}
+.cd-result-card.is-primary .cd-result-value { color: var(--white); }
+
+.cd-result-desc {
+  font-size: 13px; line-height: 1.45;
+  color: var(--grey);
+  margin-top: auto;
+}
+.cd-result-card.is-primary .cd-result-desc { color: rgba(255,255,255,0.7); }
+
+@media (max-width: 980px) { .cd-results-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .cd-results-grid { grid-template-columns: 1fr; } }
+
+/* Action section */
+.cd-action-section { padding: 0 0 var(--section-py); background: var(--grey-soft); }
+.cd-action-card {
+  background: var(--white);
+  padding: 48px clamp(28px, 4vw, 56px);
+  border-top: 4px solid var(--black);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 48px;
+  align-items: center;
+  position: relative;
+}
+.cd-action-card::after {
+  content: ""; position: absolute;
+  top: -4px; right: 0;
+  width: 56px; height: 36px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%230A0A0A'%3E%3Cpath d='M 0 0 L 100 0 L 100 100 L 80 100 L 80 20 L 0 20 Z'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+.cd-action-label {
+  font-size: 11px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--grey);
+  font-weight: 600; margin-bottom: 14px;
+}
+.cd-action-card h3 {
+  font-size: 22px; font-weight: 700;
+  letter-spacing: -0.02em; line-height: 1.25;
+  color: var(--black); margin-bottom: 12px;
+  max-width: 600px;
+}
+.cd-action-card p {
+  font-size: 15px; line-height: 1.6;
+  color: var(--grey); max-width: 600px;
+}
+@media (max-width: 900px) { .cd-action-card { grid-template-columns: 1fr; gap: 24px; padding: 36px 24px; } }
+
+/* Related scenarios */
+.cd-scenarios-section { padding: var(--section-py) 0; background: var(--white); }
+.cd-scenarios-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: var(--grey-line);
+  border: 1px solid var(--grey-line);
+}
+.cd-scenario-card {
+  background: var(--white);
+  padding: 36px 32px 32px;
+  display: flex; flex-direction: column;
+  color: inherit;
+  position: relative;
+  transition: background 0.2s ease;
+}
+.cd-scenario-card:hover { background: var(--grey-soft); }
+.cd-scenario-card::before {
+  content: ""; position: absolute;
+  top: 0; left: 0;
+  width: 36px; height: 4px;
+  background: var(--black);
+}
+.cd-scenario-card.mod-pers::before  { background: var(--accent-pers); }
+.cd-scenario-card.mod-mot::before   { background: var(--accent-mot); }
+.cd-scenario-card.mod-destr::before { background: var(--accent-destr); }
+
+.cd-scenario-num {
+  font-family: var(--font-mono);
+  font-size: 14px; color: var(--black);
+  font-weight: 600; letter-spacing: 0.04em;
+  margin-bottom: 16px; padding-top: 14px;
+}
+.cd-scenario-card h3 {
+  font-size: 22px; font-weight: 700;
+  letter-spacing: -0.02em; line-height: 1.2;
+  color: var(--black); margin-bottom: 14px;
+}
+.cd-scenario-card p {
+  font-size: 14px; line-height: 1.55;
+  color: var(--grey-deep); flex: 1;
+  margin-bottom: 20px;
+}
+.cd-scenario-link {
+  font-size: 11px; color: var(--black);
+  font-weight: 600; letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--black);
+  padding-bottom: 3px;
+  display: inline-flex; align-items: center; gap: 8px;
+  align-self: flex-start;
+  transition: gap 0.2s ease;
+}
+.cd-scenario-card:hover .cd-scenario-link { gap: 12px; }
+.cd-scenario-link .chev { width: 12px; height: 8px; }
+@media (max-width: 760px) { .cd-scenarios-grid { grid-template-columns: 1fr; } }
+
+/* Similar cases */
+.cd-similar-section { padding: var(--section-py) 0; background: var(--grey-soft); }
+.cd-similar-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+.cd-similar-card {
+  background: var(--white);
+  padding: 32px;
+  display: flex; flex-direction: column;
+  border-top: 4px solid var(--black);
+  position: relative;
+  color: inherit;
+  transition: transform 0.25s ease;
+}
+.cd-similar-card.flagship-mod-pers  { border-top-color: var(--accent-pers); }
+.cd-similar-card.flagship-mod-mot   { border-top-color: var(--accent-mot); }
+.cd-similar-card.flagship-mod-destr { border-top-color: var(--accent-destr); }
+.cd-similar-card:hover { transform: translateY(-3px); }
+
+.cd-similar-header {
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: 24px;
+}
+.cd-similar-logo {
+  width: 48px; height: 48px;
+  background: var(--grey-soft); color: var(--black);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 12px;
+  letter-spacing: 0.04em;
+  text-align: center; line-height: 1.1;
+  flex-shrink: 0;
+}
+.cd-similar-name { font-weight: 600; font-size: 14px; color: var(--black); letter-spacing: -0.01em; }
+.cd-similar-industry { font-size: 11px; color: var(--grey); letter-spacing: 0.12em; text-transform: uppercase; font-weight: 500; margin-top: 3px; }
+.cd-similar-card h3 {
+  font-size: 18px; font-weight: 700;
+  letter-spacing: -0.015em; line-height: 1.25;
+  color: var(--black); margin-bottom: 24px;
+  flex: 1;
+}
+.cd-similar-link {
+  font-size: 11px; color: var(--black);
+  font-weight: 600; letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--black);
+  padding-bottom: 3px;
+  display: inline-flex; align-items: center; gap: 8px;
+  align-self: flex-start;
+  transition: gap 0.2s ease;
+}
+.cd-similar-card:hover .cd-similar-link { gap: 12px; }
+.cd-similar-link .chev { width: 12px; height: 8px; }
+@media (max-width: 900px) { .cd-similar-grid { grid-template-columns: 1fr; } }
+
+/* Prev/next */
+.cd-prev-next { padding: 0 0 var(--section-py); background: var(--white); }
+.cd-pn-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  padding-top: 32px;
+  border-top: 1px solid var(--grey-line);
+}
+.cd-pn-card {
+  background: var(--grey-soft);
+  padding: 32px;
+  color: inherit;
+  display: flex; flex-direction: column;
+  transition: background 0.2s ease;
+}
+.cd-pn-card:hover { background: var(--black); color: var(--white); }
+.cd-pn-card:hover h3,
+.cd-pn-card:hover .cd-pn-company { color: var(--white); }
+.cd-pn-card:hover .cd-pn-label { color: rgba(255,255,255,0.7); }
+.cd-pn-card:last-child { text-align: right; align-items: flex-end; }
+.cd-pn-label {
+  font-size: 11px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--grey);
+  font-weight: 600; margin-bottom: 16px;
+  display: flex; align-items: center; gap: 8px;
+}
+.cd-pn-label .chev { width: 12px; height: 8px; color: currentColor; }
+.cd-pn-label .chev.rotate { transform: scaleX(-1); }
+.cd-pn-company {
+  font-size: 12px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--grey);
+  font-weight: 600; margin-bottom: 12px;
+  transition: color 0.2s ease;
+}
+.cd-pn-card h3 {
+  font-size: 18px; font-weight: 700;
+  letter-spacing: -0.015em; line-height: 1.3;
+  color: var(--black);
+  transition: color 0.2s ease;
+  max-width: 380px;
+}
+@media (max-width: 760px) {
+  .cd-pn-grid { grid-template-columns: 1fr; }
+  .cd-pn-card:last-child { text-align: left; align-items: flex-start; }
+  .cd-pn-card:last-child h3 { max-width: 100%; }
+}
+</style>
+
+</Base>

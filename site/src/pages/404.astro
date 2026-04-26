@@ -1,0 +1,125 @@
+---
+import Base from '../layouts/Base.astro';
+import Chev from '../components/icons/Chev.astro';
+
+const title = '404 · Страница не найдена · ЭРА';
+const description = 'Запрашиваемая страница не существует или была перемещена.';
+---
+
+<Base title={title} description={description}>
+
+<section class="status-page">
+  <div class="container status-grid">
+    <div class="status-content" data-reveal>
+      <div class="eyebrow" style="margin-bottom: 28px;">
+        <Chev kind="mark" class="eyebrow-mark" />
+        Ошибка 404
+      </div>
+      <div class="status-num">404</div>
+      <h1 class="h-hero">Этой страницы нет.</h1>
+      <p class="status-lead">
+        Возможно, страница была перемещена или ссылка устарела. Вернитесь на главную или перейдите к ключевым разделам.
+      </p>
+      <div class="status-actions">
+        <a href="/" class="btn btn-primary">На главную <Chev kind="arrow" class="btn-arrow" width="14" height="10" /></a>
+        <a href="/scenarios" class="btn btn-secondary">Сценарии применения</a>
+      </div>
+
+      <div class="status-links">
+        <div class="status-links-label">Возможно, вы искали</div>
+        <ul>
+          <li><a href="/methodology">Методология ЭРА</a> — HEXACO, валидность, надёжность</li>
+          <li><a href="/reports">Форматы отчётов</a> — индивидуальный, командный, профиль роли</li>
+          <li><a href="/cases">Кейсы и благодарности</a> — Газпромнефть, АБЗ-1, Секретория</li>
+          <li><a href="/certification">Сертификация экспертов</a> — программа подготовки</li>
+          <li><a href="/contact">Связаться с экспертом</a> — 5 ступеней воронки</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="status-graphic" data-reveal>
+      <svg class="chev-main" viewBox="0 0 100 100"><use href="#chev-7"/></svg>
+      <svg class="chev-sub" viewBox="0 0 100 100"><use href="#chev-7"/></svg>
+      <svg class="chev-tiny" viewBox="0 0 100 100"><use href="#chev-7"/></svg>
+    </div>
+  </div>
+</section>
+
+<style is:global>
+.status-page {
+  padding: 160px 0 var(--section-py);
+  background: var(--white);
+  min-height: 80vh;
+}
+.status-grid {
+  display: grid; grid-template-columns: 60% 40%;
+  gap: 80px; align-items: center;
+}
+.status-num {
+  font-family: var(--font-mono);
+  font-size: clamp(56px, 9vw, 120px);
+  font-weight: 600;
+  color: var(--grey-line);
+  letter-spacing: 0.02em;
+  line-height: 1;
+  margin-bottom: 16px;
+}
+.status-page h1 { margin-bottom: 24px; max-width: 560px; }
+.status-lead {
+  font-size: 18px; line-height: 1.55;
+  color: var(--grey-deep);
+  max-width: 520px;
+  margin-bottom: 40px;
+}
+.status-actions {
+  display: flex; gap: 12px; flex-wrap: wrap;
+  margin-bottom: 56px;
+}
+.status-links {
+  padding-top: 32px;
+  border-top: 1px solid var(--grey-line);
+  max-width: 640px;
+}
+.status-links-label {
+  font-size: 11px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--grey);
+  font-weight: 600; margin-bottom: 16px;
+}
+.status-links ul {
+  list-style: none;
+  display: flex; flex-direction: column;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--grey);
+}
+.status-links a {
+  color: var(--black);
+  font-weight: 500;
+  border-bottom: 1px solid var(--black);
+  padding-bottom: 1px;
+  margin-right: 8px;
+}
+.status-links a:hover { border-bottom-color: var(--grey); }
+
+.status-graphic {
+  position: relative; aspect-ratio: 1/1;
+  width: 100%; max-width: 380px;
+  justify-self: end;
+}
+.status-graphic .chev-main { width: 100%; height: 100%; color: var(--black); }
+.status-graphic .chev-sub {
+  position: absolute; top: 8%; right: -8%;
+  width: 42%; height: 42%; color: var(--accent-pers);
+}
+.status-graphic .chev-tiny {
+  position: absolute; bottom: 6%; left: -3%;
+  width: 24%; height: 24%; color: var(--accent-mot);
+}
+
+@media (max-width: 980px) {
+  .status-grid { grid-template-columns: 1fr; gap: 40px; }
+  .status-graphic { max-width: 240px; order: -1; }
+}
+</style>
+
+</Base>

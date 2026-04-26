@@ -1,0 +1,72 @@
+---
+import Chev from '../icons/Chev.astro';
+---
+
+<nav class="filters" id="filters">
+  <div class="container filters-row">
+    <div class="filters-label"><Chev kind="mark" class="chev" />Фильтр</div>
+    <div class="filter-group" data-filter-group="industry">
+      <button class="filter-btn active" data-filter="all" type="button">Все отрасли</button>
+      <button class="filter-btn" data-filter="oilgas" type="button">Нефтегаз</button>
+      <button class="filter-btn" data-filter="industry" type="button">Промышленность</button>
+      <button class="filter-btn" data-filter="infra" type="button">Инфраструктура</button>
+      <button class="filter-btn" data-filter="it" type="button">ИТ и услуги</button>
+    </div>
+    <div class="filters-divider"></div>
+    <div class="filter-group" data-filter-group="scenario">
+      <button class="filter-btn active" data-filter="all" type="button">Все сценарии</button>
+      <button class="filter-btn" data-filter="csuite" type="button">C-level</button>
+      <button class="filter-btn" data-filter="team" type="button">Команда</button>
+      <button class="filter-btn" data-filter="dev" type="button">Развитие</button>
+      <button class="filter-btn" data-filter="transform" type="button">Трансформация</button>
+    </div>
+  </div>
+</nav>
+
+<script>
+  type FilterKey = 'industry' | 'scenario';
+  const state: Record<FilterKey, string> = { industry: 'all', scenario: 'all' };
+
+  const flagshipCards = document.querySelectorAll<HTMLElement>('.flagship');
+  const wallCards = document.querySelectorAll<HTMLElement>('.wall-card');
+  const flagshipEmpty = document.getElementById('flagship-empty');
+  const wallEmpty = document.getElementById('wall-empty');
+
+  function applyFilters() {
+    let visibleFlagship = 0;
+    let visibleWall = 0;
+
+    flagshipCards.forEach((card) => {
+      const indMatch = state.industry === 'all' || card.dataset.industry === state.industry;
+      const scnMatch = state.scenario === 'all' || card.dataset.scenario === state.scenario;
+      const visible = indMatch && scnMatch;
+      card.classList.toggle('is-hidden', !visible);
+      if (visible) visibleFlagship++;
+    });
+
+    wallCards.forEach((card) => {
+      const indMatch = state.industry === 'all' || card.dataset.industry === state.industry;
+      const scnMatch = state.scenario === 'all' || card.dataset.scenario === state.scenario;
+      const visible = indMatch && scnMatch;
+      card.classList.toggle('is-hidden', !visible);
+      if (visible) visibleWall++;
+    });
+
+    flagshipEmpty?.classList.toggle('is-shown', visibleFlagship === 0);
+    wallEmpty?.classList.toggle('is-shown', visibleWall === 0);
+  }
+
+  document.querySelectorAll<HTMLElement>('.filter-group').forEach((group) => {
+    const groupName = group.dataset.filterGroup as FilterKey | undefined;
+    if (!groupName) return;
+    group.querySelectorAll<HTMLButtonElement>('.filter-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        group.querySelectorAll('.filter-btn').forEach((b) => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filter = btn.dataset.filter;
+        if (filter) state[groupName] = filter;
+        applyFilters();
+      });
+    });
+  });
+</script>

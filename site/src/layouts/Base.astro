@@ -1,0 +1,96 @@
+---
+import '@fontsource-variable/onest';
+import '@fontsource/jetbrains-mono';
+import '../styles/era-style.css';
+import Sprite from '../components/icons/Sprite.astro';
+import Nav from '../components/nav/Nav.astro';
+import Footer from '../components/nav/Footer.astro';
+import SchemaOrg, {
+  type BreadcrumbItem,
+  type SchemaFaqItem,
+  type SchemaProduct,
+  type SchemaArticle,
+  type SchemaType,
+} from '../components/seo/SchemaOrg.astro';
+import type { NavKey } from '../data/nav.ts';
+
+interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+  activeKey?: NavKey;
+  schemaType?: SchemaType;
+  schemaProduct?: SchemaProduct;
+  schemaArticle?: SchemaArticle;
+  schemaFaqs?: SchemaFaqItem[];
+  breadcrumbs?: BreadcrumbItem[];
+}
+
+const {
+  title,
+  description,
+  ogImage = '/og-default.png',
+  activeKey,
+  schemaType = 'WebPage',
+  schemaProduct,
+  schemaArticle,
+  schemaFaqs,
+  breadcrumbs,
+} = Astro.props;
+
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? 'https://era-lider.ru').toString();
+const ogImageUrl = ogImage.startsWith('http')
+  ? ogImage
+  : new URL(ogImage, Astro.site ?? 'https://era-lider.ru').toString();
+---
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="canonical" href={canonicalUrl} />
+
+  <meta property="og:type" content={schemaType === 'Article' ? 'article' : 'website'} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content={ogImageUrl} />
+  <meta property="og:url" content={canonicalUrl} />
+  <meta property="og:locale" content="ru_RU" />
+  <meta property="og:site_name" content="ЭРА · BITOBE" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={ogImageUrl} />
+
+  <SchemaOrg
+    url={canonicalUrl}
+    title={title}
+    description={description}
+    type={schemaType}
+    breadcrumbs={breadcrumbs}
+    faqs={schemaFaqs}
+    product={schemaProduct}
+    article={schemaArticle}
+  />
+
+  <slot name="head" />
+</head>
+<body>
+  <Sprite />
+  <Nav activeKey={activeKey} />
+
+  <slot />
+
+  <Footer />
+
+  <script>
+    import '../scripts/nav-scroll.ts';
+    import '../scripts/reveal.ts';
+  </script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+---
+import Chev from '../icons/Chev.astro';
+import { headerLinks, type NavKey } from '../../data/nav.ts';
+
+interface Props {
+  activeKey?: NavKey;
+}
+const { activeKey } = Astro.props;
+---
+
+<nav class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="/" class="logo">
+      <Chev kind="7" class="logo-mark" />
+      ЭРА<span class="logo-sub">BITOBE</span>
+    </a>
+    <ul class="nav-links">
+      {headerLinks.map((link) => (
+        <li>
+          <a href={link.href} class={activeKey === link.key ? 'active' : undefined}>
+            {link.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+    <a href="/contact" class="nav-cta">Запросить демо</a>
+    <button class="nav-burger" aria-label="menu" type="button">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>

@@ -1,0 +1,683 @@
+---
+import Base from '../layouts/Base.astro';
+import Chev from '../components/icons/Chev.astro';
+import FaqAccordion from '../components/certification/FaqAccordion.astro';
+import {
+  audience,
+  outcomes,
+  programItems,
+  seminars,
+  teachers,
+  pricingIncludes,
+  faqItems,
+} from '../data/certification.ts';
+
+const title = 'Сертификация экспертов ЭРА · Программа подготовки';
+const description =
+  'Программа сертификации экспертов ЭРА: 4-дневный семинар, доступ к платформе, методическое сопровождение. Москва 28.05.26, Санкт-Петербург 03.06.26.';
+
+// FAQs для structured data — снимаем HTML-сущности из data
+const schemaFaqs = faqItems.map((f) => ({
+  question: f.q.replace(/&nbsp;/g, ' '),
+  answer: f.a.replace(/&nbsp;/g, ' '),
+}));
+
+const breadcrumbs = [
+  { name: 'Главная', url: 'https://era-lider.ru/' },
+  { name: 'Сертификация', url: 'https://era-lider.ru/certification' },
+];
+---
+
+<Base
+  title={title}
+  description={description}
+  activeKey="certification"
+  schemaType="FAQPage"
+  schemaFaqs={schemaFaqs}
+  breadcrumbs={breadcrumbs}
+>
+
+<section class="cert-hero">
+  <div class="container">
+    <div class="hero-breadcrumbs">
+      <a href="/">Главная</a>
+      <span class="sep">/</span>
+      <span class="current">Сертификация экспертов</span>
+    </div>
+    <div class="cert-hero-grid">
+      <div data-reveal>
+        <div class="eyebrow" style="margin-bottom: 28px;">
+          <Chev kind="mark" class="eyebrow-mark" />
+          Программа подготовки
+        </div>
+        <h1 class="h-hero">
+          Сертификация экспертов <span class="accent-line">ЭРА</span>.
+        </h1>
+        <p class="lead">
+          Четырёхдневный сертификационный семинар для HR-методологов, бизнес-психологов и коучей. После программы вы&nbsp;сами интерпретируете отчёты ЭРА для руководителей в&nbsp;своей компании или у&nbsp;клиентов.
+        </p>
+        <div class="cert-hero-actions">
+          <a href="#schedule" class="btn btn-primary">
+            Календарь семинаров
+            <Chev kind="arrow" class="btn-arrow" width="14" height="10" />
+          </a>
+          <a href="#program" class="btn btn-secondary">Программа</a>
+        </div>
+        <div class="cert-hero-trust">
+          <div class="item">4 дня программы</div>
+          <div class="item">3 разработчика-преподавателя</div>
+          <div class="item">Сертификат ЭРА</div>
+          <div class="item">Доступ к платформе</div>
+        </div>
+      </div>
+
+      <div class="cert-hero-graphic" data-reveal>
+        <svg class="chev-main" viewBox="0 0 100 100"><use href="#chev-7"/></svg>
+        <svg class="chev-sub" viewBox="0 0 100 100"><use href="#chev-7"/></svg>
+        <svg class="chev-tiny" viewBox="0 0 100 100"><use href="#chev-7"/></svg>
+        <div class="label">Сертификация · 2026</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="audience">
+  <div class="container">
+    <div class="audience-header" data-reveal>
+      <div class="eyebrow"><Chev kind="mark" class="eyebrow-mark" />Кому подходит</div>
+      <h2 class="h-section">Для тех, кто работает с&nbsp;людьми всерьёз.</h2>
+    </div>
+    <div class="audience-grid">
+      {audience.map((a) => (
+        <div class="audience-card" data-reveal>
+          <div class="audience-card-num">{a.num}</div>
+          <h3 set:html={a.title}></h3>
+          <p>{a.text}</p>
+          <div class="meta" set:html={a.meta}></div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<section class="outcomes">
+  <div class="container">
+    <div class="outcomes-header" data-reveal>
+      <div class="eyebrow on-dark"><Chev kind="mark" class="eyebrow-mark" style="color: var(--white)" />Результат программы</div>
+      <h2 class="h-section">Что получает выпускник.</h2>
+    </div>
+    <div class="outcomes-grid">
+      {outcomes.map((o) => (
+        <div class="outcome" data-reveal>
+          <div class="outcome-num">{o.num}</div>
+          <h3 set:html={o.title}></h3>
+          <p>{o.text}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<section class="program" id="program">
+  <div class="container">
+    <div class="program-header" data-reveal>
+      <div>
+        <div class="eyebrow"><Chev kind="mark" class="eyebrow-mark" />Программа</div>
+        <h2 class="h-section">Четыре дня · семь&nbsp;модулей.</h2>
+      </div>
+      <p class="lead">Программа сочетает методологический фундамент (HEXACO, шкалы валидности, психометрика) с практикой интерпретации на реальных обезличенных профилях. К концу четвёртого дня вы&nbsp;самостоятельно проводите учебную сессию обратной связи.</p>
+    </div>
+
+    <div class="program-list" data-reveal>
+      {programItems.map((p) => (
+        <div class="program-item">
+          <div class="program-num"><Chev kind="mark" class="chev" />{p.num}</div>
+          <div>
+            <h3 set:html={p.title}></h3>
+            <p>{p.desc}</p>
+          </div>
+          <div class="program-duration">{p.duration}</div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<section class="schedule" id="schedule">
+  <div class="container">
+    <div class="schedule-header" data-reveal>
+      <div class="eyebrow"><Chev kind="mark" class="eyebrow-mark" />Ближайшие даты</div>
+      <h2 class="h-section">Календарь сертификационных семинаров.</h2>
+    </div>
+
+    <div class="schedule-grid">
+      {seminars.map((s) => (
+        <article class="seminar" data-reveal>
+          <div class="seminar-tag">{s.tag}</div>
+          <div class="seminar-city">{s.city}</div>
+          <div class="seminar-date">{s.date}</div>
+          <div class="seminar-meta">
+            {s.meta.map((m) => (
+              <div class="seminar-meta-item">
+                <div class="label">{m.label}</div>
+                <div class="value">{m.value}</div>
+              </div>
+            ))}
+          </div>
+          <div class="seminar-cta">
+            <a href="/contact" class="btn btn-primary">Записаться <Chev kind="arrow" class="btn-arrow" width="14" height="10" /></a>
+            <a href="/contact" class="btn btn-secondary">Уточнить детали</a>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <p class="schedule-note">
+      Не подходят даты? Оставьте заявку на удобный месяц — наберём группу под ваше расписание. Для корпоративных групп от&nbsp;6&nbsp;человек проводим выездные сертификационные сессии в&nbsp;офисе клиента.
+    </p>
+  </div>
+</section>
+
+<section class="teachers">
+  <div class="container">
+    <div class="teachers-header" data-reveal>
+      <div>
+        <div class="eyebrow"><Chev kind="mark" class="eyebrow-mark" />Преподаватели</div>
+        <h2 class="h-section">Программу ведут разработчики методологии.</h2>
+      </div>
+      <p class="lead">Каждый из преподавателей лично участвовал в создании ЭРА, валидации шкал и накоплении нормативной базы. Это уникальная возможность учиться у тех, кто разрабатывал инструмент.</p>
+    </div>
+
+    <div class="teachers-grid">
+      {teachers.map((t) => (
+        <div class="teacher" data-reveal>
+          <div class="teacher-photo">
+            <span class="teacher-initials">{t.initials}</span>
+            <span class="teacher-photo-note">фото</span>
+          </div>
+          <div class="teacher-name">{t.name}</div>
+          <div class="teacher-role" set:html={t.role}></div>
+          <p class="teacher-bio">{t.bio}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<section class="pricing">
+  <div class="container">
+    <div class="pricing-header" data-reveal>
+      <div class="eyebrow"><Chev kind="mark" class="eyebrow-mark" />Стоимость</div>
+      <h2 class="h-section">Что включено в&nbsp;стоимость семинара.</h2>
+    </div>
+
+    <div class="pricing-card" data-reveal>
+      <div class="pricing-amount">
+        от&nbsp;230&nbsp;000<span class="currency">&nbsp;₽</span>
+        <span class="vat">за участника · без&nbsp;НДС</span>
+      </div>
+      <div class="pricing-includes">
+        <h3>В стоимость включено</h3>
+        <ul>
+          {pricingIncludes.map((p) => <li>{p}</li>)}
+        </ul>
+      </div>
+      <div>
+        <a href="/contact" class="btn btn-primary">Записаться <Chev kind="arrow" class="btn-arrow" width="14" height="10" /></a>
+      </div>
+    </div>
+
+    <p class="pricing-note">
+      Для корпоративных групп от 6&nbsp;человек — индивидуальный расчёт со скидкой. Для выпускников программы развития руководителей BITOBE — специальные условия. Уточните стоимость в заявке.
+    </p>
+  </div>
+</section>
+
+<section class="faq">
+  <div class="container faq-grid">
+    <div data-reveal>
+      <div class="eyebrow" style="margin-bottom: 16px;"><Chev kind="mark" class="eyebrow-mark" />Частые вопросы</div>
+      <h2 class="h-section">FAQ.</h2>
+    </div>
+
+    <FaqAccordion items={faqItems} />
+  </div>
+</section>
+
+<section class="cta-block" id="cta">
+  <div class="container cta-grid">
+    <div data-reveal>
+      <div class="eyebrow on-dark" style="margin-bottom: 24px;">
+        <Chev kind="mark" class="eyebrow-mark" style="color: var(--white)" />
+        Запись на программу
+      </div>
+      <h2 class="h-section">Запишитесь на&nbsp;<span class="accent-line" style="color:var(--white);">ближайший семинар</span>.</h2>
+      <p class="lead">Свяжемся в течение рабочего дня для подтверждения места в группе и&nbsp;уточнения условий. Если даты не подходят — поможем подобрать удобный формат.</p>
+    </div>
+    <div class="cta-actions" data-reveal>
+      <a href="/contact" class="btn btn-primary">Записаться на семинар <Chev kind="arrow" class="btn-arrow" width="14" height="10" /></a>
+      <a href="/contact" class="btn btn-secondary-inverse">Запросить программу (PDF) <Chev kind="arrow" class="btn-arrow" width="14" height="10" /></a>
+    </div>
+  </div>
+</section>
+
+<style is:global>
+/* ===== Локальные стили /certification ===== */
+
+/* Cert hero */
+.cert-hero {
+  background: var(--white);
+  padding: 160px 0 90px;
+  position: relative; overflow: hidden;
+  border-bottom: 1px solid var(--grey-line);
+}
+.cert-hero-grid {
+  display: grid; grid-template-columns: 60% 40%;
+  gap: 80px; align-items: center;
+}
+.cert-hero h1 { margin-bottom: 32px; max-width: 720px; }
+.cert-hero .lead {
+  font-size: 19px; line-height: 1.55;
+  color: var(--grey-deep); max-width: 600px;
+  margin-bottom: 40px;
+}
+.cert-hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 48px; }
+.cert-hero-trust {
+  display: flex; padding-top: 32px;
+  border-top: 1px solid var(--grey-line);
+  font-size: 12px; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--grey); font-weight: 500;
+  flex-wrap: wrap;
+}
+.cert-hero-trust .item {
+  padding-right: 28px; margin-right: 28px;
+  border-right: 1px solid var(--grey-line);
+}
+.cert-hero-trust .item:last-child { border-right: none; }
+
+.cert-hero-graphic {
+  position: relative; aspect-ratio: 1/1;
+  width: 100%; max-width: 380px;
+  justify-self: end;
+}
+.cert-hero-graphic .chev-main { width: 100%; height: 100%; color: var(--black); }
+.cert-hero-graphic .chev-sub {
+  position: absolute; top: 8%; right: -8%;
+  width: 42%; height: 42%; color: var(--accent-pers);
+}
+.cert-hero-graphic .chev-tiny {
+  position: absolute; bottom: 6%; left: -3%;
+  width: 24%; height: 24%; color: var(--accent-mot);
+}
+.cert-hero-graphic .label {
+  position: absolute; bottom: -4px; right: 0;
+  font-size: 10px; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--grey); font-weight: 500;
+}
+@media (max-width: 980px) {
+  .cert-hero { padding: 120px 0 60px; }
+  .cert-hero-grid { grid-template-columns: 1fr; gap: 40px; }
+  .cert-hero-graphic { max-width: 240px; }
+}
+
+/* Audience */
+.audience { padding: var(--section-py) 0; background: var(--white); }
+.audience-header { max-width: 720px; margin-bottom: 56px; }
+.audience-header h2 { margin-top: 20px; }
+.audience-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: var(--grey-line);
+  border: 1px solid var(--grey-line);
+}
+.audience-card {
+  background: var(--white);
+  padding: 36px 32px;
+  position: relative; min-height: 260px;
+}
+.audience-card::before {
+  content: ""; position: absolute;
+  top: 0; left: 0;
+  width: 36px; height: 4px;
+  background: var(--black);
+}
+.audience-card-num {
+  font-family: var(--font-mono);
+  font-size: 11px; color: var(--grey);
+  letter-spacing: 0.08em; font-weight: 500;
+  margin-bottom: 14px; padding-top: 14px;
+}
+.audience-card h3 {
+  font-size: 19px; font-weight: 600;
+  letter-spacing: -0.015em; line-height: 1.25;
+  color: var(--black); margin-bottom: 12px;
+}
+.audience-card p { font-size: 14px; line-height: 1.55; color: var(--grey); }
+.audience-card .meta {
+  margin-top: 16px; padding-top: 16px;
+  border-top: 1px solid var(--grey-line);
+  font-size: 12px; color: var(--black);
+  letter-spacing: 0.04em; font-weight: 500;
+}
+@media (max-width: 760px) { .audience-grid { grid-template-columns: 1fr; } }
+
+/* Outcomes */
+.outcomes {
+  background: var(--black); color: var(--white);
+  padding: var(--section-py) 0;
+  position: relative; overflow: hidden;
+}
+.outcomes::before {
+  content: ""; position: absolute;
+  top: 0; right: 0;
+  width: 120px; height: 120px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%23FFFFFF'%3E%3Cpath d='M 0 0 L 100 0 L 100 100 L 80 100 L 80 20 L 0 20 Z'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+.outcomes-header {
+  max-width: 720px; margin-bottom: 56px;
+  position: relative; z-index: 1;
+}
+.outcomes-header h2 { color: var(--white); margin-top: 20px; }
+.outcomes-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.15);
+  position: relative; z-index: 1;
+}
+.outcome {
+  background: var(--black);
+  padding: 36px 28px;
+  display: flex; flex-direction: column;
+  position: relative; min-height: 240px;
+}
+.outcome::before {
+  content: ""; position: absolute;
+  top: 0; left: 0;
+  width: 36px; height: 4px;
+  background: var(--white);
+}
+.outcome-num {
+  font-family: var(--font-mono);
+  font-size: 11px; color: rgba(255,255,255,0.55);
+  letter-spacing: 0.08em; margin-bottom: 16px;
+  padding-top: 14px;
+}
+.outcome h3 {
+  font-size: 17px; font-weight: 600;
+  color: var(--white); letter-spacing: -0.01em;
+  line-height: 1.25; margin-bottom: 12px;
+}
+.outcome p { font-size: 13px; line-height: 1.55; color: rgba(255,255,255,0.7); }
+@media (max-width: 1100px) { .outcomes-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .outcomes-grid { grid-template-columns: 1fr; } }
+
+/* Program */
+.program { padding: var(--section-py) 0; background: var(--grey-soft); }
+.program-header {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 80px; align-items: end;
+  margin-bottom: 56px;
+}
+.program-header h2 { margin-top: 20px; }
+.program-header .lead {
+  font-size: 16px; line-height: 1.6;
+  color: var(--grey); max-width: 460px;
+}
+@media (max-width: 900px) { .program-header { grid-template-columns: 1fr; gap: 24px; } }
+
+.program-list {
+  display: flex; flex-direction: column;
+  background: var(--white);
+  border: 1px solid var(--grey-line);
+}
+.program-item {
+  display: grid;
+  grid-template-columns: 100px 1fr auto;
+  gap: 32px;
+  padding: 28px 32px;
+  border-bottom: 1px solid var(--grey-line);
+  align-items: start;
+}
+.program-item:last-child { border-bottom: none; }
+.program-num {
+  font-family: var(--font-mono);
+  font-size: 13px; color: var(--black);
+  font-weight: 600; letter-spacing: 0.08em;
+  display: flex; align-items: center; gap: 10px;
+}
+.program-num .chev { width: 14px; height: 9px; }
+.program-item h3 {
+  font-size: 18px; font-weight: 600;
+  letter-spacing: -0.015em; line-height: 1.3;
+  color: var(--black); margin-bottom: 8px;
+}
+.program-item p { font-size: 14px; line-height: 1.55; color: var(--grey); }
+.program-duration {
+  font-size: 12px; color: var(--grey);
+  letter-spacing: 0.08em; text-transform: uppercase;
+  font-weight: 500; white-space: nowrap; padding-top: 4px;
+}
+@media (max-width: 760px) {
+  .program-item { grid-template-columns: 60px 1fr; gap: 16px; padding: 24px 20px; }
+  .program-duration { grid-column: 2 / -1; padding-top: 12px; }
+}
+
+/* Schedule */
+.schedule { padding: var(--section-py) 0; background: var(--white); }
+.schedule-header { max-width: 720px; margin-bottom: 56px; }
+.schedule-header h2 { margin-top: 20px; }
+.schedule-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+.seminar {
+  background: var(--white);
+  border: 1px solid var(--black);
+  padding: 40px;
+  position: relative;
+  display: flex; flex-direction: column;
+}
+.seminar::after {
+  content: ""; position: absolute;
+  top: 0; right: 0;
+  width: 56px; height: 36px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%230A0A0A'%3E%3Cpath d='M 0 0 L 100 0 L 100 100 L 80 100 L 80 20 L 0 20 Z'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+.seminar-tag {
+  font-size: 11px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--grey);
+  font-weight: 600; margin-bottom: 18px;
+}
+.seminar-city {
+  font-size: clamp(32px, 4vw, 42px);
+  font-weight: 700; letter-spacing: -0.025em;
+  line-height: 1; color: var(--black);
+  margin-bottom: 12px;
+}
+.seminar-date {
+  font-family: var(--font-mono);
+  font-size: 18px; font-weight: 500;
+  color: var(--black); letter-spacing: 0.02em;
+  margin-bottom: 32px;
+}
+.seminar-meta {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 20px 32px; padding: 24px 0;
+  border-top: 1px solid var(--grey-line);
+  border-bottom: 1px solid var(--grey-line);
+  margin-bottom: 28px;
+}
+.seminar-meta-item .label {
+  font-size: 10px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--grey);
+  margin-bottom: 5px; font-weight: 500;
+}
+.seminar-meta-item .value {
+  font-size: 14px; font-weight: 600;
+  color: var(--black); letter-spacing: -0.01em;
+}
+.seminar-cta { margin-top: auto; display: flex; flex-direction: column; gap: 10px; }
+.schedule-note { margin-top: 32px; font-size: 13px; color: var(--grey); max-width: 720px; }
+@media (max-width: 760px) {
+  .schedule-grid { grid-template-columns: 1fr; }
+  .seminar { padding: 32px 24px; }
+}
+
+/* Teachers */
+.teachers { padding: var(--section-py) 0; background: var(--grey-soft); }
+.teachers-header {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 80px; align-items: end;
+  margin-bottom: 56px;
+}
+.teachers-header h2 { margin-top: 20px; }
+.teachers-header .lead {
+  font-size: 16px; line-height: 1.6;
+  color: var(--grey); max-width: 460px;
+}
+@media (max-width: 900px) { .teachers-header { grid-template-columns: 1fr; gap: 24px; } }
+
+.teachers-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+.teacher { display: flex; flex-direction: column; }
+.teacher-photo {
+  aspect-ratio: 4 / 5;
+  background: var(--white);
+  position: relative; overflow: hidden;
+  margin-bottom: 20px;
+  display: flex; align-items: flex-end; justify-content: flex-start;
+  padding: 24px;
+  border: 1px solid var(--grey-line);
+}
+.teacher-photo::before {
+  content: ""; position: absolute; top: 16px; right: 16px;
+  width: 32px; height: 20px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%230A0A0A'%3E%3Cpath d='M 0 0 L 100 0 L 100 100 L 80 100 L 80 20 L 0 20 Z'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+.teacher-initials { font-weight: 700; font-size: 36px; color: var(--grey); letter-spacing: -0.02em; }
+.teacher-photo-note {
+  position: absolute; bottom: 16px; right: 16px;
+  font-size: 9px; letter-spacing: 0.2em;
+  color: var(--grey); text-transform: uppercase; font-weight: 500;
+}
+.teacher-name {
+  font-size: 19px; font-weight: 600;
+  letter-spacing: -0.015em; color: var(--black);
+  margin-bottom: 6px;
+}
+.teacher-role {
+  font-size: 12px; color: var(--grey);
+  font-weight: 500; margin-bottom: 16px;
+  letter-spacing: 0.04em; line-height: 1.4;
+  text-transform: uppercase;
+}
+.teacher-bio { font-size: 13px; line-height: 1.55; color: var(--grey-deep); }
+@media (max-width: 760px) { .teachers-grid { grid-template-columns: 1fr; gap: 32px; } }
+
+/* Pricing */
+.pricing { padding: var(--section-py) 0; background: var(--white); }
+.pricing-header { max-width: 720px; margin-bottom: 56px; }
+.pricing-header h2 { margin-top: 20px; }
+.pricing-card {
+  background: var(--grey-soft);
+  padding: 56px clamp(32px, 5vw, 64px);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 56px; align-items: center;
+  border-top: 4px solid var(--black);
+  position: relative;
+}
+.pricing-card::after {
+  content: ""; position: absolute;
+  top: -4px; right: 0;
+  width: 80px; height: 56px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%230A0A0A'%3E%3Cpath d='M 0 0 L 100 0 L 100 100 L 80 100 L 80 20 L 0 20 Z'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+.pricing-amount {
+  font-size: clamp(48px, 6vw, 72px);
+  font-weight: 700; letter-spacing: -0.03em;
+  line-height: 0.95; color: var(--black);
+}
+.pricing-amount .currency {
+  font-size: 0.4em; color: var(--grey);
+  font-weight: 500; letter-spacing: 0;
+  margin-left: 4px;
+}
+.pricing-amount .vat {
+  display: block; font-size: 0.18em;
+  color: var(--grey); font-weight: 500;
+  letter-spacing: 0.08em; margin-top: 8px;
+  text-transform: uppercase;
+}
+.pricing-includes h3 {
+  font-size: 18px; font-weight: 600;
+  letter-spacing: -0.015em; margin-bottom: 14px;
+  color: var(--black);
+}
+.pricing-includes ul {
+  list-style: none;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 8px 24px;
+  font-size: 14px; color: var(--grey-deep);
+}
+.pricing-includes li { position: relative; padding-left: 20px; line-height: 1.5; }
+.pricing-includes li::before {
+  content: ""; position: absolute;
+  left: 0; top: 9px;
+  width: 10px; height: 1.5px;
+  background: var(--black);
+}
+.pricing-note { margin-top: 28px; font-size: 13px; color: var(--grey); max-width: 720px; }
+@media (max-width: 1000px) {
+  .pricing-card { grid-template-columns: 1fr; gap: 32px; padding: 40px 28px; }
+  .pricing-includes ul { grid-template-columns: 1fr; }
+}
+
+/* FAQ */
+.faq { padding: var(--section-py) 0; background: var(--grey-soft); }
+.faq-grid {
+  display: grid; grid-template-columns: 280px 1fr;
+  gap: 80px; align-items: start;
+}
+.faq-grid h2 { position: sticky; top: 100px; margin-top: 20px; }
+.faq-list {
+  background: var(--white);
+  border-top: 1px solid var(--black);
+}
+.faq-item { border-bottom: 1px solid var(--grey-line); }
+.faq-q {
+  width: 100%;
+  background: none; border: none;
+  font-family: inherit;
+  text-align: left;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 24px; padding: 24px 32px;
+  font-size: 16px; font-weight: 600;
+  color: var(--black); letter-spacing: -0.01em;
+  cursor: pointer; transition: background 0.2s ease;
+}
+.faq-q:hover { background: var(--grey-soft); }
+.faq-q .icon {
+  width: 18px; height: 18px;
+  position: relative; flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+.faq-q .icon::before, .faq-q .icon::after {
+  content: ""; position: absolute;
+  top: 50%; left: 50%;
+  background: var(--black);
+  transform: translate(-50%, -50%);
+}
+.faq-q .icon::before { width: 16px; height: 1.5px; }
+.faq-q .icon::after { width: 1.5px; height: 16px; transition: transform 0.3s ease; }
+.faq-item.is-open .faq-q .icon::after { transform: translate(-50%, -50%) scaleY(0); }
+.faq-a { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+.faq-item.is-open .faq-a { max-height: 400px; }
+.faq-a-inner {
+  padding: 0 32px 28px;
+  font-size: 15px; line-height: 1.6;
+  color: var(--grey-deep); max-width: 720px;
+}
+@media (max-width: 900px) {
+  .faq-grid { grid-template-columns: 1fr; gap: 32px; }
+  .faq-grid h2 { position: static; }
+}
+</style>
+
+</Base>
