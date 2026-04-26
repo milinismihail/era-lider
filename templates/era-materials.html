@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Исследования и материалы · ЭРА</title>
+<meta name="description" content="Открытые материалы ЭРА: white papers, отраслевые бенчмарки, методические статьи, разборы экспертов из Telegram @era_lider, подкаст BITOBE о лидерстве.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="era-style.css">
+
+<style>
+/* ========================== Локальные стили "Материалы" ========================== */
+
+.filters {
+  position: sticky;
+  top: 70px;
+  z-index: 50;
+  background: var(--white);
+  border-bottom: 1px solid var(--grey-line);
+  padding: 18px 0;
+}
+.filters-row {
+  display: flex; align-items: center; gap: 32px;
+  flex-wrap: wrap;
+}
+.filters-label {
+  font-size: 11px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--grey);
+  font-weight: 600; display: flex;
+  align-items: center; gap: 8px; margin-right: 8px;
+}
+.filters-label .chev { width: 14px; height: 9px; color: var(--black); }
+.filter-group { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+.filter-btn {
+  padding: 6px 0; font-size: 13px; font-weight: 500;
+  color: var(--grey-deep); background: none; border: none;
+  border-bottom: 1px solid transparent; cursor: pointer;
+  font-family: inherit; transition: all 0.2s ease;
+}
+.filter-btn:hover { color: var(--black); }
+.filter-btn.active { color: var(--black); border-bottom-color: var(--black); font-weight: 600; }
+@media (max-width: 760px) { .filters { top: 64px; } }
+
+/* Featured (3 главных материала) */
+.featured { padding: clamp(64px, 9vw, 100px) 0; background: var(--white); }
+.featured-header {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 80px; align-items: end; margin-bottom: 56px;
+}
+.featured-header h2 { margin-top: 20px; }
+.featured-header .lead {
+  color: var(--grey); font-size: 16px;
+  line-height: 1.6; max-width: 460px;
+}
+@media (max-width: 900px) { .featured-header { grid-template-columns: 1fr; gap: 24px; } }
+
+.featured-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr;
+  gap: 24px;
+}
+.feat-card {
+  background: var(--grey-soft);
+  padding: 36px 32px 32px;
+  display: flex;
+  flex-direction: column;
+  border-top: 4px solid var(--black);
+  position: relative;
+  transition: transform 0.25s ease;
+  cursor: pointer;
+  min-height: 380px;
+}
+.feat-card:hover { transform: translateY(-3px); }
+.feat-card.mod-pers  { border-top-color: var(--accent-pers); }
+.feat-card.mod-mot   { border-top-color: var(--accent-mot); }
+.feat-card.mod-destr { border-top-color: var(--accent-destr); }
+.feat-card::after {
+  content: ""; position: absolute;
+  top: -4px; right: 0;
+  width: 44px; height: 28px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%230A0A0A'%3E%3Cpath d='M 0 0 L 100 0 L 100 100 L 80 100 L 80 20 L 0 20 Z'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+
+.feat-tag {
+  font-size: 11px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--grey);
+  font-weight: 600; padding-top: 14px;
+  margin-bottom: 14px;
+  display: flex; align-items: center; gap: 8px;
+}
+.feat-tag .dot { width: 8px; height: 8px; background: var(--black); }
+.feat-card.mod-pers  .feat-tag .dot { background: var(--accent-pers); }
+.feat-card.mod-mot   .feat-tag .dot { background: var(--accent-mot); }
+.feat-card.mod-destr .feat-tag .dot { background: var(--accent-destr); }
+
+.feat-title {
+  font-size: clamp(22px, 1.8vw, 26px);
+  font-weight: 700; letter-spacing: -0.02em;
+  line-height: 1.2; color: var(--black);
+  margin-bottom: 16px;
+}
+.feat-card.large .feat-title { font-size: clamp(28px, 2.2vw, 34px); }
+.feat-desc {
+  font-size: 14px; line-height: 1.55;
+  color: var(--grey); margin-bottom: 20px; flex: 1;
+}
+.feat-meta {
+  font-family: var(--font-mono);
+  font-size: 11px; color: var(--grey);
+  letter-spacing: 0.04em;
+  display: flex; gap: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--grey-line);
+  margin-bottom: 16px;
+}
+.feat-link {
+  font-size: 12px; color: var(--black);
+  font-weight: 600; letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--black);
+  padding-bottom: 3px; display: inline-flex;
+  align-items: center; gap: 8px;
+  align-self: flex-start;
+  transition: gap 0.2s ease;
+}
+.feat-card:hover .feat-link { gap: 12px; }
+.feat-link .chev { width: 12px; height: 8px; }
+
+@media (max-width: 980px) { .featured-grid { grid-template-columns: 1fr; } }
+
+/* Список материалов (table-like) */
+.materials { padding: 0 0 var(--section-py); background: var(--white); }
+.materials-list {
+  margin-top: 32px;
+  border-top: 2px solid var(--black);
+}
+.material {
+  display: grid;
+  grid-template-columns: 100px 130px 1fr 100px 36px;
+  gap: 24px;
+  padding: 22px 8px;
+  border-bottom: 1px solid var(--grey-line);
+  align-items: start;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.material:hover { background: var(--grey-soft); }
+.material.is-hidden { display: none; }
+
+.material-year {
+  font-family: var(--font-mono);
+  font-size: 13px; color: var(--black);
+  font-weight: 600; padding-top: 2px;
+  letter-spacing: 0.04em;
+}
+.material-type {
+  font-size: 10px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--grey);
+  font-weight: 600; padding-top: 4px;
+  display: flex; align-items: center; gap: 6px;
+}
+.material-type .dot {
+  width: 7px; height: 7px;
+  background: var(--black);
+  flex-shrink: 0;
+}
+.material[data-type="paper"] .dot { background: var(--accent-pers); }
+.material[data-type="benchmark"] .dot { background: var(--accent-mot); }
+.material[data-type="article"] .dot { background: var(--black); }
+.material[data-type="podcast"] .dot { background: var(--accent-destr); }
+.material[data-type="telegram"] .dot { background: var(--black); }
+
+.material-info .title {
+  font-size: 16px; color: var(--black);
+  line-height: 1.4; font-weight: 500;
+  letter-spacing: -0.005em;
+  margin-bottom: 4px;
+}
+.material-info .meta {
+  font-size: 13px; color: var(--grey);
+  line-height: 1.45;
+}
+.material-info .meta .source { font-weight: 500; }
+
+.material-pages {
+  font-family: var(--font-mono);
+  font-size: 11px; color: var(--grey);
+  font-weight: 500; padding-top: 4px;
+  text-align: right; letter-spacing: 0.04em;
+  letter-spacing: 0.04em;
+}
+
+.material-arrow {
+  color: var(--grey);
+  padding-top: 4px;
+  transition: all 0.2s ease;
+}
+.material-arrow svg { width: 14px; height: 10px; }
+.material:hover .material-arrow { color: var(--black); transform: translate(3px, -3px); }
+
+@media (max-width: 760px) {
+  .material { grid-template-columns: 80px 1fr 24px; gap: 16px; }
+  .material-type, .material-pages { display: none; }
+}
+
+/* Telegram block */
+.telegram-block {
+  background: var(--black);
+  color: var(--white);
+  padding: var(--section-py) 0;
+  position: relative;
+  overflow: hidden;
+}
+.telegram-block::before {
+  content: ""; position: absolute;
+  top: 40px; right: 40px;
+  width: 80px; height: 80px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%23FFFFFF'%3E%3Cpath d='M 0 0 L 100 0 L 100 100 L 80 100 L 80 20 L 0 20 Z'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+.telegram-grid {
+  display: grid;
+  grid-template-columns: 60% 40%;
+  gap: 80px;
+  align-items: center;
+  position: relative;
+}
+.telegram-grid .eyebrow { color: var(--white); opacity: 0.85; margin-bottom: 24px; }
+.telegram-grid h2 { color: var(--white); margin-bottom: 24px; }
+.telegram-grid p {
+  font-size: 17px;
+  line-height: 1.6;
+  color: rgba(255,255,255,0.72);
+  margin-bottom: 32px;
+  max-width: 560px;
+}
+.telegram-handle {
+  font-family: var(--font-mono);
+  font-size: 22px;
+  color: var(--white);
+  font-weight: 500;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 14px;
+  padding: 16px 24px;
+  border: 1px solid rgba(255,255,255,0.3);
+}
+.telegram-handle .at { color: rgba(255,255,255,0.5); }
+
+.telegram-meta {
+  display: grid; grid-template-columns: 1fr;
+  gap: 16px;
+}
+.telegram-meta-item {
+  padding: 20px 24px;
+  background: rgba(255,255,255,0.06);
+  border-left: 3px solid var(--white);
+}
+.telegram-meta-item .label {
+  font-size: 11px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: rgba(255,255,255,0.55);
+  font-weight: 600; margin-bottom: 8px;
+}
+.telegram-meta-item .value {
+  font-size: 16px; color: var(--white);
+  font-weight: 500; line-height: 1.4;
+}
+
+@media (max-width: 980px) { .telegram-grid { grid-template-columns: 1fr; gap: 32px; } }
+
+/* Subscribe block */
+.subscribe { padding: var(--section-py) 0; background: var(--grey-soft); }
+.subscribe-card {
+  background: var(--white);
+  padding: 56px clamp(32px, 5vw, 64px);
+  border-top: 4px solid var(--black);
+  position: relative;
+  display: grid;
+  grid-template-columns: 60% 40%;
+  gap: 56px;
+  align-items: center;
+}
+.subscribe-card::after {
+  content: ""; position: absolute;
+  top: -4px; right: 0;
+  width: 80px; height: 56px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%230A0A0A'%3E%3Cpath d='M 0 0 L 100 0 L 100 100 L 80 100 L 80 20 L 0 20 Z'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+.subscribe-card h2 { margin-bottom: 16px; }
+.subscribe-card p {
+  font-size: 16px; line-height: 1.6;
+  color: var(--grey); max-width: 480px;
+}
+.subscribe-form { display: flex; flex-direction: column; gap: 14px; }
+.subscribe-input {
+  width: 100%; background: transparent;
+  border: none; border-bottom: 1px solid var(--grey-line);
+  color: var(--black); font-family: inherit;
+  font-size: 16px; padding: 12px 0;
+  outline: none; transition: border-color 0.2s ease;
+}
+.subscribe-input::placeholder { color: var(--grey); }
+.subscribe-input:focus { border-bottom-color: var(--black); }
+.subscribe-form .btn { justify-content: space-between; padding: 16px 24px; }
+.subscribe-footnote {
+  font-size: 11px; color: var(--grey);
+  margin-top: 14px; line-height: 1.5;
+}
+
+@media (max-width: 900px) { .subscribe-card { grid-template-columns: 1fr; gap: 32px; padding: 40px 28px; } }
+
+/* Empty state */
+.empty-state {
+  padding: 60px 32px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--grey);
+  display: none;
+}
+.empty-state.is-shown { display: block; }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="chev-7" viewBox="0 0 100 100"><path d="M 0 0 L 100 0 L 100 100 L 80 100 L 80 20 L 0 20 Z" fill="currentColor"/></symbol>
+    <symbol id="chev-arrow" viewBox="0 0 14 10"><path d="M 0 0 H 14 V 3 H 3 V 10 H 0 Z" fill="currentColor"/></symbol>
+    <symbol id="chev-mark" viewBox="0 0 22 14"><path d="M 0 0 H 22 V 4 H 4 V 14 H 0 Z" fill="currentColor"/></symbol>
+  </defs>
+</svg>
+
+<nav class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="era-lider.html" class="logo">
+      <svg class="logo-mark"><use href="#chev-7"/></svg>
+      ЭРА<span class="logo-sub">BITOBE</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="era-scenarios.html">Задачи</a></li>
+      <li><a href="era-lider.html#how">Как устроено</a></li>
+      <li><a href="era-methodology.html">Методология</a></li>
+      <li><a href="era-cases.html">Кейсы</a></li>
+      <li><a href="#" class="active">Материалы</a></li>
+    </ul>
+    <button class="nav-cta" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">Запросить демо</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="page-hero">
+  <div class="container">
+    <div class="hero-breadcrumbs">
+      <a href="era-lider.html">Главная</a>
+      <span class="sep">/</span>
+      <span class="current">Исследования и материалы</span>
+    </div>
+    <div class="page-hero-grid">
+      <div data-reveal>
+        <div class="eyebrow" style="margin-bottom: 28px;">
+          <svg class="eyebrow-mark"><use href="#chev-mark"/></svg>
+          Открытые материалы
+        </div>
+        <h1 class="h-hero">
+          Что мы пишем для&nbsp;тех, кто работает <span class="accent-line">с&nbsp;оценкой</span>.
+        </h1>
+        <p class="page-hero-lead">
+          White papers по методологии, отраслевые бенчмарки, разборы кейсов от&nbsp;действующих экспертов, статьи blog.bitobe.ru с&nbsp;тегом ЭРА. Всё в&nbsp;открытом доступе — для&nbsp;HR, психометристов, методологов и&nbsp;лиц, принимающих решение о&nbsp;запуске оценки.
+        </p>
+      </div>
+      <div class="page-hero-meta" data-reveal>
+        <div class="page-hero-meta-item">
+          <div class="label">Публикаций</div>
+          <div class="value">15+</div>
+        </div>
+        <div class="page-hero-meta-item">
+          <div class="label">Бенчмарков</div>
+          <div class="value">8 <span class="dim">отраслей</span></div>
+        </div>
+        <div class="page-hero-meta-item">
+          <div class="label">Telegram-канал</div>
+          <div class="value">@era_lider</div>
+        </div>
+        <div class="page-hero-meta-item">
+          <div class="label">Обновляется</div>
+          <div class="value">2&nbsp;раза <span class="dim">в&nbsp;месяц</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Featured (3 материала на верху) -->
+<section class="featured">
+  <div class="container">
+    <div class="featured-header" data-reveal>
+      <div>
+        <div class="eyebrow"><svg class="eyebrow-mark"><use href="#chev-mark"/></svg>Главное</div>
+        <h2 class="h-section">Три материала, с&nbsp;которых стоит начать.</h2>
+      </div>
+      <p class="lead">Ключевые публикации ЭРА: методический отчёт, флагманский бенчмарк по выгоранию топ-менеджеров и базовая статья о роли личностных опросников в&nbsp;принятии управленческих решений.</p>
+    </div>
+
+    <div class="featured-grid">
+      <article class="feat-card mod-pers large" data-reveal>
+        <div class="feat-tag"><span class="dot"></span>White Paper</div>
+        <h3 class="feat-title">Адаптация HEXACO-PI-R на&nbsp;российской выборке руководителей.</h3>
+        <p class="feat-desc">Полный методический разбор: факторная структура на выборке 5&nbsp;127 профилей, корреляции с HPI/HDS/MVPI, шкалы валидности, нормы по 8 отраслям. Базовый документ для HR-методолога и психометриста.</p>
+        <div class="feat-meta"><span>2025</span><span>·</span><span>24&nbsp;стр.</span><span>·</span><span>Боровикова, Белоуско</span></div>
+        <a href="era-methodology.html" class="feat-link">Читать в методологии <svg class="chev"><use href="#chev-arrow"/></svg></a>
+      </article>
+
+      <article class="feat-card mod-destr" data-reveal>
+        <div class="feat-tag"><span class="dot"></span>Бенчмарк</div>
+        <h3 class="feat-title">Паттерны выгорания топ-менеджеров.</h3>
+        <p class="feat-desc">Кросс-секционное исследование на 5&nbsp;000+ профилей: какие сочетания деструкторов и мотивационного истощения предсказывают уход с C-level позиции в горизонте 12&nbsp;месяцев.</p>
+        <div class="feat-meta"><span>2024</span><span>·</span><span>28&nbsp;стр.</span></div>
+        <a href="#" class="feat-link">Скачать (PDF) <svg class="chev"><use href="#chev-arrow"/></svg></a>
+      </article>
+
+      <article class="feat-card" data-reveal>
+        <div class="feat-tag"><span class="dot"></span>Статья</div>
+        <h3 class="feat-title">Личностные опросники для&nbsp;бизнеса.</h3>
+        <p class="feat-desc">Какими бывают личностные опросники, чем отличаются HEXACO и Big Five, почему важна конфиденциальность результатов и как читать профиль без клинических ярлыков.</p>
+        <div class="feat-meta"><span>blog.bitobe.ru</span></div>
+        <a href="https://blog.bitobe.ru/article/lichnostnye-oprosniki-dlya-biznesa/" class="feat-link">Читать ↗ <svg class="chev"><use href="#chev-arrow"/></svg></a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- Фильтры -->
+<nav class="filters" id="filters">
+  <div class="container filters-row">
+    <div class="filters-label"><svg class="chev"><use href="#chev-mark"/></svg>Тип материала</div>
+    <div class="filter-group" data-filter-group="type">
+      <button class="filter-btn active" data-filter="all">Все материалы</button>
+      <button class="filter-btn" data-filter="paper">White papers</button>
+      <button class="filter-btn" data-filter="benchmark">Бенчмарки</button>
+      <button class="filter-btn" data-filter="article">Статьи</button>
+      <button class="filter-btn" data-filter="podcast">Подкасты</button>
+      <button class="filter-btn" data-filter="telegram">Telegram-разборы</button>
+    </div>
+  </div>
+</nav>
+
+<!-- Список всех материалов -->
+<section class="materials">
+  <div class="container">
+    <div class="materials-list" id="materials-list">
+
+      <a href="#" class="material" data-type="paper">
+        <div class="material-year">2025</div>
+        <div class="material-type"><span class="dot"></span>White Paper</div>
+        <div class="material-info">
+          <div class="title">Адаптация модели HEXACO-PI-R на российской выборке руководителей: факторная структура и предиктивная валидность</div>
+          <div class="meta"><span class="source">Боровикова Н., Белоуско Е.</span> · Вестник психометрии</div>
+        </div>
+        <div class="material-pages">24&nbsp;стр.</div>
+        <div class="material-arrow"><svg><use href="#chev-arrow"/></svg></div>
+      </a>
+
+      <a href="#" class="material" data-type="paper">
+        <div class="material-year">2024</div>
+        <div class="material-type"><span class="dot"></span>White Paper</div>
+        <div class="material-info">
+          <div class="title">Конкурентная валидность ЭРА: сопоставление с инструментами Hogan (HPI, HDS, MVPI)</div>
+          <div class="meta"><span class="source">BITOBE Research</span> · Методический отчёт</div>
+        </div>
+        <div class="material-pages">42&nbsp;стр.</div>
+        <div class="material-arrow"><svg><use href="#chev-arrow"/></svg></div>
+      </a>
+
+      <a href="#" class="material" data-type="benchmark">
+        <div class="material-year">2024</div>
+        <div class="material-type"><span class="dot"></span>Бенчмарк</div>
+        <div class="material-info">
+          <div class="title">Паттерны выгорания топ-менеджеров: данные 5&nbsp;000+ профилей</div>
+          <div class="meta"><span class="source">Лагутина С., Боровикова Н.</span> · BITOBE White Paper</div>
+        </div>
+        <div class="material-pages">28&nbsp;стр.</div>
+        <div class="material-arrow"><svg><use href="#chev-arrow"/></svg></div>
+      </a>
+
+      <a href="#" class="material" data-type="benchmark">
+        <div class="material-year">2023</div>
+        <div class="material-type"><span class="dot"></span>Бенчмарк</div>
+        <div class="material-info">
+          <div class="title">16 мотиваторов российских лидеров: кросс-секционное исследование 2020–2023</div>
+          <div class="meta"><span class="source">BITOBE Research</span> · Отраслевой бенчмарк</div>
+        </div>
+        <div class="material-pages">36&nbsp;стр.</div>
+        <div class="material-arrow"><svg><use href="#chev-arrow"/></svg></div>
+      </a>
+
+      <a href="https://blog.bitobe.ru/article/lichnostnye-oprosniki-dlya-biznesa/" class="material" data-type="article">
+        <div class="material-year">2024</div>
+        <div class="material-type"><span class="dot"></span>Статья</div>
+        <div class="material-info">
+          <div class="title">Личностные опросники для бизнеса</div>
+          <div class="meta"><span class="source">blog.bitobe.ru</span> · Какими бывают опросники и почему важна их конфиденциальность</div>
+        </div>
+        <div class="material-pages">↗</div>
+        <div class="material-arrow"><svg><use href="#chev-arrow"/></svg></div>
+      </a>
+
+      <a href="https://blog.bitobe.ru/article/luchshie-ostayutsya/" class="material" data-type="article">
+        <div class="material-year">2024</div>
+        <div class="material-type"><span class="dot"></span>Статья</div>
+        <div class="material-info">
+          <div class="title">Лучшие остаются</div>
+          <div class="meta"><span class="source">blog.bitobe.ru</span> · Три ситуации, когда нужна диагностика бизнес-лидера и его команды</div>
+        </div>
+        <div class="material-pages">↗</div>
+        <div class="material-arrow"><svg><use href="#chev-arrow"/></svg></div>
+      </a>
+
+      <a href="https://blog.bitobe.ru/article/era-komandnyy-otchet/" class="material" data-type="article">
+        <div class="material-year">2024</div>
+        <div class="material-type"><span class="dot"></span>Статья</div>
+        <div class="material-info">
+          <div class="title">ЭРА — командный отчёт</div>
+          <div class="meta"><span class="source">blog.bitobe.ru</span> · Как спрогнозировать риск ухода «талантов» с помощью оценки</div>
+        </div>
+        <div class="material-pages">↗</div>
+        <div class="material-arrow"><svg><use href="#chev-arrow"/></svg></div>
+      </a>
+
+      <a href="#" class="material" data-type="article">
+        <div class="material-year">2023</div>
+        <div class="material-type"><span class="dot"></span>Статья</div>
+        <div class="material-info">
+          <div class="title">Практика преемственности: методологические выводы из 50 кейсов</div>
+          <div class="meta"><span class="source">Боровикова Н.</span> · Журнал HR-практики</div>
+        </div>
+        <div class="material-pages">18&nbsp;стр.</div>
+        <div class="material-arrow"><svg><use href="#chev-arrow"/></svg></div>
+      </a>
+
+      <a href="#" class="material" data-type="podcast">
+        <div class="material-year">2024</div>
+        <div class="material-type"><span class="dot"></span>Подкаст</div>
+        <div class="material-info">
+          <div class="title">Стрессовые паттерны C-level: как распознать до того, как сломается</div>
+          <div class="meta"><span class="source">Подкаст BITOBE о&nbsp;лидерстве</span> · с участием Е. Белоуско</div>
+        </div>
+        <div class="material-pages">42&nbsp;мин</div>
+        <div class="material-arrow"><svg><use href="#chev-arrow"/></svg></div>
+      </a>
+
+      <a href="#" class="material" data-type="podcast">
+        <div class="material-year">2024</div>
+        <div class="material-type"><span class="dot"></span>Подкаст</div>
+        <div class="material-info">
+          <div class="title">Команда как система: что показывает командный профиль ЭРА</div>
+          <div class="meta"><span class="source">Подкаст BITOBE о&nbsp;лидерстве</span> · с участием С. Лагутиной</div>
+        </div>
+        <div class="material-pages">38&nbsp;мин</div>
+        <div class="material-arrow"><svg><use href="#chev-arrow"/></svg></div>
+      </a>
+
+      <a href="https://t.me/era_lider" class="material" data-type="telegram">
+        <div class="material-year">2026</div>
+        <div class="material-type"><span class="dot"></span>Telegram</div>
+        <div class="material-info">
+          <div class="title">Серия разборов: «Когда деструкторы не равно проблема»</div>
+          <div class="meta"><span class="source">@era_lider</span> · Короткие материалы от&nbsp;действующих экспертов</div>
+        </div>
+        <div class="material-pages">↗</div>
+        <div class="material-arrow"><svg><use href="#chev-arrow"/></svg></div>
+      </a>
+
+      <a href="https://t.me/era_lider" class="material" data-type="telegram">
+        <div class="material-year">2026</div>
+        <div class="material-type"><span class="dot"></span>Telegram</div>
+        <div class="material-info">
+          <div class="title">Разбор анонимного профиля: «Почему преемник может быть не&nbsp;готов»</div>
+          <div class="meta"><span class="source">@era_lider</span> · Действующий эксперт ЭРА</div>
+        </div>
+        <div class="material-pages">↗</div>
+        <div class="material-arrow"><svg><use href="#chev-arrow"/></svg></div>
+      </a>
+
+      <a href="#" class="material" data-type="benchmark">
+        <div class="material-year">2024</div>
+        <div class="material-type"><span class="dot"></span>Бенчмарк</div>
+        <div class="material-info">
+          <div class="title">Профиль HiPo в&nbsp;российской промышленности: что отличает кандидатов в&nbsp;кадровый резерв</div>
+          <div class="meta"><span class="source">BITOBE Research</span> · Отраслевой бенчмарк</div>
+        </div>
+        <div class="material-pages">22&nbsp;стр.</div>
+        <div class="material-arrow"><svg><use href="#chev-arrow"/></svg></div>
+      </a>
+
+      <a href="#" class="material" data-type="paper">
+        <div class="material-year">2023</div>
+        <div class="material-type"><span class="dot"></span>White Paper</div>
+        <div class="material-info">
+          <div class="title">Шкала социальной желательности в&nbsp;ассессмент-практике</div>
+          <div class="meta"><span class="source">Белоуско Е.</span> · Методический разбор</div>
+        </div>
+        <div class="material-pages">14&nbsp;стр.</div>
+        <div class="material-arrow"><svg><use href="#chev-arrow"/></svg></div>
+      </a>
+
+      <a href="#" class="material" data-type="benchmark">
+        <div class="material-year">2024</div>
+        <div class="material-type"><span class="dot"></span>Бенчмарк</div>
+        <div class="material-info">
+          <div class="title">Распределение деструкторов в&nbsp;нефтегазовой и&nbsp;металлургической отраслях</div>
+          <div class="meta"><span class="source">BITOBE Research</span> · Отраслевой бенчмарк</div>
+        </div>
+        <div class="material-pages">19&nbsp;стр.</div>
+        <div class="material-arrow"><svg><use href="#chev-arrow"/></svg></div>
+      </a>
+
+    </div>
+
+    <div class="empty-state" id="empty">По выбранному типу материалов пока нет публикаций. Попробуйте сбросить фильтр.</div>
+  </div>
+</section>
+
+<!-- Telegram блок -->
+<section class="telegram-block">
+  <div class="container telegram-grid">
+    <div data-reveal>
+      <div class="eyebrow on-dark"><svg class="eyebrow-mark" style="color: var(--white)"><use href="#chev-mark"/></svg>Telegram-канал</div>
+      <h2 class="h-section">Короткие разборы от&nbsp;действующих <span class="accent-line" style="color:var(--white);">экспертов</span>.</h2>
+      <p>В Telegram-канале @era_lider действующие эксперты ЭРА регулярно публикуют короткие разборы реальных рабочих ситуаций (с соблюдением конфиденциальности): что показывают профили в типичных управленческих коллизиях, как читать сложные сочетания шкал, почему интерпретация без контекста — это ошибка. Эти материалы потом пересобираются в статьи и записи в этом разделе.</p>
+      <a href="https://t.me/era_lider" class="telegram-handle">
+        <span class="at">@</span>era_lider
+        <svg width="14" height="10" style="margin-left: auto; color: var(--white); flex-shrink: 0;"><use href="#chev-arrow"/></svg>
+      </a>
+    </div>
+
+    <div class="telegram-meta" data-reveal>
+      <div class="telegram-meta-item">
+        <div class="label">Формат</div>
+        <div class="value">Короткие разборы 200–500 слов</div>
+      </div>
+      <div class="telegram-meta-item">
+        <div class="label">Авторы</div>
+        <div class="value">Действующие эксперты ЭРА</div>
+      </div>
+      <div class="telegram-meta-item">
+        <div class="label">Регулярность</div>
+        <div class="value">2–3 публикации в неделю</div>
+      </div>
+      <div class="telegram-meta-item">
+        <div class="label">Темы</div>
+        <div class="value">Кейсы, шкалы, методология, наблюдения из&nbsp;практики</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Email-рассылка -->
+<section class="subscribe">
+  <div class="container">
+    <div class="subscribe-card" data-reveal>
+      <div>
+        <div class="eyebrow" style="margin-bottom: 16px;"><svg class="eyebrow-mark"><use href="#chev-mark"/></svg>Email-рассылка</div>
+        <h2 class="h-section">Исследования, разборы и&nbsp;кейсы — в&nbsp;почту.</h2>
+        <p>Раз в&nbsp;месяц присылаем подборку: новые white papers, бенчмарки по&nbsp;отраслям, ключевые материалы из&nbsp;Telegram-канала, события (вебинары, семинары, открытые сессии). Без рекламы, только содержательный контент. Отписка — в один клик.</p>
+      </div>
+      <form class="subscribe-form" onsubmit="handleSubscribe(event)">
+        <input type="email" class="subscribe-input" placeholder="name@company.ru" required>
+        <button type="submit" class="btn btn-primary">
+          Подписаться
+          <svg class="btn-arrow" width="14" height="10"><use href="#chev-arrow"/></svg>
+        </button>
+        <div class="subscribe-footnote">
+          Нажимая кнопку, вы соглашаетесь с&nbsp;политикой обработки персональных данных и условиями получения рассылки. Письма приходят с&nbsp;адреса era@bitobe.ru.
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-block" id="cta">
+  <div class="container cta-grid">
+    <div data-reveal>
+      <div class="eyebrow on-dark" style="margin-bottom: 24px;">
+        <svg class="eyebrow-mark" style="color: var(--white)"><use href="#chev-mark"/></svg>
+        Под вашу задачу
+      </div>
+      <h2 class="h-section">Нужен <span class="accent-line" style="color:var(--white);">бенчмарк</span> по&nbsp;вашей отрасли?</h2>
+      <p class="lead">Если в открытых материалах нет нужного среза — пришлите запрос. Раз в полгода мы готовим заказные обезличенные бенчмарки под конкретную отраслевую или задачную выборку.</p>
+    </div>
+    <div class="cta-actions" data-reveal>
+      <a href="era-lider.html#cta" class="btn btn-primary">Запросить бенчмарк <svg class="btn-arrow" width="14" height="10"><use href="#chev-arrow"/></svg></a>
+      <a href="era-methodology.html" class="btn btn-secondary-inverse">Перейти к&nbsp;методологии <svg class="btn-arrow" width="14" height="10"><use href="#chev-arrow"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col footer-brand">
+        <a href="era-lider.html" class="logo"><svg class="logo-mark"><use href="#chev-7"/></svg>ЭРА<span class="logo-sub">BITOBE</span></a>
+        <p>Система оценки руководителей. Продукт семейства BITOBE. Санкт-Петербург, 2026.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Продукт</h4>
+        <ul>
+          <li><a href="era-scenarios.html">Сценарии применения</a></li>
+          <li><a href="era-lider.html#how">Как работает</a></li>
+          <li><a href="era-methodology.html">Методология</a></li>
+          <li><a href="era-reports.html">Отчёты</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Компания</h4>
+        <ul>
+          <li><a href="era-cases.html">Кейсы</a></li>
+          <li><a href="era-lider.html#experts">Эксперты</a></li>
+          <li><a href="era-certification.html">Сертификация</a></li>
+          <li><a href="#">Исследования</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Контакты</h4>
+        <ul>
+          <li><a href="mailto:era@bitobe.ru">era@bitobe.ru</a></li>
+          <li><a href="https://t.me/era_lider">Telegram: @era_lider</a></li>
+          <li><a href="https://bitobe.ru">bitobe.ru ↗</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© ЭРА / BITOBE, 2026 · Реестр РПО №&nbsp;28543</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 40); }, { passive: true });
+
+  const rev = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); rev.unobserve(e.target); } });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('[data-reveal]').forEach(el => rev.observe(el));
+
+  // Filter logic
+  const materials = document.querySelectorAll('.material');
+  const empty = document.getElementById('empty');
+  document.querySelectorAll('.filter-group .filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      btn.parentElement.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filter;
+      let visible = 0;
+      materials.forEach(m => {
+        const v = filter === 'all' || m.dataset.type === filter;
+        m.classList.toggle('is-hidden', !v);
+        if (v) visible++;
+      });
+      empty.classList.toggle('is-shown', visible === 0);
+    });
+  });
+
+  // Subscribe stub
+  function handleSubscribe(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('button[type=submit]');
+    const original = btn.innerHTML;
+    btn.innerHTML = 'Подписка оформлена ✓';
+    btn.style.background = '#6B6B6B';
+    setTimeout(() => { btn.innerHTML = original; btn.style.background = ''; e.target.reset(); }, 2400);
+  }
+</script>
+
+</body>
+</html>

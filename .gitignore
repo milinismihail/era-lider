@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+.astro/
+
+# Environment
+.env
+.env.local
+.env.production
+
+# Logs
+*.log
+npm-debug.log*
+
+# Editor / OS
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Claude Code: только project-config (.claude/settings.json), не личные настройки
+.claude/settings.local.json
+.claude/projects/
+.claude/sessions/
+
+# Extracted TZ artifacts (рабочие файлы)
+docs/TZ_extracted/
+docs/TZ.txt

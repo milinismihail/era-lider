@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Сертификация экспертов ЭРА · Программа подготовки</title>
+<meta name="description" content="Программа сертификации экспертов ЭРА: 4-дневный семинар, доступ к платформе, методическое сопровождение. Москва 28.05.26, Санкт-Петербург 03.06.26.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="era-style.css">
+
+<style>
+/* ========================== Локальные стили "Сертификация" ========================== */
+
+/* Hero с большим chevron */
+.cert-hero {
+  background: var(--white);
+  padding: 160px 0 90px;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid var(--grey-line);
+}
+.cert-hero-grid {
+  display: grid;
+  grid-template-columns: 60% 40%;
+  gap: 80px;
+  align-items: center;
+}
+.cert-hero h1 { margin-bottom: 32px; max-width: 720px; }
+.cert-hero .lead {
+  font-size: 19px; line-height: 1.55;
+  color: var(--grey-deep); max-width: 600px;
+  margin-bottom: 40px;
+}
+.cert-hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 48px; }
+.cert-hero-trust {
+  display: flex; padding-top: 32px;
+  border-top: 1px solid var(--grey-line);
+  font-size: 12px; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--grey); font-weight: 500;
+  flex-wrap: wrap;
+}
+.cert-hero-trust .item {
+  padding-right: 28px; margin-right: 28px;
+  border-right: 1px solid var(--grey-line);
+}
+.cert-hero-trust .item:last-child { border-right: none; }
+
+.cert-hero-graphic {
+  position: relative; aspect-ratio: 1/1;
+  width: 100%; max-width: 380px;
+  justify-self: end;
+}
+.cert-hero-graphic .chev-main { width: 100%; height: 100%; color: var(--black); }
+.cert-hero-graphic .chev-sub {
+  position: absolute; top: 8%; right: -8%;
+  width: 42%; height: 42%; color: var(--accent-pers);
+}
+.cert-hero-graphic .chev-tiny {
+  position: absolute; bottom: 6%; left: -3%;
+  width: 24%; height: 24%; color: var(--accent-mot);
+}
+.cert-hero-graphic .label {
+  position: absolute; bottom: -4px; right: 0;
+  font-size: 10px; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--grey); font-weight: 500;
+}
+@media (max-width: 980px) {
+  .cert-hero { padding: 120px 0 60px; }
+  .cert-hero-grid { grid-template-columns: 1fr; gap: 40px; }
+  .cert-hero-graphic { max-width: 240px; }
+}
+
+/* Для кого */
+.audience { padding: var(--section-py) 0; background: var(--white); }
+.audience-header { max-width: 720px; margin-bottom: 56px; }
+.audience-header h2 { margin-top: 20px; }
+
+.audience-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--grey-line);
+  border: 1px solid var(--grey-line);
+}
+.audience-card {
+  background: var(--white);
+  padding: 36px 32px;
+  position: relative;
+  min-height: 260px;
+}
+.audience-card::before {
+  content: ""; position: absolute;
+  top: 0; left: 0;
+  width: 36px; height: 4px;
+  background: var(--black);
+}
+.audience-card-num {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--grey);
+  letter-spacing: 0.08em;
+  font-weight: 500;
+  margin-bottom: 14px;
+  padding-top: 14px;
+}
+.audience-card h3 {
+  font-size: 19px; font-weight: 600;
+  letter-spacing: -0.015em; line-height: 1.25;
+  color: var(--black); margin-bottom: 12px;
+}
+.audience-card p { font-size: 14px; line-height: 1.55; color: var(--grey); }
+.audience-card .meta {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--grey-line);
+  font-size: 12px;
+  color: var(--black);
+  letter-spacing: 0.04em;
+  font-weight: 500;
+}
+@media (max-width: 760px) { .audience-grid { grid-template-columns: 1fr; } }
+
+/* Что получает выпускник */
+.outcomes {
+  background: var(--black);
+  color: var(--white);
+  padding: var(--section-py) 0;
+  position: relative;
+  overflow: hidden;
+}
+.outcomes::before {
+  content: ""; position: absolute;
+  top: 0; right: 0;
+  width: 120px; height: 120px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%23FFFFFF'%3E%3Cpath d='M 0 0 L 100 0 L 100 100 L 80 100 L 80 20 L 0 20 Z'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+.outcomes-header {
+  max-width: 720px; margin-bottom: 56px;
+  position: relative; z-index: 1;
+}
+.outcomes-header h2 { color: var(--white); margin-top: 20px; }
+
+.outcomes-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.15);
+  position: relative;
+  z-index: 1;
+}
+.outcome {
+  background: var(--black);
+  padding: 36px 28px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  min-height: 240px;
+}
+.outcome::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 36px; height: 4px;
+  background: var(--white);
+}
+.outcome-num {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: rgba(255,255,255,0.55);
+  letter-spacing: 0.08em;
+  margin-bottom: 16px;
+  padding-top: 14px;
+}
+.outcome h3 {
+  font-size: 17px; font-weight: 600;
+  color: var(--white); letter-spacing: -0.01em;
+  line-height: 1.25; margin-bottom: 12px;
+}
+.outcome p {
+  font-size: 13px; line-height: 1.55;
+  color: rgba(255,255,255,0.7);
+}
+@media (max-width: 1100px) { .outcomes-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .outcomes-grid { grid-template-columns: 1fr; } }
+
+/* Программа курса */
+.program { padding: var(--section-py) 0; background: var(--grey-soft); }
+.program-header {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 80px; align-items: end;
+  margin-bottom: 56px;
+}
+.program-header h2 { margin-top: 20px; }
+.program-header .lead {
+  font-size: 16px; line-height: 1.6;
+  color: var(--grey); max-width: 460px;
+}
+@media (max-width: 900px) { .program-header { grid-template-columns: 1fr; gap: 24px; } }
+
+.program-list {
+  display: flex; flex-direction: column;
+  background: var(--white);
+  border: 1px solid var(--grey-line);
+}
+.program-item {
+  display: grid;
+  grid-template-columns: 100px 1fr auto;
+  gap: 32px;
+  padding: 28px 32px;
+  border-bottom: 1px solid var(--grey-line);
+  align-items: start;
+}
+.program-item:last-child { border-bottom: none; }
+.program-num {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--black);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  display: flex; align-items: center; gap: 10px;
+}
+.program-num .chev { width: 14px; height: 9px; }
+.program-item h3 {
+  font-size: 18px; font-weight: 600;
+  letter-spacing: -0.015em; line-height: 1.3;
+  color: var(--black); margin-bottom: 8px;
+}
+.program-item p {
+  font-size: 14px; line-height: 1.55;
+  color: var(--grey);
+}
+.program-duration {
+  font-size: 12px; color: var(--grey);
+  letter-spacing: 0.08em; text-transform: uppercase;
+  font-weight: 500; white-space: nowrap; padding-top: 4px;
+}
+@media (max-width: 760px) {
+  .program-item { grid-template-columns: 60px 1fr; gap: 16px; padding: 24px 20px; }
+  .program-duration { grid-column: 2 / -1; padding-top: 12px; }
+}
+
+/* Календарь семинаров */
+.schedule { padding: var(--section-py) 0; background: var(--white); }
+.schedule-header { max-width: 720px; margin-bottom: 56px; }
+.schedule-header h2 { margin-top: 20px; }
+
+.schedule-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+.seminar {
+  background: var(--white);
+  border: 1px solid var(--black);
+  padding: 40px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.seminar::after {
+  content: ""; position: absolute;
+  top: 0; right: 0;
+  width: 56px; height: 36px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%230A0A0A'%3E%3Cpath d='M 0 0 L 100 0 L 100 100 L 80 100 L 80 20 L 0 20 Z'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+.seminar-tag {
+  font-size: 11px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--grey);
+  font-weight: 600; margin-bottom: 18px;
+}
+.seminar-city {
+  font-size: clamp(32px, 4vw, 42px);
+  font-weight: 700; letter-spacing: -0.025em;
+  line-height: 1; color: var(--black);
+  margin-bottom: 12px;
+}
+.seminar-date {
+  font-family: var(--font-mono);
+  font-size: 18px; font-weight: 500;
+  color: var(--black); letter-spacing: 0.02em;
+  margin-bottom: 32px;
+}
+.seminar-meta {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 20px 32px; padding: 24px 0;
+  border-top: 1px solid var(--grey-line);
+  border-bottom: 1px solid var(--grey-line);
+  margin-bottom: 28px;
+}
+.seminar-meta-item .label {
+  font-size: 10px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--grey);
+  margin-bottom: 5px; font-weight: 500;
+}
+.seminar-meta-item .value {
+  font-size: 14px; font-weight: 600;
+  color: var(--black); letter-spacing: -0.01em;
+}
+.seminar-cta {
+  margin-top: auto;
+  display: flex; flex-direction: column; gap: 10px;
+}
+@media (max-width: 760px) {
+  .schedule-grid { grid-template-columns: 1fr; }
+  .seminar { padding: 32px 24px; }
+}
+
+/* Преподаватели */
+.teachers { padding: var(--section-py) 0; background: var(--grey-soft); }
+.teachers-header {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 80px; align-items: end;
+  margin-bottom: 56px;
+}
+.teachers-header h2 { margin-top: 20px; }
+.teachers-header .lead {
+  font-size: 16px; line-height: 1.6;
+  color: var(--grey); max-width: 460px;
+}
+@media (max-width: 900px) { .teachers-header { grid-template-columns: 1fr; gap: 24px; } }
+
+.teachers-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+.teacher { display: flex; flex-direction: column; }
+.teacher-photo {
+  aspect-ratio: 4 / 5;
+  background: var(--white);
+  position: relative; overflow: hidden;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding: 24px;
+  border: 1px solid var(--grey-line);
+}
+.teacher-photo::before {
+  content: "";
+  position: absolute; top: 16px; right: 16px;
+  width: 32px; height: 20px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%230A0A0A'%3E%3Cpath d='M 0 0 L 100 0 L 100 100 L 80 100 L 80 20 L 0 20 Z'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+.teacher-initials {
+  font-weight: 700; font-size: 36px;
+  color: var(--grey); letter-spacing: -0.02em;
+}
+.teacher-photo-note {
+  position: absolute; bottom: 16px; right: 16px;
+  font-size: 9px; letter-spacing: 0.2em;
+  color: var(--grey); text-transform: uppercase;
+  font-weight: 500;
+}
+.teacher-name {
+  font-size: 19px; font-weight: 600;
+  letter-spacing: -0.015em; color: var(--black);
+  margin-bottom: 6px;
+}
+.teacher-role {
+  font-size: 12px; color: var(--grey);
+  font-weight: 500; margin-bottom: 16px;
+  letter-spacing: 0.04em; line-height: 1.4;
+  text-transform: uppercase;
+}
+.teacher-bio {
+  font-size: 13px; line-height: 1.55;
+  color: var(--grey-deep);
+}
+@media (max-width: 760px) { .teachers-grid { grid-template-columns: 1fr; gap: 32px; } }
+
+/* Стоимость */
+.pricing { padding: var(--section-py) 0; background: var(--white); }
+.pricing-header { max-width: 720px; margin-bottom: 56px; }
+.pricing-header h2 { margin-top: 20px; }
+
+.pricing-card {
+  background: var(--grey-soft);
+  padding: 56px clamp(32px, 5vw, 64px);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 56px;
+  align-items: center;
+  border-top: 4px solid var(--black);
+  position: relative;
+}
+.pricing-card::after {
+  content: ""; position: absolute;
+  top: -4px; right: 0;
+  width: 80px; height: 56px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%230A0A0A'%3E%3Cpath d='M 0 0 L 100 0 L 100 100 L 80 100 L 80 20 L 0 20 Z'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+.pricing-amount {
+  font-size: clamp(48px, 6vw, 72px);
+  font-weight: 700; letter-spacing: -0.03em;
+  line-height: 0.95; color: var(--black);
+}
+.pricing-amount .currency {
+  font-size: 0.4em; color: var(--grey);
+  font-weight: 500; letter-spacing: 0;
+  margin-left: 4px;
+}
+.pricing-amount .vat {
+  display: block; font-size: 0.18em;
+  color: var(--grey); font-weight: 500;
+  letter-spacing: 0.08em; margin-top: 8px;
+  text-transform: uppercase;
+}
+.pricing-includes h3 {
+  font-size: 18px; font-weight: 600;
+  letter-spacing: -0.015em; margin-bottom: 14px;
+  color: var(--black);
+}
+.pricing-includes ul {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 24px;
+  font-size: 14px;
+  color: var(--grey-deep);
+}
+.pricing-includes li {
+  position: relative; padding-left: 20px;
+  line-height: 1.5;
+}
+.pricing-includes li::before {
+  content: ""; position: absolute;
+  left: 0; top: 9px;
+  width: 10px; height: 1.5px;
+  background: var(--black);
+}
+@media (max-width: 1000px) {
+  .pricing-card { grid-template-columns: 1fr; gap: 32px; padding: 40px 28px; }
+  .pricing-includes ul { grid-template-columns: 1fr; }
+}
+
+/* FAQ */
+.faq { padding: var(--section-py) 0; background: var(--grey-soft); }
+.faq-grid {
+  display: grid; grid-template-columns: 280px 1fr;
+  gap: 80px; align-items: start;
+}
+.faq-grid h2 {
+  position: sticky; top: 100px;
+  margin-top: 20px;
+}
+.faq-list {
+  background: var(--white);
+  border-top: 1px solid var(--black);
+}
+.faq-item {
+  border-bottom: 1px solid var(--grey-line);
+}
+.faq-q {
+  width: 100%;
+  background: none; border: none;
+  font-family: inherit;
+  text-align: left;
+  display: flex; align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 24px 32px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--black);
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.faq-q:hover { background: var(--grey-soft); }
+.faq-q .icon {
+  width: 18px; height: 18px;
+  position: relative;
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+.faq-q .icon::before, .faq-q .icon::after {
+  content: ""; position: absolute;
+  top: 50%; left: 50%;
+  background: var(--black);
+  transform: translate(-50%, -50%);
+}
+.faq-q .icon::before { width: 16px; height: 1.5px; }
+.faq-q .icon::after { width: 1.5px; height: 16px; transition: transform 0.3s ease; }
+.faq-item.is-open .faq-q .icon::after { transform: translate(-50%, -50%) scaleY(0); }
+.faq-a {
+  max-height: 0; overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+.faq-item.is-open .faq-a { max-height: 400px; }
+.faq-a-inner {
+  padding: 0 32px 28px;
+  font-size: 15px; line-height: 1.6;
+  color: var(--grey-deep); max-width: 720px;
+}
+@media (max-width: 900px) {
+  .faq-grid { grid-template-columns: 1fr; gap: 32px; }
+  .faq-grid h2 { position: static; }
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="chev-7" viewBox="0 0 100 100"><path d="M 0 0 L 100 0 L 100 100 L 80 100 L 80 20 L 0 20 Z" fill="currentColor"/></symbol>
+    <symbol id="chev-arrow" viewBox="0 0 14 10"><path d="M 0 0 H 14 V 3 H 3 V 10 H 0 Z" fill="currentColor"/></symbol>
+    <symbol id="chev-mark" viewBox="0 0 22 14"><path d="M 0 0 H 22 V 4 H 4 V 14 H 0 Z" fill="currentColor"/></symbol>
+  </defs>
+</svg>
+
+<nav class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="era-lider.html" class="logo">
+      <svg class="logo-mark"><use href="#chev-7"/></svg>
+      ЭРА<span class="logo-sub">BITOBE</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="era-scenarios.html">Задачи</a></li>
+      <li><a href="era-lider.html#how">Как устроено</a></li>
+      <li><a href="era-methodology.html">Методология</a></li>
+      <li><a href="era-cases.html">Кейсы</a></li>
+      <li><a href="#" class="active">Сертификация</a></li>
+    </ul>
+    <button class="nav-cta" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">Записаться</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="cert-hero">
+  <div class="container">
+    <div class="hero-breadcrumbs">
+      <a href="era-lider.html">Главная</a>
+      <span class="sep">/</span>
+      <span class="current">Сертификация экспертов</span>
+    </div>
+    <div class="cert-hero-grid">
+      <div data-reveal>
+        <div class="eyebrow" style="margin-bottom: 28px;">
+          <svg class="eyebrow-mark"><use href="#chev-mark"/></svg>
+          Программа подготовки
+        </div>
+        <h1 class="h-hero">
+          Сертификация экспертов <span class="accent-line">ЭРА</span>.
+        </h1>
+        <p class="lead">
+          Четырёхдневный сертификационный семинар для HR-методологов, бизнес-психологов и коучей. После программы вы&nbsp;сами интерпретируете отчёты ЭРА для руководителей в&nbsp;своей компании или у&nbsp;клиентов.
+        </p>
+        <div class="cert-hero-actions">
+          <a href="#schedule" class="btn btn-primary">
+            Календарь семинаров
+            <svg class="btn-arrow" width="14" height="10"><use href="#chev-arrow"/></svg>
+          </a>
+          <a href="#program" class="btn btn-secondary">Программа</a>
+        </div>
+        <div class="cert-hero-trust">
+          <div class="item">4 дня программы</div>
+          <div class="item">3 разработчика-преподавателя</div>
+          <div class="item">Сертификат ЭРА</div>
+          <div class="item">Доступ к платформе</div>
+        </div>
+      </div>
+
+      <div class="cert-hero-graphic" data-reveal>
+        <svg class="chev-main" viewBox="0 0 100 100"><use href="#chev-7"/></svg>
+        <svg class="chev-sub" viewBox="0 0 100 100"><use href="#chev-7"/></svg>
+        <svg class="chev-tiny" viewBox="0 0 100 100"><use href="#chev-7"/></svg>
+        <div class="label">Сертификация · 2026</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Кому подходит -->
+<section class="audience">
+  <div class="container">
+    <div class="audience-header" data-reveal>
+      <div class="eyebrow"><svg class="eyebrow-mark"><use href="#chev-mark"/></svg>Кому подходит</div>
+      <h2 class="h-section">Для тех, кто работает с&nbsp;людьми всерьёз.</h2>
+    </div>
+    <div class="audience-grid">
+      <div class="audience-card" data-reveal>
+        <div class="audience-card-num">01</div>
+        <h3>HR-методологи и&nbsp;психометристы</h3>
+        <p>Внутренние HR-эксперты компаний, занимающиеся оценкой и развитием руководителей. Сертификация позволяет встроить ЭРА в стандарт работы внутри компании, без обращения к внешнему подрядчику на каждой задаче.</p>
+        <div class="meta">Опыт оценки от 2&nbsp;лет</div>
+      </div>
+      <div class="audience-card" data-reveal>
+        <div class="audience-card-num">02</div>
+        <h3>Бизнес-психологи и&nbsp;консультанты</h3>
+        <p>Внешние консультанты, проводящие assessment руководителей в проектном режиме. ЭРА расширяет инструментарий и даёт российскую нормативную базу — ту, что не достать через западные инструменты.</p>
+        <div class="meta">Профильное психологич. образование</div>
+      </div>
+      <div class="audience-card" data-reveal>
+        <div class="audience-card-num">03</div>
+        <h3>Executive-коучи</h3>
+        <p>Коучи, работающие с топ-руководителями и командами. Сертификация позволяет использовать ЭРА как стартовую диагностику в коуч-программах — и обоснованно говорить с клиентом о его стрессовых паттернах и мотивации.</p>
+        <div class="meta">Сертификация ICF · приветствуется</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Что получает выпускник -->
+<section class="outcomes">
+  <div class="container">
+    <div class="outcomes-header" data-reveal>
+      <div class="eyebrow on-dark"><svg class="eyebrow-mark" style="color: var(--white)"><use href="#chev-mark"/></svg>Результат программы</div>
+      <h2 class="h-section">Что получает выпускник.</h2>
+    </div>
+    <div class="outcomes-grid">
+      <div class="outcome" data-reveal>
+        <div class="outcome-num">01</div>
+        <h3>Сертификат эксперта&nbsp;ЭРА</h3>
+        <p>Именной сертификат, подтверждающий право самостоятельно проводить ассессмент-сессии и обратную связь по результатам ЭРА. Включается в реестр сертифицированных экспертов на сайте.</p>
+      </div>
+      <div class="outcome" data-reveal>
+        <div class="outcome-num">02</div>
+        <h3>Доступ к&nbsp;платформе</h3>
+        <p>Личный кабинет с возможностью назначать оценки респондентам, получать готовые отчёты, экспортировать в PDF и работать с командными профилями. Лимиты и&nbsp;тарифы — в&nbsp;зависимости от&nbsp;объёма.</p>
+      </div>
+      <div class="outcome" data-reveal>
+        <div class="outcome-num">03</div>
+        <h3>Методический комплект</h3>
+        <p>86-страничный методический отчёт, протокол интерпретации, библиотека кейсов, шаблоны сессий обратной связи, формы ИПР, рекомендации по работе со сложными случаями.</p>
+      </div>
+      <div class="outcome" data-reveal>
+        <div class="outcome-num">04</div>
+        <h3>Поддержка экспертов</h3>
+        <p>Закрытое сообщество сертифицированных экспертов, разборы кейсов с архитекторами методологии раз в квартал, доступ к супервизии при работе со сложными профилями.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Программа курса -->
+<section class="program" id="program">
+  <div class="container">
+    <div class="program-header" data-reveal>
+      <div>
+        <div class="eyebrow"><svg class="eyebrow-mark"><use href="#chev-mark"/></svg>Программа</div>
+        <h2 class="h-section">Четыре дня · семь&nbsp;модулей.</h2>
+      </div>
+      <p class="lead">Программа сочетает методологический фундамент (HEXACO, шкалы валидности, психометрика) с практикой интерпретации на реальных обезличенных профилях. К концу четвёртого дня вы&nbsp;самостоятельно проводите учебную сессию обратной связи.</p>
+    </div>
+
+    <div class="program-list" data-reveal>
+      <div class="program-item">
+        <div class="program-num"><svg class="chev"><use href="#chev-mark"/></svg>01</div>
+        <div>
+          <h3>Философия и архитектура системы ЭРА</h3>
+          <p>Identity vs. reputation. Почему ЭРА измеряет предсказуемое поведение, а не самооценку. Как три опросника складываются в комплексную картину.</p>
+        </div>
+        <div class="program-duration">День 1 · утро</div>
+      </div>
+
+      <div class="program-item">
+        <div class="program-num"><svg class="chev"><use href="#chev-mark"/></svg>02</div>
+        <div>
+          <h3>Модель HEXACO в&nbsp;деталях</h3>
+          <p>Шесть факторов и 30 фасет. Чем HEXACO отличается от Big Five. Особенности фактора H (Честность-Смирение) в российской управленческой культуре.</p>
+        </div>
+        <div class="program-duration">День 1 · вечер</div>
+      </div>
+
+      <div class="program-item">
+        <div class="program-num"><svg class="chev"><use href="#chev-mark"/></svg>03</div>
+        <div>
+          <h3>Мотивационные драйверы и&nbsp;деструкторы</h3>
+          <p>16 мотиваторов: интерпретация и сочетания. 11 деструкторов: триггеры, прогнозы, рекомендации. Связь между мотивацией и поведением под стрессом.</p>
+        </div>
+        <div class="program-duration">День 2</div>
+      </div>
+
+      <div class="program-item">
+        <div class="program-num"><svg class="chev"><use href="#chev-mark"/></svg>04</div>
+        <div>
+          <h3>Психометрика и работа со&nbsp;шкалами защиты</h3>
+          <p>Валидность, надёжность, ретестовая стабильность. Шкала социальной желательности и индекс невнимательности. Что делать с&nbsp;профилями высокого&nbsp;SD.</p>
+        </div>
+        <div class="program-duration">День 3 · утро</div>
+      </div>
+
+      <div class="program-item">
+        <div class="program-num"><svg class="chev"><use href="#chev-mark"/></svg>05</div>
+        <div>
+          <h3>Интерпретация профилей · практика</h3>
+          <p>Разбор 6 обезличенных кейсов: подбор C-level, диагностика команды, M&amp;A. Работа в малых группах с супервизией от разработчиков методологии.</p>
+        </div>
+        <div class="program-duration">День 3 · вечер</div>
+      </div>
+
+      <div class="program-item">
+        <div class="program-num"><svg class="chev"><use href="#chev-mark"/></svg>06</div>
+        <div>
+          <h3>Сессия обратной связи</h3>
+          <p>Структура 90-минутной сессии. Типичные сложности: защитные реакции, ригидность, эмоциональные всплески. Учебные ролевые сессии в парах.</p>
+        </div>
+        <div class="program-duration">День 4 · утро</div>
+      </div>
+
+      <div class="program-item">
+        <div class="program-num"><svg class="chev"><use href="#chev-mark"/></svg>07</div>
+        <div>
+          <h3>Сертификационная сессия</h3>
+          <p>Каждый участник проводит самостоятельную учебную сессию обратной связи по подготовленному профилю. Оценка преподавателями + выдача сертификата.</p>
+        </div>
+        <div class="program-duration">День 4 · вечер</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Календарь семинаров -->
+<section class="schedule" id="schedule">
+  <div class="container">
+    <div class="schedule-header" data-reveal>
+      <div class="eyebrow"><svg class="eyebrow-mark"><use href="#chev-mark"/></svg>Ближайшие даты</div>
+      <h2 class="h-section">Календарь сертификационных семинаров.</h2>
+    </div>
+
+    <div class="schedule-grid">
+      <article class="seminar" data-reveal>
+        <div class="seminar-tag">Семинар 01</div>
+        <div class="seminar-city">Москва</div>
+        <div class="seminar-date">28.05.2026 — 31.05.2026</div>
+        <div class="seminar-meta">
+          <div class="seminar-meta-item">
+            <div class="label">Формат</div>
+            <div class="value">Очно, полные дни</div>
+          </div>
+          <div class="seminar-meta-item">
+            <div class="label">Место</div>
+            <div class="value">Центр Москвы</div>
+          </div>
+          <div class="seminar-meta-item">
+            <div class="label">Группа</div>
+            <div class="value">До 12 участников</div>
+          </div>
+          <div class="seminar-meta-item">
+            <div class="label">Преподаватели</div>
+            <div class="value">3 разработчика</div>
+          </div>
+        </div>
+        <div class="seminar-cta">
+          <a href="#cta" class="btn btn-primary">Записаться <svg class="btn-arrow" width="14" height="10"><use href="#chev-arrow"/></svg></a>
+          <a href="#cta" class="btn btn-secondary">Уточнить детали</a>
+        </div>
+      </article>
+
+      <article class="seminar" data-reveal>
+        <div class="seminar-tag">Семинар 02</div>
+        <div class="seminar-city">Санкт-Петербург</div>
+        <div class="seminar-date">03.06.2026 — 06.06.2026</div>
+        <div class="seminar-meta">
+          <div class="seminar-meta-item">
+            <div class="label">Формат</div>
+            <div class="value">Очно, полные дни</div>
+          </div>
+          <div class="seminar-meta-item">
+            <div class="label">Место</div>
+            <div class="value">Офис BITOBE</div>
+          </div>
+          <div class="seminar-meta-item">
+            <div class="label">Группа</div>
+            <div class="value">До 12 участников</div>
+          </div>
+          <div class="seminar-meta-item">
+            <div class="label">Преподаватели</div>
+            <div class="value">3 разработчика</div>
+          </div>
+        </div>
+        <div class="seminar-cta">
+          <a href="#cta" class="btn btn-primary">Записаться <svg class="btn-arrow" width="14" height="10"><use href="#chev-arrow"/></svg></a>
+          <a href="#cta" class="btn btn-secondary">Уточнить детали</a>
+        </div>
+      </article>
+    </div>
+
+    <p style="margin-top: 32px; font-size: 13px; color: var(--grey); max-width: 720px;">
+      Не подходят даты? Оставьте заявку на удобный месяц — наберём группу под ваше расписание. Для корпоративных групп от&nbsp;6&nbsp;человек проводим выездные сертификационные сессии в&nbsp;офисе клиента.
+    </p>
+  </div>
+</section>
+
+<!-- Преподаватели (тут с фото — они в роли преподавателей) -->
+<section class="teachers">
+  <div class="container">
+    <div class="teachers-header" data-reveal>
+      <div>
+        <div class="eyebrow"><svg class="eyebrow-mark"><use href="#chev-mark"/></svg>Преподаватели</div>
+        <h2 class="h-section">Программу ведут разработчики методологии.</h2>
+      </div>
+      <p class="lead">Каждый из преподавателей лично участвовал в создании ЭРА, валидации шкал и накоплении нормативной базы. Это уникальная возможность учиться у тех, кто разрабатывал инструмент.</p>
+    </div>
+
+    <div class="teachers-grid">
+      <div class="teacher" data-reveal>
+        <div class="teacher-photo">
+          <span class="teacher-initials">НБ</span>
+          <span class="teacher-photo-note">фото</span>
+        </div>
+        <div class="teacher-name">Наталия Боровикова</div>
+        <div class="teacher-role">К.&nbsp;п.&nbsp;н., разработчик</div>
+        <p class="teacher-bio">Эксперт по оценке и развитию топ-менеджеров и команд первого уровня. Возглавляла адаптацию HEXACO на российской выборке. Ведёт модули о философии системы и работе с командными профилями.</p>
+      </div>
+      <div class="teacher" data-reveal>
+        <div class="teacher-photo">
+          <span class="teacher-initials">ЕБ</span>
+          <span class="teacher-photo-note">фото</span>
+        </div>
+        <div class="teacher-name">Екатерина Белоуско</div>
+        <div class="teacher-role">Психометрик, ведущий эксперт</div>
+        <p class="teacher-bio">Психолог-психометрист, консультант по оценке персонала. Отвечает за валидность и надёжность шкал. Ведёт модули по психометрике, работе со шкалой социальной желательности и сложным профилям.</p>
+      </div>
+      <div class="teacher" data-reveal>
+        <div class="teacher-photo">
+          <span class="teacher-initials">СЛ</span>
+          <span class="teacher-photo-note">фото</span>
+        </div>
+        <div class="teacher-name">Светлана Лагутина</div>
+        <div class="teacher-role">Руководитель проекта в&nbsp;Москве</div>
+        <p class="teacher-bio">Разработчик и ведущий эксперт. Курирует развитие нормативной базы и работу со стратегическими клиентами. Ведёт практические модули по интерпретации и сертификационную сессию.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Стоимость -->
+<section class="pricing">
+  <div class="container">
+    <div class="pricing-header" data-reveal>
+      <div class="eyebrow"><svg class="eyebrow-mark"><use href="#chev-mark"/></svg>Стоимость</div>
+      <h2 class="h-section">Что включено в&nbsp;стоимость семинара.</h2>
+    </div>
+
+    <div class="pricing-card" data-reveal>
+      <div class="pricing-amount">
+        от&nbsp;230&nbsp;000<span class="currency">&nbsp;₽</span>
+        <span class="vat">за участника · без&nbsp;НДС</span>
+      </div>
+      <div class="pricing-includes">
+        <h3>В стоимость включено</h3>
+        <ul>
+          <li>4 дня очной программы</li>
+          <li>Методический комплект (86 стр.)</li>
+          <li>Именной сертификат эксперта ЭРА</li>
+          <li>Доступ к платформе ЭРА</li>
+          <li>Кофе-брейки и обеды</li>
+          <li>Сообщество выпускников</li>
+          <li>Супервизия первых 3 кейсов</li>
+          <li>Квартальные разборы с разработчиками</li>
+        </ul>
+      </div>
+      <div>
+        <a href="#cta" class="btn btn-primary">Записаться <svg class="btn-arrow" width="14" height="10"><use href="#chev-arrow"/></svg></a>
+      </div>
+    </div>
+
+    <p style="margin-top: 28px; font-size: 13px; color: var(--grey); max-width: 720px;">
+      Для корпоративных групп от 6&nbsp;человек — индивидуальный расчёт со скидкой. Для выпускников программы развития руководителей BITOBE — специальные условия. Уточните стоимость в заявке.
+    </p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq">
+  <div class="container faq-grid">
+    <div data-reveal>
+      <div class="eyebrow" style="margin-bottom: 16px;"><svg class="eyebrow-mark"><use href="#chev-mark"/></svg>Частые вопросы</div>
+      <h2 class="h-section">FAQ.</h2>
+    </div>
+
+    <div class="faq-list" data-reveal>
+      <div class="faq-item">
+        <button class="faq-q">Нужно ли психологическое образование?<span class="icon"></span></button>
+        <div class="faq-a"><div class="faq-a-inner">Профильное психологическое образование — желательно, но не обязательно. Принимаем участников с опытом в HR-оценке от 2 лет, executive coaching, организационном консалтинге. На этапе заявки прикладывается короткое CV — мы&nbsp;индивидуально оцениваем готовность к программе.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Можно ли пройти онлайн?<span class="icon"></span></button>
+        <div class="faq-a"><div class="faq-a-inner">Сертификационный семинар проводится только очно — практические модули по интерпретации и работе со сложными профилями требуют живой коммуникации в малых группах. Онлайн-формат планируется, но как самостоятельный продукт «Базовая подготовка» с другим объёмом сертификации.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Что если не сдам сертификационную сессию?<span class="icon"></span></button>
+        <div class="faq-a"><div class="faq-a-inner">Если уровень готовности недостаточен, преподаватели рекомендуют доработку — обычно это 2–4 дополнительные супервизионные сессии в течение месяца после семинара. Повторная сертификация — без оплаты семинара заново. Доля участников, не получающих сертификат с первого раза, составляет около&nbsp;15%.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Что такое «сообщество экспертов»?<span class="icon"></span></button>
+        <div class="faq-a"><div class="faq-a-inner">Закрытое профессиональное сообщество в Telegram, доступ к которому открывается после сертификации. Раз в квартал — открытые разборы сложных кейсов с архитекторами методологии. Раз в полгода — супервизионная встреча офлайн. Возможность задать вопрос разработчикам по конкретному профилю.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Можно ли использовать ЭРА в&nbsp;своей частной практике?<span class="icon"></span></button>
+        <div class="faq-a"><div class="faq-a-inner">Да. После сертификации эксперт получает доступ к платформе и право самостоятельно проводить оценки и обратную связь — как в составе своей компании, так и в&nbsp;частной практике с&nbsp;клиентами. Тарифы доступа к&nbsp;платформе — отдельно от&nbsp;стоимости сертификации, рассчитываются по&nbsp;объёму проведённых оценок.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Есть ли корпоративные пакеты?<span class="icon"></span></button>
+        <div class="faq-a"><div class="faq-a-inner">Да. Для компаний от 6 человек — выездная сертификационная сессия в&nbsp;офисе клиента или нашей закрытой группой. Включает кастомизацию программы под отрасль клиента и&nbsp;разбор реальных кейсов из&nbsp;его практики (с&nbsp;соблюдением конфиденциальности). Уточните условия в&nbsp;заявке.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-block" id="cta">
+  <div class="container cta-grid">
+    <div data-reveal>
+      <div class="eyebrow on-dark" style="margin-bottom: 24px;">
+        <svg class="eyebrow-mark" style="color: var(--white)"><use href="#chev-mark"/></svg>
+        Запись на программу
+      </div>
+      <h2 class="h-section">Запишитесь на&nbsp;<span class="accent-line" style="color:var(--white);">ближайший семинар</span>.</h2>
+      <p class="lead">Свяжемся в течение рабочего дня для подтверждения места в группе и&nbsp;уточнения условий. Если даты не подходят — поможем подобрать удобный формат.</p>
+    </div>
+    <div class="cta-actions" data-reveal>
+      <a href="era-lider.html#cta" class="btn btn-primary">Записаться на семинар <svg class="btn-arrow" width="14" height="10"><use href="#chev-arrow"/></svg></a>
+      <a href="era-lider.html#cta" class="btn btn-secondary-inverse">Запросить программу (PDF) <svg class="btn-arrow" width="14" height="10"><use href="#chev-arrow"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col footer-brand">
+        <a href="era-lider.html" class="logo"><svg class="logo-mark"><use href="#chev-7"/></svg>ЭРА<span class="logo-sub">BITOBE</span></a>
+        <p>Система оценки руководителей. Продукт семейства BITOBE. Санкт-Петербург, 2026.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Продукт</h4>
+        <ul>
+          <li><a href="era-scenarios.html">Сценарии применения</a></li>
+          <li><a href="era-lider.html#how">Как работает</a></li>
+          <li><a href="era-methodology.html">Методология</a></li>
+          <li><a href="era-reports.html">Отчёты</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Компания</h4>
+        <ul>
+          <li><a href="era-cases.html">Кейсы</a></li>
+          <li><a href="era-lider.html#experts">Эксперты</a></li>
+          <li><a href="#">Сертификация</a></li>
+          <li><a href="era-materials.html">Исследования</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Контакты</h4>
+        <ul>
+          <li><a href="mailto:era@bitobe.ru">era@bitobe.ru</a></li>
+          <li><a href="https://t.me/era_lider">Telegram: @era_lider</a></li>
+          <li><a href="https://bitobe.ru">bitobe.ru ↗</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© ЭРА / BITOBE, 2026 · Реестр РПО №&nbsp;28543</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 40); }, { passive: true });
+
+  const rev = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); rev.unobserve(e.target); } });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('[data-reveal]').forEach(el => rev.observe(el));
+
+  // FAQ accordion
+  document.querySelectorAll('.faq-q').forEach(q => {
+    q.addEventListener('click', () => {
+      const item = q.closest('.faq-item');
+      item.classList.toggle('is-open');
+    });
+  });
+</script>
+
+</body>
+</html>

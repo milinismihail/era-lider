@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Отчёты ЭРА · форматы и примеры</title>
+<meta name="description" content="Пять форматов отчётов ЭРА: индивидуальный, сводный, командный профиль, профиль роли, 360°-совместимость.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="era-style.css">
+
+<style>
+/* ========================== Локальные стили "Отчёты" ========================== */
+
+.formats-section { padding: var(--section-py) 0; }
+.formats-header {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 80px; align-items: end; margin-bottom: 72px;
+}
+.formats-header .lead { color: var(--grey); font-size: 16px; line-height: 1.6; max-width: 460px; }
+.formats-header h2 { margin-top: 20px; }
+@media (max-width: 900px) { .formats-header { grid-template-columns: 1fr; gap: 24px; } }
+
+/* Каждый формат отчёта — большой блок с превью слева, описанием справа */
+.format {
+  display: grid;
+  grid-template-columns: 42% 58%;
+  gap: 64px;
+  align-items: start;
+  padding: 80px 0;
+  border-top: 1px solid var(--grey-line);
+}
+.format:first-of-type { padding-top: 0; border-top: none; }
+.format.reverse { grid-template-columns: 58% 42%; }
+.format.reverse .format-preview { order: 2; }
+
+@media (max-width: 980px) {
+  .format, .format.reverse { grid-template-columns: 1fr; gap: 32px; padding: 56px 0; }
+  .format.reverse .format-preview { order: 0; }
+}
+
+/* Превью отчёта — стилизованная "страница" с мокапом контента */
+.format-preview {
+  position: relative;
+  aspect-ratio: 4 / 5.2;
+  background: var(--white);
+  border: 1px solid var(--grey-line);
+  padding: 32px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  font-size: 9px;
+  letter-spacing: 0.04em;
+  color: var(--grey);
+  position: relative;
+  overflow: hidden;
+}
+.format-preview::after {
+  content: "";
+  position: absolute;
+  top: 0; right: 0;
+  width: 32px; height: 20px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%230A0A0A'%3E%3Cpath d='M 0 0 L 100 0 L 100 100 L 80 100 L 80 20 L 0 20 Z'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+
+.preview-tag {
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--black);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+.preview-tag .dot { width: 8px; height: 8px; background: var(--black); }
+.preview-tag.mod-pers  .dot { background: var(--accent-pers); }
+.preview-tag.mod-mot   .dot { background: var(--accent-mot); }
+.preview-tag.mod-destr .dot { background: var(--accent-destr); }
+
+.preview-h {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--black);
+  letter-spacing: -0.015em;
+  line-height: 1.15;
+  margin-bottom: 4px;
+}
+.preview-h2 {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--black);
+  letter-spacing: -0.005em;
+  margin-bottom: 6px;
+  padding-top: 8px;
+  border-top: 1px solid var(--grey-line);
+}
+
+.preview-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 8px;
+}
+.preview-bar {
+  display: grid;
+  grid-template-columns: 50px 1fr 22px;
+  gap: 8px;
+  align-items: center;
+  font-size: 8px;
+  color: var(--grey-deep);
+}
+.preview-bar .label { font-weight: 500; }
+.preview-bar .track {
+  height: 3px;
+  background: var(--grey-line);
+  position: relative;
+}
+.preview-bar .fill {
+  position: absolute;
+  height: 100%;
+  background: var(--black);
+}
+.preview-bar.mod-pers  .fill { background: var(--accent-pers); }
+.preview-bar.mod-mot   .fill { background: var(--accent-mot); }
+.preview-bar.mod-destr .fill { background: var(--accent-destr); }
+.preview-bar .num {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  text-align: right;
+  font-weight: 600;
+  color: var(--black);
+}
+
+.preview-block {
+  background: var(--grey-soft);
+  padding: 8px 10px;
+  font-size: 8px;
+  line-height: 1.35;
+  color: var(--grey-deep);
+  border-left: 2px solid var(--black);
+}
+.preview-block.mod-pers  { border-left-color: var(--accent-pers); }
+.preview-block.mod-mot   { border-left-color: var(--accent-mot); }
+.preview-block.mod-destr { border-left-color: var(--accent-destr); }
+
+.preview-meta {
+  display: flex;
+  gap: 12px;
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid var(--grey-line);
+  font-size: 8px;
+  color: var(--grey);
+  letter-spacing: 0.04em;
+}
+
+/* Описание формата справа */
+.format-info { padding-top: 8px; }
+.format-num {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--grey);
+  letter-spacing: 0.08em;
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.format-num .chev { width: 14px; height: 9px; color: var(--black); }
+.format-num .total { color: var(--grey-line); }
+.format-info h2 { margin-bottom: 24px; }
+.format-info > .lead {
+  font-size: 19px;
+  line-height: 1.5;
+  color: var(--grey-deep);
+  margin-bottom: 32px;
+  max-width: 560px;
+}
+
+.format-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px 32px;
+  margin-bottom: 28px;
+  padding: 24px 0;
+  border-top: 1px solid var(--grey-line);
+  border-bottom: 1px solid var(--grey-line);
+}
+.format-grid-item .label {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--grey);
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+.format-grid-item .value {
+  font-size: 14px;
+  color: var(--black);
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.format-features {
+  list-style: none;
+  margin-bottom: 28px;
+}
+.format-features li {
+  padding: 12px 0 12px 24px;
+  position: relative;
+  border-bottom: 1px solid var(--grey-line);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--grey-deep);
+}
+.format-features li:last-child { border-bottom: none; }
+.format-features li::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 20px;
+  width: 12px; height: 1.5px;
+  background: var(--black);
+}
+.format-features li strong { color: var(--black); font-weight: 600; }
+
+.format-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.format-link {
+  font-size: 12px;
+  color: var(--black);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--black);
+  padding-bottom: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transition: gap 0.2s ease;
+}
+.format-link:hover { gap: 14px; }
+.format-link .chev { width: 12px; height: 8px; }
+
+/* Принципы отчётов */
+.principles {
+  background: var(--grey-soft);
+  padding: var(--section-py) 0;
+}
+.principles-header { max-width: 720px; margin-bottom: 56px; }
+.principles-header h2 { margin-top: 20px; }
+
+.principles-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--grey-line);
+  border: 1px solid var(--grey-line);
+}
+.principle {
+  background: var(--white);
+  padding: 36px 32px 32px;
+  position: relative;
+  min-height: 220px;
+}
+.principle::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 36px; height: 4px;
+  background: var(--black);
+}
+.principle-num {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--grey);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  margin-bottom: 16px;
+  padding-top: 14px;
+}
+.principle h3 {
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+  color: var(--black);
+  margin-bottom: 12px;
+}
+.principle p {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--grey);
+}
+@media (max-width: 760px) { .principles-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="chev-7" viewBox="0 0 100 100"><path d="M 0 0 L 100 0 L 100 100 L 80 100 L 80 20 L 0 20 Z" fill="currentColor"/></symbol>
+    <symbol id="chev-arrow" viewBox="0 0 14 10"><path d="M 0 0 H 14 V 3 H 3 V 10 H 0 Z" fill="currentColor"/></symbol>
+    <symbol id="chev-mark" viewBox="0 0 22 14"><path d="M 0 0 H 22 V 4 H 4 V 14 H 0 Z" fill="currentColor"/></symbol>
+  </defs>
+</svg>
+
+<nav class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="era-lider.html" class="logo">
+      <svg class="logo-mark"><use href="#chev-7"/></svg>
+      ЭРА<span class="logo-sub">BITOBE</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="era-scenarios.html">Задачи</a></li>
+      <li><a href="era-lider.html#how">Как устроено</a></li>
+      <li><a href="era-methodology.html">Методология</a></li>
+      <li><a href="era-cases.html">Кейсы</a></li>
+      <li><a href="era-lider.html#experts">Эксперты</a></li>
+    </ul>
+    <button class="nav-cta" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">Запросить демо</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="page-hero">
+  <div class="container">
+    <div class="hero-breadcrumbs">
+      <a href="era-lider.html">Главная</a>
+      <span class="sep">/</span>
+      <span class="current">Отчёты</span>
+    </div>
+    <div class="page-hero-grid">
+      <div data-reveal>
+        <div class="eyebrow" style="margin-bottom: 28px;">
+          <svg class="eyebrow-mark"><use href="#chev-mark"/></svg>
+          Форматы отчётов
+        </div>
+        <h1 class="h-hero">
+          Отчёт ЭРА — это <span class="accent-line">рабочий инструмент</span>, а не папка в архиве.
+        </h1>
+        <p class="page-hero-lead">
+          Пять форматов под разные задачи и разных читателей. CEO нужен сводный, HR-методологу — полный, руководителю команды — командный профиль. Все форматы выстроены так, чтобы открыть и сразу понять.
+        </p>
+      </div>
+      <div class="page-hero-meta" data-reveal>
+        <div class="page-hero-meta-item">
+          <div class="label">Форматов отчётов</div>
+          <div class="value">5</div>
+        </div>
+        <div class="page-hero-meta-item">
+          <div class="label">Полный отчёт</div>
+          <div class="value">~30 <span class="dim">страниц</span></div>
+        </div>
+        <div class="page-hero-meta-item">
+          <div class="label">Сводный отчёт</div>
+          <div class="value">5 <span class="dim">страниц</span></div>
+        </div>
+        <div class="page-hero-meta-item">
+          <div class="label">Языки интерпретации</div>
+          <div class="value">RU <span class="dim">/ EN</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Формат 1: Индивидуальный полный отчёт -->
+<section class="formats-section">
+  <div class="container">
+
+    <div class="format" data-reveal>
+      <div class="format-preview">
+        <div class="preview-tag mod-pers"><span class="dot"></span>ОТЧЁТ · ЛИЧНОСТЬ</div>
+        <div class="preview-h">Личностные черты</div>
+        <div style="font-size: 8px; color: var(--grey);">Иванов И. И. · Руководитель направления</div>
+
+        <div class="preview-h2">Шесть факторов HEXACO</div>
+        <div class="preview-bars">
+          <div class="preview-bar mod-pers"><span class="label">H · Честность</span><span class="track"><span class="fill" style="width: 72%"></span></span><span class="num">7.2</span></div>
+          <div class="preview-bar mod-pers"><span class="label">E · Эмоц.</span><span class="track"><span class="fill" style="width: 48%"></span></span><span class="num">4.8</span></div>
+          <div class="preview-bar mod-pers"><span class="label">X · Экстра.</span><span class="track"><span class="fill" style="width: 84%"></span></span><span class="num">8.4</span></div>
+          <div class="preview-bar mod-pers"><span class="label">A · Доброж.</span><span class="track"><span class="fill" style="width: 56%"></span></span><span class="num">5.6</span></div>
+          <div class="preview-bar mod-pers"><span class="label">C · Добросов.</span><span class="track"><span class="fill" style="width: 92%"></span></span><span class="num">9.2</span></div>
+          <div class="preview-bar mod-pers"><span class="label">O · Открыт.</span><span class="track"><span class="fill" style="width: 68%"></span></span><span class="num">6.8</span></div>
+        </div>
+
+        <div class="preview-block mod-pers">Высокая Добросовестность в сочетании с выраженной Экстраверсией формирует профиль активного исполнителя, ориентированного на результат и лидерство...</div>
+
+        <div class="preview-h2">Поведение под давлением</div>
+        <div style="font-size: 8px; color: var(--grey-deep); line-height: 1.4;">При высокой нагрузке профиль с большей вероятностью переходит в паттерн перфекционизма (D.09) с тенденцией к микроменеджменту...</div>
+
+        <div class="preview-meta">
+          <span>Стр. 12 / 28</span>
+          <span style="margin-left: auto;">ЭРА · 2026</span>
+        </div>
+      </div>
+
+      <div class="format-info">
+        <div class="format-num"><svg class="chev"><use href="#chev-mark"/></svg>01<span class="total">/ 05</span></div>
+        <h2 class="h-section">Индивидуальный полный отчёт.</h2>
+        <p class="lead">Полная картина по одному руководителю: личность (HEXACO), мотивация (16 драйверов), стресс-поведение (11 деструкторов). Развёрнутая интерпретация на ~30 страницах.</p>
+        <div class="format-grid">
+          <div class="format-grid-item">
+            <div class="label">Для кого</div>
+            <div class="value">HR-методолог, эксперт ЭРА, сам руководитель</div>
+          </div>
+          <div class="format-grid-item">
+            <div class="label">Объём</div>
+            <div class="value">28–32 страницы</div>
+          </div>
+          <div class="format-grid-item">
+            <div class="label">Готовность</div>
+            <div class="value">В течение суток после прохождения</div>
+          </div>
+          <div class="format-grid-item">
+            <div class="label">Используется</div>
+            <div class="value">На сессии обратной связи + ИПР</div>
+          </div>
+        </div>
+        <ul class="format-features">
+          <li><strong>Шкалы по 30 фасетам</strong> — детализация каждого фактора HEXACO до уровня поддерживающих субшкал</li>
+          <li><strong>Сравнение с нормой</strong> — где находится профиль относительно 5 127 руководителей в нормативной базе</li>
+          <li><strong>Раздел «Поведение под давлением»</strong> — прогнозы по 11 деструкторам с описанием триггеров</li>
+          <li><strong>Раздел «Что развивать»</strong> — конкретные рекомендации, материалы, ИПР-шаблоны</li>
+        </ul>
+        <div class="format-actions">
+          <a href="https://media.era-lider.ru/otchety/era-primer-otcheta-lichnostnye-cherty.pdf" class="format-link">Пример отчёта (PDF) <svg class="chev"><use href="#chev-arrow"/></svg></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Формат 2: Сводный краткий -->
+    <div class="format reverse" data-reveal>
+      <div class="format-info">
+        <div class="format-num"><svg class="chev"><use href="#chev-mark"/></svg>02<span class="total">/ 05</span></div>
+        <h2 class="h-section">Сводный краткий отчёт.</h2>
+        <p class="lead">Пять страниц для CEO или акционера. Без академической детализации — только то, что нужно для принятия конкретного решения по конкретной позиции.</p>
+        <div class="format-grid">
+          <div class="format-grid-item">
+            <div class="label">Для кого</div>
+            <div class="value">CEO, акционер, нанимающий руководитель</div>
+          </div>
+          <div class="format-grid-item">
+            <div class="label">Объём</div>
+            <div class="value">5 страниц</div>
+          </div>
+          <div class="format-grid-item">
+            <div class="label">Время чтения</div>
+            <div class="value">8–10 минут</div>
+          </div>
+          <div class="format-grid-item">
+            <div class="label">Используется</div>
+            <div class="value">Подбор C-level, преемственность</div>
+          </div>
+        </div>
+        <ul class="format-features">
+          <li><strong>Executive summary</strong> — три ключевых вывода, выделенных типографически на первой странице</li>
+          <li><strong>Профиль готовности</strong> — соответствие требованиям конкретной позиции в простой шкале</li>
+          <li><strong>Топ-3 сильных стороны</strong> и <strong>Топ-3 риска</strong> — прямой язык, без жаргона</li>
+          <li><strong>Рекомендация</strong> — однозначное «назначить / назначить с поддержкой / не назначать»</li>
+        </ul>
+        <div class="format-actions">
+          <a href="#" class="format-link">Пример отчёта (PDF) <svg class="chev"><use href="#chev-arrow"/></svg></a>
+        </div>
+      </div>
+
+      <div class="format-preview">
+        <div class="preview-tag"><span class="dot"></span>ОТЧЁТ · СВОДНЫЙ</div>
+        <div class="preview-h">Готовность к&nbsp;роли CEO</div>
+        <div style="font-size: 8px; color: var(--grey);">Кандидат А. · Производственный холдинг · Конф.</div>
+
+        <div class="preview-h2">Executive summary</div>
+        <div class="preview-block">Профиль показывает высокую готовность к роли. Ключевая сильная сторона — стресс-устойчивость в нерегулярных кризисах. Риск — склонность к перфекционизму, ограничивающая делегирование.</div>
+
+        <div class="preview-h2">Топ-3 сильных</div>
+        <div class="preview-bars">
+          <div class="preview-bar"><span class="label">Стресс-уст.</span><span class="track"><span class="fill" style="width: 88%"></span></span><span class="num">8.8</span></div>
+          <div class="preview-bar"><span class="label">Решительн.</span><span class="track"><span class="fill" style="width: 81%"></span></span><span class="num">8.1</span></div>
+          <div class="preview-bar"><span class="label">Этичность</span><span class="track"><span class="fill" style="width: 76%"></span></span><span class="num">7.6</span></div>
+        </div>
+
+        <div class="preview-h2">Топ-3 рисков</div>
+        <div class="preview-bars">
+          <div class="preview-bar mod-destr"><span class="label">Перфекц.</span><span class="track"><span class="fill" style="width: 79%"></span></span><span class="num">7.9</span></div>
+          <div class="preview-bar mod-destr"><span class="label">Ригидность</span><span class="track"><span class="fill" style="width: 62%"></span></span><span class="num">6.2</span></div>
+          <div class="preview-bar mod-destr"><span class="label">Скептицизм</span><span class="track"><span class="fill" style="width: 54%"></span></span><span class="num">5.4</span></div>
+        </div>
+
+        <div class="preview-block" style="border-left-color: var(--black); background: var(--black); color: var(--white);">РЕКОМЕНДАЦИЯ: Назначить с поддержкой коуча в первые 6 мес — на адаптацию стиля делегирования.</div>
+
+        <div class="preview-meta">
+          <span>Стр. 1 / 5</span>
+          <span style="margin-left: auto;">ЭРА · Сводный</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Формат 3: Командный профиль -->
+    <div class="format" data-reveal>
+      <div class="format-preview">
+        <div class="preview-tag mod-mot"><span class="dot"></span>ОТЧЁТ · КОМАНДА</div>
+        <div class="preview-h">Командный профиль</div>
+        <div style="font-size: 8px; color: var(--grey);">Команда снабжения · 12 руководителей</div>
+
+        <div class="preview-h2">Мотивационная конгруэнтность</div>
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-bottom: 8px;">
+          <div style="aspect-ratio: 1; background: var(--accent-mot); opacity: 0.85;"></div>
+          <div style="aspect-ratio: 1; background: var(--accent-mot); opacity: 0.5;"></div>
+          <div style="aspect-ratio: 1; background: var(--accent-mot); opacity: 0.3;"></div>
+          <div style="aspect-ratio: 1; background: var(--accent-mot); opacity: 0.7;"></div>
+          <div style="aspect-ratio: 1; background: var(--accent-mot); opacity: 0.4;"></div>
+          <div style="aspect-ratio: 1; background: var(--accent-mot); opacity: 0.9;"></div>
+          <div style="aspect-ratio: 1; background: var(--accent-mot); opacity: 0.6;"></div>
+          <div style="aspect-ratio: 1; background: var(--accent-mot); opacity: 0.45;"></div>
+        </div>
+        <div style="font-size: 8px; color: var(--grey-deep); line-height: 1.4;">Команда демонстрирует высокую конгруэнтность по мотиватору «Достижение» (8/12 участников) и сильный разрыв по «Автономии».</div>
+
+        <div class="preview-h2">Слепые зоны</div>
+        <div class="preview-block mod-mot">Ни один из участников не имеет высокого балла по мотиватору «Творчество». Это может ограничивать команду на этапе генерации новых решений.</div>
+
+        <div class="preview-h2">Риски кросс-взаимодействия</div>
+        <div style="font-size: 8px; color: var(--grey-deep); line-height: 1.4;">3 пары участников показывают высокий риск конфликта на уровне ценностей: «Структурированность» vs «Творчество», «Власть» vs «Автономия»...</div>
+
+        <div class="preview-meta">
+          <span>Стр. 7 / 18</span>
+          <span style="margin-left: auto;">ЭРА · Команда</span>
+        </div>
+      </div>
+
+      <div class="format-info">
+        <div class="format-num"><svg class="chev"><use href="#chev-mark"/></svg>03<span class="total">/ 05</span></div>
+        <h2 class="h-section">Командный профиль.</h2>
+        <p class="lead">Не среднее арифметическое индивидуальных профилей, а карта взаимодействия. Где взаимные усиления, где конфликты на уровне ценностей, какие компетенции не покрыты.</p>
+        <div class="format-grid">
+          <div class="format-grid-item">
+            <div class="label">Для кого</div>
+            <div class="value">Руководитель команды, HR BP</div>
+          </div>
+          <div class="format-grid-item">
+            <div class="label">Объём команды</div>
+            <div class="value">6–25 человек</div>
+          </div>
+          <div class="format-grid-item">
+            <div class="label">Объём отчёта</div>
+            <div class="value">15–22 страницы</div>
+          </div>
+          <div class="format-grid-item">
+            <div class="label">Используется</div>
+            <div class="value">Диагностика, трансформация</div>
+          </div>
+        </div>
+        <ul class="format-features">
+          <li><strong>Тепловая карта мотивационной конгруэнтности</strong> — по 16 драйверам сразу видно, где команда тянет в одну сторону, а где в разные</li>
+          <li><strong>Слепые зоны</strong> — какие ключевые компетенции не покрыты ни одним участником</li>
+          <li><strong>Карта потенциальных конфликтов</strong> — пары с высоким риском трения по ценностям</li>
+          <li><strong>Рекомендации по перераспределению ответственности</strong> — кто за что должен отвечать с учётом профилей</li>
+        </ul>
+        <div class="format-actions">
+          <a href="https://media.era-lider.ru/otchety/era-primer-komandnogo-otcheta.pdf" class="format-link">Пример отчёта (PDF) <svg class="chev"><use href="#chev-arrow"/></svg></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Формат 4: Профиль роли -->
+    <div class="format reverse" data-reveal>
+      <div class="format-info">
+        <div class="format-num"><svg class="chev"><use href="#chev-mark"/></svg>04<span class="total">/ 05</span></div>
+        <h2 class="h-section">Профиль роли (Profile of Role).</h2>
+        <p class="lead">Целевой профиль для конкретной позиции в конкретной компании. Не «универсальный CEO», а «CEO нашей компании на следующие 3 года стратегии».</p>
+        <div class="format-grid">
+          <div class="format-grid-item">
+            <div class="label">Для кого</div>
+            <div class="value">CEO, акционер, HR-директор</div>
+          </div>
+          <div class="format-grid-item">
+            <div class="label">Срок сборки</div>
+            <div class="value">2–3 недели</div>
+          </div>
+          <div class="format-grid-item">
+            <div class="label">Используется как</div>
+            <div class="value">Бенчмарк для сравнения</div>
+          </div>
+          <div class="format-grid-item">
+            <div class="label">Сценарии</div>
+            <div class="value">Подбор, преемственность, M&amp;A</div>
+          </div>
+        </div>
+        <ul class="format-features">
+          <li><strong>Целевые значения</strong> по каждой шкале HEXACO, мотивации и деструкторам — с диапазонами «оптимально / приемлемо / риск»</li>
+          <li><strong>Весовые коэффициенты</strong> — что важнее для этой роли: устойчивость, креативность, политическая грамотность</li>
+          <li><strong>Gap-анализ</strong> — автоматическое сопоставление кандидатов с целевым профилем</li>
+          <li><strong>Сценарии трансформации профиля</strong> — что делать, если идеального кандидата нет</li>
+        </ul>
+        <div class="format-actions">
+          <a href="#" class="format-link">Пример отчёта (PDF) <svg class="chev"><use href="#chev-arrow"/></svg></a>
+        </div>
+      </div>
+
+      <div class="format-preview">
+        <div class="preview-tag"><span class="dot"></span>ПРОФИЛЬ РОЛИ</div>
+        <div class="preview-h">CEO производственного холдинга</div>
+        <div style="font-size: 8px; color: var(--grey);">Стратегия 2026–2028 · Конф.</div>
+
+        <div class="preview-h2">Целевой профиль HEXACO</div>
+        <div style="display: flex; flex-direction: column; gap: 4px; margin-bottom: 8px;">
+          <div style="position: relative; height: 12px; background: var(--grey-line);">
+            <div style="position: absolute; left: 60%; right: 25%; height: 100%; background: var(--grey-soft); border-left: 1px solid var(--black); border-right: 1px solid var(--black);"></div>
+            <div style="position: absolute; left: 65%; height: 100%; width: 2px; background: var(--black);"></div>
+            <div style="position: absolute; left: -42px; top: 1px; font-size: 8px; font-weight: 500;">H · Честн.</div>
+          </div>
+          <div style="position: relative; height: 12px; background: var(--grey-line);">
+            <div style="position: absolute; left: 25%; right: 50%; height: 100%; background: var(--grey-soft); border-left: 1px solid var(--black); border-right: 1px solid var(--black);"></div>
+            <div style="position: absolute; left: 38%; height: 100%; width: 2px; background: var(--black);"></div>
+            <div style="position: absolute; left: -42px; top: 1px; font-size: 8px; font-weight: 500;">E · Эмоц.</div>
+          </div>
+          <div style="position: relative; height: 12px; background: var(--grey-line);">
+            <div style="position: absolute; left: 50%; right: 15%; height: 100%; background: var(--grey-soft); border-left: 1px solid var(--black); border-right: 1px solid var(--black);"></div>
+            <div style="position: absolute; left: 75%; height: 100%; width: 2px; background: var(--black);"></div>
+            <div style="position: absolute; left: -42px; top: 1px; font-size: 8px; font-weight: 500;">C · Добросов.</div>
+          </div>
+        </div>
+        <div style="font-size: 7px; color: var(--grey); margin-bottom: 8px;">⬛ зона приемлемого · | целевое</div>
+
+        <div class="preview-h2">Веса под стратегию</div>
+        <div class="preview-block">Стресс-устойчивость и решительность — двойной вес. Креативность — нейтрально. Этичность — критично (репутационные риски).</div>
+
+        <div class="preview-h2">Сравнение кандидатов</div>
+        <div class="preview-bars">
+          <div class="preview-bar"><span class="label">Канд. А</span><span class="track"><span class="fill" style="width: 84%"></span></span><span class="num">84%</span></div>
+          <div class="preview-bar"><span class="label">Канд. Б</span><span class="track"><span class="fill" style="width: 67%"></span></span><span class="num">67%</span></div>
+          <div class="preview-bar"><span class="label">Канд. В</span><span class="track"><span class="fill" style="width: 71%"></span></span><span class="num">71%</span></div>
+        </div>
+
+        <div class="preview-meta">
+          <span>Стр. 4 / 14</span>
+          <span style="margin-left: auto;">ЭРА · Profile of Role</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Формат 5: 360°-совместимость -->
+    <div class="format" data-reveal>
+      <div class="format-preview">
+        <div class="preview-tag mod-destr"><span class="dot"></span>360° · СОВМЕСТИМОСТЬ</div>
+        <div class="preview-h">Совместимость в&nbsp;паре</div>
+        <div style="font-size: 8px; color: var(--grey);">CEO ↔ CFO · Промышленный холдинг</div>
+
+        <div class="preview-h2">Зоны взаимного усиления</div>
+        <div class="preview-block">Высокая Добросовестность обоих + взаимодополняющая Экстраверсия (X1=8.4 / X2=4.2). Совместный потенциал в системной операционной работе.</div>
+
+        <div class="preview-h2">Зоны риска</div>
+        <div class="preview-block mod-destr">Конфликт по мотивации «Контроль» (оба — высокие). Риск дублирования зоны ответственности и борьбы за решающий голос. Прогноз: трения на этапе бюджетирования.</div>
+
+        <div class="preview-h2">Поведение в стрессе</div>
+        <div style="font-size: 8px; color: var(--grey-deep); line-height: 1.4;">CEO активирует D.05 (Самонадеянность), CFO — D.09 (Перфекционизм). В сочетании это создаёт паттерн «навязывание решения / увязание в деталях».</div>
+
+        <div class="preview-h2">Рекомендации</div>
+        <div style="font-size: 8px; color: var(--grey-deep); line-height: 1.4;">1. Чётко зафиксировать решающий голос в финансовых решениях. 2. Установить watch-режим на бюджетных циклах. 3. Раз в квартал — синхронизирующая сессия с экспертом ЭРА...</div>
+
+        <div class="preview-meta">
+          <span>Стр. 6 / 11</span>
+          <span style="margin-left: auto;">ЭРА · 360°</span>
+        </div>
+      </div>
+
+      <div class="format-info">
+        <div class="format-num"><svg class="chev"><use href="#chev-mark"/></svg>05<span class="total">/ 05</span></div>
+        <h2 class="h-section">360°-совместимость.</h2>
+        <p class="lead">Парный отчёт по совместимости двух руководителей: CEO ↔ CFO, наставник ↔ преемник, лидер ↔ заместитель. Где взаимное усиление, где предсказуемые трения.</p>
+        <div class="format-grid">
+          <div class="format-grid-item">
+            <div class="label">Для кого</div>
+            <div class="value">Акционер, CEO, HR</div>
+          </div>
+          <div class="format-grid-item">
+            <div class="label">Объём</div>
+            <div class="value">10–14 страниц</div>
+          </div>
+          <div class="format-grid-item">
+            <div class="label">Готовность</div>
+            <div class="value">3–5 дней после двух оценок</div>
+          </div>
+          <div class="format-grid-item">
+            <div class="label">Сценарии</div>
+            <div class="value">Транзит власти, тандемы C-level</div>
+          </div>
+        </div>
+        <ul class="format-features">
+          <li><strong>Карта взаимных усилений</strong> — где профили дополняют друг друга и создают синергию</li>
+          <li><strong>Карта потенциальных конфликтов</strong> — где мотиваторы или деструкторы будут провоцировать друг друга</li>
+          <li><strong>Поведение в стрессе</strong> — какие совместные паттерны активируются под давлением</li>
+          <li><strong>Конкретные рекомендации</strong> — как зафиксировать роли, что синхронизировать, какие триггеры мониторить</li>
+        </ul>
+        <div class="format-actions">
+          <a href="#" class="format-link">Пример отчёта (PDF) <svg class="chev"><use href="#chev-arrow"/></svg></a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Принципы отчётов -->
+<section class="principles">
+  <div class="container">
+    <div class="principles-header" data-reveal>
+      <div class="eyebrow"><svg class="eyebrow-mark"><use href="#chev-mark"/></svg>Принципы отчётов</div>
+      <h2 class="h-section">Что отличает отчёт ЭРА от типового ассессмента.</h2>
+    </div>
+
+    <div class="principles-grid">
+      <div class="principle" data-reveal>
+        <div class="principle-num">01</div>
+        <h3>Без ярлыков и категоризации</h3>
+        <p>Никаких «красный/жёлтый/зелёный», никаких «талантов/середнячков/балласта». Профиль — это система описания, а не приговор. Любой балл интерпретируется в контексте задачи и роли.</p>
+      </div>
+      <div class="principle" data-reveal>
+        <div class="principle-num">02</div>
+        <h3>Язык, на котором можно говорить</h3>
+        <p>Отчёт написан так, чтобы его было не стыдно показать самому руководителю. Никакой клинической терминологии, никаких «дисфункциональных паттернов» — рабочий язык менеджмента.</p>
+      </div>
+      <div class="principle" data-reveal>
+        <div class="principle-num">03</div>
+        <h3>Сразу к рекомендациям</h3>
+        <p>Отчёт без «что с этим делать» — это не инструмент, а статистика. По каждой шкале — конкретные действия: что развивать в работе, какие задачи брать, какие — делегировать, на что обращать внимание.</p>
+      </div>
+      <div class="principle" data-reveal>
+        <div class="principle-num">04</div>
+        <h3>Привязка к российской норме</h3>
+        <p>Все перцентили и сравнения — на нормативной базе российских руководителей (5 127 профилей). Не «международный middle management», а «российский руководитель направления в индустрии Х».</p>
+      </div>
+      <div class="principle" data-reveal>
+        <div class="principle-num">05</div>
+        <h3>Разные форматы — один контент</h3>
+        <p>Сводный краткий, полный, командный, профиль роли — это разные срезы одной и той же базы данных. Не разные тесты, а разные ракурсы. Ключевые факты не противоречат друг другу.</p>
+      </div>
+      <div class="principle" data-reveal>
+        <div class="principle-num">06</div>
+        <h3>Защита от формальной интерпретации</h3>
+        <p>Отчёт работает в связке с сессией обратной связи. Только цифры — это диагноз без лечения. Только разговор — это субъективное мнение. Вместе — рабочий инструмент.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-block" id="cta">
+  <div class="container cta-grid">
+    <div data-reveal>
+      <div class="eyebrow on-dark" style="margin-bottom: 24px;">
+        <svg class="eyebrow-mark" style="color: var(--white)"><use href="#chev-mark"/></svg>
+        Под вашу задачу
+      </div>
+      <h2 class="h-section">Получите <span class="accent-line" style="color:var(--white);">пример отчёта</span> в&nbsp;вашей отрасли.</h2>
+      <p class="lead">На сессии разбора кейса покажем релевантный пример отчёта — обезличенный, под ваш сценарий и масштаб. Не маркетинговый PDF, а реальный рабочий документ из практики ЭРА.</p>
+    </div>
+    <div class="cta-actions" data-reveal>
+      <a href="era-lider.html#cta" class="btn btn-primary">Запросить пример отчёта <svg class="btn-arrow" width="14" height="10"><use href="#chev-arrow"/></svg></a>
+      <a href="era-scenarios.html" class="btn btn-secondary-inverse">Сценарии применения <svg class="btn-arrow" width="14" height="10"><use href="#chev-arrow"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col footer-brand">
+        <a href="era-lider.html" class="logo">
+          <svg class="logo-mark"><use href="#chev-7"/></svg>
+          ЭРА<span class="logo-sub">BITOBE</span>
+        </a>
+        <p>Система оценки руководителей. Продукт семейства BITOBE. Санкт-Петербург, 2026.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Продукт</h4>
+        <ul>
+          <li><a href="era-scenarios.html">Сценарии применения</a></li>
+          <li><a href="era-lider.html#how">Как работает</a></li>
+          <li><a href="era-methodology.html">Методология</a></li>
+          <li><a href="#">Отчёты</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Компания</h4>
+        <ul>
+          <li><a href="era-cases.html">Кейсы</a></li>
+          <li><a href="era-lider.html#experts">Эксперты</a></li>
+          <li><a href="era-certification.html">Сертификация</a></li>
+          <li><a href="era-materials.html">Исследования</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Контакты</h4>
+        <ul>
+          <li><a href="mailto:era@bitobe.ru">era@bitobe.ru</a></li>
+          <li><a href="https://t.me/era_lider">Telegram: @era_lider</a></li>
+          <li><a href="https://bitobe.ru">bitobe.ru ↗</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© ЭРА / BITOBE, 2026 · Реестр РПО №&nbsp;28543</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 40); }, { passive: true });
+  const rev = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); rev.unobserve(e.target); } });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('[data-reveal]').forEach(el => rev.observe(el));
+</script>
+
+</body>
+</html>

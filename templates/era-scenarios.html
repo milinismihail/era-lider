@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Сценарии применения · ЭРА</title>
+<meta name="description" content="6 управленческих задач, в которых ЭРА работает: подбор C-level, преемники, диагностика команды, M&A, выгорание, трансформация.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="era-style.css">
+
+<style>
+/* ========================== Локальные стили страницы Сценарии ========================== */
+
+/* Быстрая навигация по сценариям (sticky) */
+.scenarios-nav {
+  position: sticky;
+  top: 70px;
+  z-index: 50;
+  background: var(--white);
+  border-bottom: 1px solid var(--grey-line);
+  padding: 16px 0;
+}
+.scenarios-nav-inner {
+  display: flex;
+  gap: 28px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--grey-deep);
+}
+.scenarios-nav-inner::-webkit-scrollbar { display: none; }
+.scenarios-nav-inner a {
+  white-space: nowrap;
+  padding: 6px 0;
+  border-bottom: 1px solid transparent;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.scenarios-nav-inner a:hover { color: var(--black); }
+.scenarios-nav-inner a.active { color: var(--black); border-bottom-color: var(--black); }
+.scenarios-nav-inner a .num {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--grey);
+}
+.scenarios-nav-inner a.active .num { color: var(--black); }
+
+/* Один сценарий — большой блок */
+.scenario {
+  padding: clamp(60px, 9vw, 100px) 0;
+  border-top: 1px solid var(--grey-line);
+}
+.scenario:first-of-type { border-top: none; }
+.scenario:nth-child(even) { background: var(--grey-soft); }
+
+.scenario-grid {
+  display: grid;
+  grid-template-columns: 40% 60%;
+  gap: 80px;
+  align-items: start;
+}
+
+.scenario-left {
+  position: sticky;
+  top: 140px;
+}
+.scenario-num {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--grey);
+  letter-spacing: 0.1em;
+  margin-bottom: 18px;
+}
+.scenario-num .chev { width: 16px; height: 11px; color: var(--black); }
+.scenario-num .total { color: var(--grey-line); font-weight: 400; }
+.scenario h2 { margin-bottom: 24px; }
+.scenario-question {
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--grey-deep);
+  margin-bottom: 28px;
+  padding-left: 16px;
+  border-left: 2px solid var(--black);
+  font-weight: 400;
+}
+.scenario-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 24px;
+  margin-bottom: 28px;
+  padding-top: 24px;
+  border-top: 1px solid var(--grey-line);
+}
+.scenario-meta-item .label {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--grey);
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+.scenario-meta-item .value {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--black);
+  line-height: 1.3;
+}
+
+.scenario-btn {
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid var(--black);
+  padding-bottom: 4px;
+  transition: gap 0.2s ease;
+}
+.scenario-btn:hover { gap: 14px; }
+.scenario-btn .chev { width: 12px; height: 8px; }
+
+.scenario-right {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.scenario-block {
+  background: var(--white);
+  padding: 32px;
+  border-left: 3px solid var(--black);
+}
+.scenario:nth-child(even) .scenario-block { background: var(--white); }
+.scenario-block-label {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--grey);
+  margin-bottom: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.scenario-block-label .chev { width: 14px; height: 9px; color: var(--black); }
+.scenario-block h3 {
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.3;
+  color: var(--black);
+  margin-bottom: 14px;
+}
+.scenario-block p {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--grey-deep);
+}
+.scenario-block ul {
+  list-style: none;
+  margin-top: 12px;
+}
+.scenario-block ul li {
+  padding: 10px 0 10px 24px;
+  position: relative;
+  border-bottom: 1px solid var(--grey-line);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--grey-deep);
+}
+.scenario-block ul li:last-child { border-bottom: none; padding-bottom: 0; }
+.scenario-block ul li::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 18px;
+  width: 12px; height: 1.5px;
+  background: var(--black);
+}
+
+/* Цитата клиента */
+.scenario-testimonial {
+  background: var(--grey-soft);
+  padding: 28px 32px;
+  position: relative;
+}
+.scenario:nth-child(even) .scenario-testimonial { background: var(--white); }
+.scenario-testimonial::before {
+  content: "";
+  position: absolute;
+  top: 0; right: 0;
+  width: 28px; height: 18px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%230A0A0A'%3E%3Cpath d='M 0 0 L 100 0 L 100 100 L 80 100 L 80 20 L 0 20 Z'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+.scenario-testimonial-label {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--grey);
+  margin-bottom: 14px;
+  font-weight: 600;
+}
+.scenario-testimonial p {
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--black);
+  font-weight: 400;
+  margin-bottom: 14px;
+}
+.scenario-testimonial-source {
+  font-size: 12px;
+  color: var(--grey);
+  letter-spacing: 0.04em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.scenario-testimonial-source::before {
+  content: "";
+  width: 20px; height: 1px; background: var(--black);
+}
+
+/* Цвет акцента блока — по модулю сценария */
+.scenario.mod-pers .scenario-block { border-left-color: var(--accent-pers); }
+.scenario.mod-mot   .scenario-block { border-left-color: var(--accent-mot); }
+.scenario.mod-destr .scenario-block { border-left-color: var(--accent-destr); }
+.scenario.mod-pers .scenario-num .chev  { color: var(--accent-pers); }
+.scenario.mod-mot   .scenario-num .chev  { color: var(--accent-mot); }
+.scenario.mod-destr .scenario-num .chev  { color: var(--accent-destr); }
+
+@media (max-width: 980px) {
+  .scenario-grid { grid-template-columns: 1fr; gap: 40px; }
+  .scenario-left { position: static; }
+  .scenarios-nav { top: 64px; }
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="chev-7" viewBox="0 0 100 100"><path d="M 0 0 L 100 0 L 100 100 L 80 100 L 80 20 L 0 20 Z" fill="currentColor"/></symbol>
+    <symbol id="chev-arrow" viewBox="0 0 14 10"><path d="M 0 0 H 14 V 3 H 3 V 10 H 0 Z" fill="currentColor"/></symbol>
+    <symbol id="chev-mark" viewBox="0 0 22 14"><path d="M 0 0 H 22 V 4 H 4 V 14 H 0 Z" fill="currentColor"/></symbol>
+  </defs>
+</svg>
+
+<nav class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="era-lider.html" class="logo">
+      <svg class="logo-mark"><use href="#chev-7"/></svg>
+      ЭРА<span class="logo-sub">BITOBE</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#" class="active">Задачи</a></li>
+      <li><a href="era-lider.html#how">Как устроено</a></li>
+      <li><a href="era-methodology.html">Методология</a></li>
+      <li><a href="era-cases.html">Кейсы</a></li>
+      <li><a href="era-lider.html#experts">Эксперты</a></li>
+    </ul>
+    <button class="nav-cta" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">Запросить демо</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="page-hero">
+  <div class="container">
+    <div class="hero-breadcrumbs">
+      <a href="era-lider.html">Главная</a>
+      <span class="sep">/</span>
+      <span class="current">Сценарии применения</span>
+    </div>
+    <div class="page-hero-grid">
+      <div data-reveal>
+        <div class="eyebrow" style="margin-bottom: 28px;">
+          <svg class="eyebrow-mark"><use href="#chev-mark"/></svg>
+          Сценарии применения
+        </div>
+        <h1 class="h-hero">
+          Шесть задач, в&nbsp;которых <span class="accent-line">нельзя ошибиться</span>.
+        </h1>
+        <p class="page-hero-lead">
+          ЭРА работает не «вообще», а на конкретные управленческие решения. Под каждый сценарий — свой комплект отчётов, своя сессия с экспертом, свой формат презентации результатов.
+        </p>
+      </div>
+      <div class="page-hero-meta" data-reveal>
+        <div class="page-hero-meta-item">
+          <div class="label">Сценариев</div>
+          <div class="value">6</div>
+        </div>
+        <div class="page-hero-meta-item">
+          <div class="label">Под одну задачу</div>
+          <div class="value">3 опросника</div>
+        </div>
+        <div class="page-hero-meta-item">
+          <div class="label">Сессия с&nbsp;экспертом</div>
+          <div class="value">60–90 <span class="dim">мин</span></div>
+        </div>
+        <div class="page-hero-meta-item">
+          <div class="label">Срок проекта</div>
+          <div class="value">2–6 <span class="dim">недель</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Sticky навигация по сценариям -->
+<nav class="scenarios-nav" id="scenarios-nav">
+  <div class="container scenarios-nav-inner">
+    <a href="#csuite" class="active"><span class="num">01</span>Подбор C-level</a>
+    <a href="#successors"><span class="num">02</span>Преемники</a>
+    <a href="#team"><span class="num">03</span>Диагностика команды</a>
+    <a href="#mna"><span class="num">04</span>M&amp;A и реструктуризация</a>
+    <a href="#burnout"><span class="num">05</span>Выгорание</a>
+    <a href="#transformation"><span class="num">06</span>Трансформация</a>
+  </div>
+</nav>
+
+<!-- 01 — Подбор на C-level -->
+<section class="scenario mod-pers" id="csuite">
+  <div class="container scenario-grid">
+    <div class="scenario-left" data-reveal>
+      <div class="scenario-num"><svg class="chev"><use href="#chev-mark"/></svg>01<span class="total">/ 06</span></div>
+      <h2 class="h-section">Подбор на C-level.</h2>
+      <p class="scenario-question">Объективный выбор первого лица или директора-направления — без опоры на интуицию, харизму и «лояльность к акционеру».</p>
+      <div class="scenario-meta">
+        <div class="scenario-meta-item">
+          <div class="label">Для кого</div>
+          <div class="value">CEO, акционер, HR-директор</div>
+        </div>
+        <div class="scenario-meta-item">
+          <div class="label">Срок</div>
+          <div class="value">3–4 недели</div>
+        </div>
+        <div class="scenario-meta-item">
+          <div class="label">Формат</div>
+          <div class="value">Индивид. ассессмент</div>
+        </div>
+        <div class="scenario-meta-item">
+          <div class="label">Отчёты</div>
+          <div class="value">Полный + сводный</div>
+        </div>
+      </div>
+      <a href="#cta" class="scenario-btn">Разбор кейса с&nbsp;экспертом <svg class="chev"><use href="#chev-arrow"/></svg></a>
+    </div>
+
+    <div class="scenario-right" data-reveal>
+      <div class="scenario-block">
+        <div class="scenario-block-label"><svg class="chev"><use href="#chev-mark"/></svg>Что измеряем</div>
+        <h3>Стресс-устойчивость, мотивацию под масштаб задачи, готовность к непопулярным решениям.</h3>
+        <p>Кандидат на C-level должен не просто «уметь руководить» — он должен выдерживать давление акционеров, противостоять политическим интригам и принимать решения, которые мало кому понравятся. ЭРА оценивает это через комбинацию HEXACO + 16 мотиваторов + 11 деструкторов.</p>
+        <ul>
+          <li><strong>Личность (HEXACO):</strong> Честность-Смирение, Эмоциональность, Добросовестность — три критичных фактора для C-level</li>
+          <li><strong>Мотивация:</strong> отличаем «власть ради влияния» от «власть ради автономии» и «достижение» от «признания»</li>
+          <li><strong>Деструкторы:</strong> прогнозируем 11 типовых паттернов, которые проявятся под давлением</li>
+        </ul>
+      </div>
+
+      <div class="scenario-block">
+        <div class="scenario-block-label"><svg class="chev"><use href="#chev-mark"/></svg>Как работает в проекте</div>
+        <p>Тестирование 45–60 минут, executive interview с экспертом ЭРА, индивидуальный отчёт + сводный для лица, принимающего решение. Если кандидатов несколько — матрица сравнения по 8 компетенциям CEO с весовыми коэффициентами под задачу.</p>
+      </div>
+
+      <div class="scenario-testimonial">
+        <div class="scenario-testimonial-label">Отзыв клиента</div>
+        <p>Подчеркнули основные сильные стороны и зоны развития руководителя. Удалось составить объективную картину профессионального поведения.</p>
+        <div class="scenario-testimonial-source">АБЗ-Дорстрой, Носанова · 2025</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 — Преемники и кадровый резерв -->
+<section class="scenario mod-mot" id="successors">
+  <div class="container scenario-grid">
+    <div class="scenario-left" data-reveal>
+      <div class="scenario-num"><svg class="chev"><use href="#chev-mark"/></svg>02<span class="total">/ 06</span></div>
+      <h2 class="h-section">Преемники и кадровый резерв.</h2>
+      <p class="scenario-question">Увидеть всех HiPo, а не только громких. Собрать пул преемников на 3 года вперёд — с пониманием, кто на какую позицию готов и за какой срок.</p>
+      <div class="scenario-meta">
+        <div class="scenario-meta-item">
+          <div class="label">Для кого</div>
+          <div class="value">CEO, HR-директор</div>
+        </div>
+        <div class="scenario-meta-item">
+          <div class="label">Срок</div>
+          <div class="value">4–8 недель</div>
+        </div>
+        <div class="scenario-meta-item">
+          <div class="label">Объём</div>
+          <div class="value">15–60 руководителей</div>
+        </div>
+        <div class="scenario-meta-item">
+          <div class="label">Отчёты</div>
+          <div class="value">Профиль роли + ИПР</div>
+        </div>
+      </div>
+      <a href="#cta" class="scenario-btn">Разбор кейса с&nbsp;экспертом <svg class="chev"><use href="#chev-arrow"/></svg></a>
+    </div>
+
+    <div class="scenario-right" data-reveal>
+      <div class="scenario-block">
+        <div class="scenario-block-label"><svg class="chev"><use href="#chev-mark"/></svg>Что измеряем</div>
+        <h3>Готовность к роли — а не «потенциал вообще».</h3>
+        <p>Большинство систем talent-pool отвечают на вопрос «кто молодец». ЭРА отвечает на вопрос «кто готов к конкретной позиции и в какой срок». Через сопоставление профиля кандидата с профилем целевой роли (Profile of Role).</p>
+        <ul>
+          <li><strong>Готовность now:</strong> кандидаты, которых можно назначать в течение 6 месяцев</li>
+          <li><strong>Готовность next:</strong> кандидаты с горизонтом 12–24 месяца + конкретные зоны развития</li>
+          <li><strong>Скрытый потенциал:</strong> те, кого упускают традиционные системы оценки</li>
+        </ul>
+      </div>
+
+      <div class="scenario-block">
+        <div class="scenario-block-label"><svg class="chev"><use href="#chev-mark"/></svg>Что получаете</div>
+        <p>Карта кадрового резерва с 3-уровневой готовностью. Индивидуальные планы развития для каждого участника. Рекомендации по программам обучения, ротациям и менторингу. Возможность повторной оценки через 12 месяцев для трекинга прогресса.</p>
+      </div>
+
+      <div class="scenario-testimonial">
+        <div class="scenario-testimonial-label">Отзыв клиента</div>
+        <p>Результаты тестирования легли в основу индивидуальных планов развития руководителей. ЭРА зарекомендовала себя как качественный, инновационный продукт.</p>
+        <div class="scenario-testimonial-source">Азот, Докучаева</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 — Диагностика команды -->
+<section class="scenario mod-mot" id="team">
+  <div class="container scenario-grid">
+    <div class="scenario-left" data-reveal>
+      <div class="scenario-num"><svg class="chev"><use href="#chev-mark"/></svg>03<span class="total">/ 06</span></div>
+      <h2 class="h-section">Диагностика команды.</h2>
+      <p class="scenario-question">Увидеть команду как систему, а не как сумму анкет. Понять, где зажимы между людьми и где скрытый ресурс.</p>
+      <div class="scenario-meta">
+        <div class="scenario-meta-item">
+          <div class="label">Для кого</div>
+          <div class="value">Руководитель команды</div>
+        </div>
+        <div class="scenario-meta-item">
+          <div class="label">Срок</div>
+          <div class="value">3–5 недель</div>
+        </div>
+        <div class="scenario-meta-item">
+          <div class="label">Размер команды</div>
+          <div class="value">6–25 человек</div>
+        </div>
+        <div class="scenario-meta-item">
+          <div class="label">Отчёт</div>
+          <div class="value">Командный профиль</div>
+        </div>
+      </div>
+      <a href="#cta" class="scenario-btn">Разбор кейса с&nbsp;экспертом <svg class="chev"><use href="#chev-arrow"/></svg></a>
+    </div>
+
+    <div class="scenario-right" data-reveal>
+      <div class="scenario-block">
+        <div class="scenario-block-label"><svg class="chev"><use href="#chev-mark"/></svg>Что измеряем</div>
+        <h3>Командную динамику: где взаимные усиления и где конфликты на уровне ценностей.</h3>
+        <p>Командный профиль ЭРА — не среднее арифметическое индивидуальных профилей. Это карта взаимодействия: как отдельные паттерны участников складываются в общее поведение команды. Где разрывы в мотивации, где совместимость в стилях, где деструкторы будут провоцировать друг друга.</p>
+        <ul>
+          <li>Карта мотивационной конгруэнтности — кто тянет в одну сторону, кто в разные</li>
+          <li>Паттерны принятия решений — как команда работает с конфликтом и неопределённостью</li>
+          <li>Слепые зоны — какие компетенции не покрыты ни одним из участников</li>
+          <li>Риски выгорания и ухода — кого надо подстраховать первым</li>
+        </ul>
+      </div>
+
+      <div class="scenario-testimonial">
+        <div class="scenario-testimonial-label">Отзыв клиента</div>
+        <p>Итоговые командные отчёты дали детальную характеристику каждой из команд. Выявлен потенциал и зоны роста, рекомендации по работе с каждым сотрудником и кросс-функциональному взаимодействию.</p>
+        <div class="scenario-testimonial-source">Газпромнефть Снабжение, Хакимова · 2023</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 — M&A и реструктуризация -->
+<section class="scenario mod-destr" id="mna">
+  <div class="container scenario-grid">
+    <div class="scenario-left" data-reveal>
+      <div class="scenario-num"><svg class="chev"><use href="#chev-mark"/></svg>04<span class="total">/ 06</span></div>
+      <h2 class="h-section">M&amp;A и реструктуризация.</h2>
+      <p class="scenario-question">Решить, кто остаётся в новой структуре, а кто уходит. Собрать команду под новый периметр без политических потерь и без публичных скандалов.</p>
+      <div class="scenario-meta">
+        <div class="scenario-meta-item">
+          <div class="label">Для кого</div>
+          <div class="value">Акционер, M&amp;A-команда</div>
+        </div>
+        <div class="scenario-meta-item">
+          <div class="label">Срок</div>
+          <div class="value">5–10 недель</div>
+        </div>
+        <div class="scenario-meta-item">
+          <div class="label">Конфиденциальность</div>
+          <div class="value">NDA-режим</div>
+        </div>
+        <div class="scenario-meta-item">
+          <div class="label">Отчёты</div>
+          <div class="value">Под NDA, ограничен. доступ</div>
+        </div>
+      </div>
+      <a href="#cta" class="scenario-btn">Разбор кейса с&nbsp;экспертом <svg class="chev"><use href="#chev-arrow"/></svg></a>
+    </div>
+
+    <div class="scenario-right" data-reveal>
+      <div class="scenario-block">
+        <div class="scenario-block-label"><svg class="chev"><use href="#chev-mark"/></svg>Что измеряем</div>
+        <h3>Стрессовые паттерны под давлением неопределённости — то, что не видно в обычной работе.</h3>
+        <p>Реструктуризация — это длительный пик стресса для всей команды. Один и тот же руководитель в стабильной ситуации и в M&amp;A показывает себя по-разному. Деструкторы ЭРА (D.01–D.11) точно прогнозируют, как именно «сломается» каждый — кто уйдёт в самосаботаж, кто в манипуляции, кто закроется, кто пойдёт в открытый конфликт.</p>
+        <ul>
+          <li>Карта рисков по каждому ключевому руководителю на период transition</li>
+          <li>Прогноз политических коалиций в новой структуре</li>
+          <li>Рекомендации по последовательности коммуникаций</li>
+        </ul>
+      </div>
+
+      <div class="scenario-block">
+        <div class="scenario-block-label"><svg class="chev"><use href="#chev-mark"/></svg>Режим работы</div>
+        <p>Все материалы — под NDA. Доступ к отчётам только у акционера и руководителя M&amp;A-проекта. Расширенная шкала социальной желательности (для контроля защитных ответов в кризисной ситуации). Возможность повторной оценки через 6 месяцев после завершения сделки.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 — Выгорание и риск ухода -->
+<section class="scenario mod-destr" id="burnout">
+  <div class="container scenario-grid">
+    <div class="scenario-left" data-reveal>
+      <div class="scenario-num"><svg class="chev"><use href="#chev-mark"/></svg>05<span class="total">/ 06</span></div>
+      <h2 class="h-section">Выгорание и риск ухода.</h2>
+      <p class="scenario-question">Распознать выгорание до заявления об уходе, а не после. Сохранить ключевых людей, пока не поздно.</p>
+      <div class="scenario-meta">
+        <div class="scenario-meta-item">
+          <div class="label">Для кого</div>
+          <div class="value">CEO, HR-директор</div>
+        </div>
+        <div class="scenario-meta-item">
+          <div class="label">Срок</div>
+          <div class="value">2–3 недели</div>
+        </div>
+        <div class="scenario-meta-item">
+          <div class="label">Формат</div>
+          <div class="value">Индивид. + командный</div>
+        </div>
+        <div class="scenario-meta-item">
+          <div class="label">Бенчмарк</div>
+          <div class="value">5 000+ профилей</div>
+        </div>
+      </div>
+      <a href="#cta" class="scenario-btn">Разбор кейса с&nbsp;экспертом <svg class="chev"><use href="#chev-arrow"/></svg></a>
+    </div>
+
+    <div class="scenario-right" data-reveal>
+      <div class="scenario-block">
+        <div class="scenario-block-label"><svg class="chev"><use href="#chev-mark"/></svg>Что измеряем</div>
+        <h3>Сочетание мотивационного истощения и активации деструкторов — раннее предупреждение.</h3>
+        <p>Выгорание — это не «усталость», это специфический паттерн в данных оценки. Ключевые маркеры: падение мотиваторов «развитие» и «активность», рост деструкторов «отстранённость» (D.03), «эмоциональная нестабильность» (D.01), смещение шкал HEXACO. ЭРА умеет это видеть на ранней стадии — за 6–12 месяцев до возможного ухода.</p>
+        <ul>
+          <li>Сопоставление текущего профиля с базовым (если есть оценка 1–2 года назад)</li>
+          <li>Сравнение с отраслевым бенчмарком 5 000+ профилей</li>
+          <li>Конкретные действия по удержанию: что менять в задачах, в окружении, в формате работы</li>
+        </ul>
+      </div>
+
+      <div class="scenario-testimonial">
+        <div class="scenario-testimonial-label">Из материалов команды</div>
+        <p>Благодаря оценке ЭРА бизнес-лидеры смогли взглянуть на себя со стороны, почувствовать внутренние точки опоры, найти ресурс для новых прорывов и обнаружить зоны для возможного развития.</p>
+        <div class="scenario-testimonial-source">i-Teco</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 — Трансформация -->
+<section class="scenario mod-pers" id="transformation">
+  <div class="container scenario-grid">
+    <div class="scenario-left" data-reveal>
+      <div class="scenario-num"><svg class="chev"><use href="#chev-mark"/></svg>06<span class="total">/ 06</span></div>
+      <h2 class="h-section">Стратегическая трансформация.</h2>
+      <p class="scenario-question">Понять, кто потянет следующий этап развития бизнеса, а кто — уже не сможет. Перераспределить ответственность под новую стратегию.</p>
+      <div class="scenario-meta">
+        <div class="scenario-meta-item">
+          <div class="label">Для кого</div>
+          <div class="value">CEO, борд</div>
+        </div>
+        <div class="scenario-meta-item">
+          <div class="label">Срок</div>
+          <div class="value">6–12 недель</div>
+        </div>
+        <div class="scenario-meta-item">
+          <div class="label">Формат</div>
+          <div class="value">Команда + индивидуальные</div>
+        </div>
+        <div class="scenario-meta-item">
+          <div class="label">Сопровождение</div>
+          <div class="value">Коуч-сессии 3–6 мес</div>
+        </div>
+      </div>
+      <a href="#cta" class="scenario-btn">Разбор кейса с&nbsp;экспертом <svg class="chev"><use href="#chev-arrow"/></svg></a>
+    </div>
+
+    <div class="scenario-right" data-reveal>
+      <div class="scenario-block">
+        <div class="scenario-block-label"><svg class="chev"><use href="#chev-mark"/></svg>Что измеряем</div>
+        <h3>Совместимость текущей команды с целевой стратегией. Где придётся менять людей, а где — задачи.</h3>
+        <p>Трансформация бизнеса — это всегда трансформация команды. Не каждый, кто был успешен в фазе роста, потянет фазу масштабирования. Не каждый, кто хорошо «строит», умеет «оптимизировать». ЭРА сопоставляет профили команды с требованиями новой стратегии и показывает gap-зоны.</p>
+        <ul>
+          <li>Профиль роли под новую стратегию (Profile of Role)</li>
+          <li>Gap-анализ между текущей командой и целевыми требованиями</li>
+          <li>Сценарии: ротация, обучение, замена — по каждой ключевой позиции</li>
+          <li>Программа коуч-сопровождения на 3–6 месяцев перехода</li>
+        </ul>
+      </div>
+
+      <div class="scenario-testimonial">
+        <div class="scenario-testimonial-label">Отзыв клиента</div>
+        <p>Выявленные деструкторы позволили увеличить скорость движения команды и снизить сопротивление управленцев. Удалось осознать, почему некоторые руководители были против стратегического плана, и перераспределить зоны ответственности.</p>
+        <div class="scenario-testimonial-source">Секретория</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-block" id="cta">
+  <div class="container cta-grid">
+    <div data-reveal>
+      <div class="eyebrow on-dark" style="margin-bottom: 24px;">
+        <svg class="eyebrow-mark" style="color: var(--white)"><use href="#chev-mark"/></svg>
+        Ваш сценарий
+      </div>
+      <h2 class="h-section">Разберём <span class="accent-line" style="color:var(--white);">ваш кейс</span> на&nbsp;60-минутной сессии.</h2>
+      <p class="lead">Соберём пример отчёта, релевантный вашей задаче. Покажем на конкретике, как ЭРА работает в вашем сценарии. Без обязательств — только содержательный разговор с экспертом.</p>
+    </div>
+    <div class="cta-actions" data-reveal>
+      <a href="era-lider.html#cta" class="btn btn-primary">Записаться на разбор кейса <svg class="btn-arrow" width="14" height="10"><use href="#chev-arrow"/></svg></a>
+      <a href="era-lider.html#cta" class="btn btn-secondary-inverse">Получить презентацию с&nbsp;ценами <svg class="btn-arrow" width="14" height="10"><use href="#chev-arrow"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col footer-brand">
+        <a href="era-lider.html" class="logo">
+          <svg class="logo-mark"><use href="#chev-7"/></svg>
+          ЭРА<span class="logo-sub">BITOBE</span>
+        </a>
+        <p>Система оценки руководителей. Продукт семейства BITOBE. Санкт-Петербург, 2026.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Продукт</h4>
+        <ul>
+          <li><a href="#">Сценарии применения</a></li>
+          <li><a href="era-lider.html#how">Как работает</a></li>
+          <li><a href="era-methodology.html">Методология</a></li>
+          <li><a href="era-reports.html">Отчёты</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Компания</h4>
+        <ul>
+          <li><a href="era-cases.html">Кейсы</a></li>
+          <li><a href="era-lider.html#experts">Эксперты</a></li>
+          <li><a href="era-certification.html">Сертификация</a></li>
+          <li><a href="era-materials.html">Исследования</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Контакты</h4>
+        <ul>
+          <li><a href="mailto:era@bitobe.ru">era@bitobe.ru</a></li>
+          <li><a href="https://t.me/era_lider">Telegram: @era_lider</a></li>
+          <li><a href="https://bitobe.ru">bitobe.ru ↗</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© ЭРА / BITOBE, 2026 · Реестр РПО №&nbsp;28543</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 40); }, { passive: true });
+
+  // Подсветка активного сценария в sticky-нав
+  const navLinks = document.querySelectorAll('.scenarios-nav-inner a');
+  const sections = document.querySelectorAll('.scenario[id]');
+  const setActive = (id) => navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + id));
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) setActive(e.target.id); });
+  }, { rootMargin: '-30% 0px -60% 0px' });
+  sections.forEach(s => io.observe(s));
+
+  // Reveal
+  const rev = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); rev.unobserve(e.target); } });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('[data-reveal]').forEach(el => rev.observe(el));
+</script>
+
+</body>
+</html>

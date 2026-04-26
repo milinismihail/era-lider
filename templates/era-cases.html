@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Кейсы ЭРА · Доказательства</title>
+<meta name="description" content="Кейсы и отзывы клиентов ЭРА. Производственные холдинги, нефтегаз, инфраструктура, ИТ. Преемственность, командные диагностики, M&A.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="era-style.css">
+
+<style>
+/* ========================== Локальные стили "Кейсы" ========================== */
+
+/* Фильтры */
+.filters {
+  position: sticky;
+  top: 70px;
+  z-index: 50;
+  background: var(--white);
+  border-bottom: 1px solid var(--grey-line);
+  padding: 18px 0;
+}
+.filters-row {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+.filters-label {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--grey);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: 8px;
+}
+.filters-label .chev { width: 14px; height: 9px; color: var(--black); }
+
+.filter-group {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+.filter-btn {
+  padding: 6px 0;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--grey-deep);
+  background: none;
+  border: none;
+  border-bottom: 1px solid transparent;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s ease;
+  letter-spacing: 0;
+}
+.filter-btn:hover { color: var(--black); }
+.filter-btn.active { color: var(--black); border-bottom-color: var(--black); font-weight: 600; }
+.filters-divider { width: 1px; height: 18px; background: var(--grey-line); }
+
+@media (max-width: 760px) {
+  .filters { top: 64px; }
+  .filters-row { gap: 16px; }
+  .filter-group { gap: 12px; flex-wrap: wrap; }
+}
+
+/* Flagship кейсы */
+.flagship-section {
+  padding: clamp(64px, 9vw, 100px) 0 0;
+}
+.flagship-header {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 80px; align-items: end; margin-bottom: 56px;
+}
+.flagship-header h2 { margin-top: 20px; }
+.flagship-header .lead { color: var(--grey); font-size: 16px; line-height: 1.6; max-width: 460px; }
+@media (max-width: 900px) { .flagship-header { grid-template-columns: 1fr; gap: 24px; } }
+
+.flagship-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.flagship {
+  background: var(--grey-soft);
+  padding: 48px clamp(28px, 4vw, 48px);
+  display: grid;
+  grid-template-columns: 280px 1fr auto;
+  gap: 48px;
+  align-items: start;
+  border-top: 4px solid var(--black);
+  position: relative;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.flagship.flagship-mod-pers  { border-top-color: var(--accent-pers); }
+.flagship.flagship-mod-mot   { border-top-color: var(--accent-mot); }
+.flagship.flagship-mod-destr { border-top-color: var(--accent-destr); }
+.flagship::after {
+  content: "";
+  position: absolute;
+  top: -4px; right: 0;
+  width: 56px; height: 36px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%230A0A0A'%3E%3Cpath d='M 0 0 L 100 0 L 100 100 L 80 100 L 80 20 L 0 20 Z'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+.flagship.is-hidden { display: none; }
+
+.flagship-meta {
+  position: relative;
+}
+.flagship-num {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--grey);
+  letter-spacing: 0.08em;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.flagship-num .chev { width: 14px; height: 9px; color: var(--black); }
+.flagship-company {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+.flagship-logo {
+  width: 56px; height: 56px;
+  background: var(--white);
+  color: var(--black);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  border: 1px solid var(--grey-line);
+  text-align: center;
+  line-height: 1.1;
+  flex-shrink: 0;
+}
+.flagship-company-info .name { font-weight: 600; font-size: 15px; color: var(--black); letter-spacing: -0.01em; line-height: 1.25; }
+.flagship-company-info .industry { font-size: 11px; color: var(--grey); letter-spacing: 0.12em; text-transform: uppercase; font-weight: 500; margin-top: 4px; }
+
+.flagship-tags {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--grey);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 500;
+  padding-top: 18px;
+  border-top: 1px solid var(--grey-line);
+}
+.flagship-tags-row { display: flex; gap: 8px; align-items: baseline; }
+.flagship-tags .label { color: var(--grey); flex-shrink: 0; min-width: 80px; }
+.flagship-tags .value { color: var(--black); font-weight: 600; }
+
+.flagship-body h3 {
+  font-size: clamp(22px, 2.4vw, 28px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.18;
+  color: var(--black);
+  margin-bottom: 20px;
+  max-width: 720px;
+}
+.flagship-body .summary {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--grey-deep);
+  margin-bottom: 24px;
+  max-width: 720px;
+}
+.flagship-quote {
+  padding: 20px 24px;
+  background: var(--white);
+  border-left: 3px solid var(--black);
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--black);
+  margin-bottom: 24px;
+  max-width: 720px;
+}
+.flagship-mod-pers  .flagship-quote { border-left-color: var(--accent-pers); }
+.flagship-mod-mot   .flagship-quote { border-left-color: var(--accent-mot); }
+.flagship-mod-destr .flagship-quote { border-left-color: var(--accent-destr); }
+.flagship-quote-source {
+  display: block;
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--grey);
+  letter-spacing: 0.04em;
+}
+
+.flagship-results {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 28px;
+  padding-top: 24px;
+  border-top: 1px solid var(--grey-line);
+  max-width: 720px;
+}
+.flagship-result .num {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1;
+  color: var(--black);
+  margin-bottom: 8px;
+}
+.flagship-result .desc {
+  font-size: 12px;
+  color: var(--grey);
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+}
+
+.flagship-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: flex-end;
+}
+.flagship-actions .btn { padding: 14px 22px; font-size: 13px; }
+
+@media (max-width: 1100px) {
+  .flagship { grid-template-columns: 1fr; gap: 32px; }
+  .flagship-actions { flex-direction: row; align-items: flex-start; }
+  .flagship-results { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+}
+
+/* Стена благодарностей */
+.wall-section {
+  padding: var(--section-py) 0;
+}
+.wall-header {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 80px; align-items: end; margin-bottom: 56px;
+}
+.wall-header .lead { color: var(--grey); font-size: 16px; line-height: 1.6; max-width: 460px; }
+.wall-header h2 { margin-top: 20px; }
+@media (max-width: 900px) { .wall-header { grid-template-columns: 1fr; gap: 24px; } }
+
+.wall-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--grey-line);
+  border: 1px solid var(--grey-line);
+}
+.wall-card {
+  background: var(--white);
+  padding: 32px 28px 28px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  min-height: 260px;
+  transition: opacity 0.3s ease;
+}
+.wall-card.is-hidden { display: none; }
+.wall-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 28px; height: 4px;
+  background: var(--black);
+}
+.wall-card.mod-pers::before  { background: var(--accent-pers); }
+.wall-card.mod-mot::before   { background: var(--accent-mot); }
+.wall-card.mod-destr::before { background: var(--accent-destr); }
+
+.wall-tag {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--grey);
+  font-weight: 600;
+  padding-top: 14px;
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: space-between;
+}
+.wall-tag .industry { color: var(--black); }
+
+.wall-quote {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--black);
+  margin-bottom: 20px;
+  flex: 1;
+}
+.wall-source {
+  font-size: 11px;
+  color: var(--grey);
+  letter-spacing: 0.04em;
+  padding-top: 16px;
+  border-top: 1px solid var(--grey-line);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.wall-source .name { font-weight: 600; color: var(--black); letter-spacing: -0.01em; font-size: 13px; }
+.wall-source .scenario { color: var(--grey); }
+
+@media (max-width: 900px) { .wall-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .wall-grid { grid-template-columns: 1fr; } }
+
+/* Empty state для фильтров */
+.empty-state {
+  padding: 80px 32px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--grey);
+  display: none;
+}
+.empty-state.is-shown { display: block; }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="chev-7" viewBox="0 0 100 100"><path d="M 0 0 L 100 0 L 100 100 L 80 100 L 80 20 L 0 20 Z" fill="currentColor"/></symbol>
+    <symbol id="chev-arrow" viewBox="0 0 14 10"><path d="M 0 0 H 14 V 3 H 3 V 10 H 0 Z" fill="currentColor"/></symbol>
+    <symbol id="chev-mark" viewBox="0 0 22 14"><path d="M 0 0 H 22 V 4 H 4 V 14 H 0 Z" fill="currentColor"/></symbol>
+  </defs>
+</svg>
+
+<nav class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="era-lider.html" class="logo">
+      <svg class="logo-mark"><use href="#chev-7"/></svg>
+      ЭРА<span class="logo-sub">BITOBE</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="era-scenarios.html">Задачи</a></li>
+      <li><a href="era-lider.html#how">Как устроено</a></li>
+      <li><a href="era-methodology.html">Методология</a></li>
+      <li><a href="#" class="active">Кейсы</a></li>
+      <li><a href="era-lider.html#experts">Эксперты</a></li>
+    </ul>
+    <button class="nav-cta" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">Запросить демо</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="page-hero">
+  <div class="container">
+    <div class="hero-breadcrumbs">
+      <a href="era-lider.html">Главная</a>
+      <span class="sep">/</span>
+      <span class="current">Кейсы</span>
+    </div>
+    <div class="page-hero-grid">
+      <div data-reveal>
+        <div class="eyebrow" style="margin-bottom: 28px;">
+          <svg class="eyebrow-mark"><use href="#chev-mark"/></svg>
+          Доказательства
+        </div>
+        <h1 class="h-hero">
+          Что было, что мы&nbsp;сделали, что&nbsp;<span class="accent-line">получилось</span>.
+        </h1>
+        <p class="page-hero-lead">
+          Пять флагманских кейсов в подробном формате и стена благодарностей от клиентов: нефтегаз, металлургия, инфраструктура, ИТ. Фильтры по отрасли и сценарию помогут найти близкое к вашей задаче.
+        </p>
+      </div>
+      <div class="page-hero-meta" data-reveal>
+        <div class="page-hero-meta-item">
+          <div class="label">Flagship-кейсов</div>
+          <div class="value">5</div>
+        </div>
+        <div class="page-hero-meta-item">
+          <div class="label">Благодарств. писем</div>
+          <div class="value">12+</div>
+        </div>
+        <div class="page-hero-meta-item">
+          <div class="label">Отраслей</div>
+          <div class="value">7+</div>
+        </div>
+        <div class="page-hero-meta-item">
+          <div class="label">Лет в&nbsp;продакшене</div>
+          <div class="value">4 <span class="dim">года</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Фильтры -->
+<nav class="filters" id="filters">
+  <div class="container filters-row">
+    <div class="filters-label"><svg class="chev"><use href="#chev-mark"/></svg>Фильтр</div>
+    <div class="filter-group" data-filter-group="industry">
+      <button class="filter-btn active" data-filter="all">Все отрасли</button>
+      <button class="filter-btn" data-filter="oilgas">Нефтегаз</button>
+      <button class="filter-btn" data-filter="industry">Промышленность</button>
+      <button class="filter-btn" data-filter="infra">Инфраструктура</button>
+      <button class="filter-btn" data-filter="it">ИТ и услуги</button>
+    </div>
+    <div class="filters-divider"></div>
+    <div class="filter-group" data-filter-group="scenario">
+      <button class="filter-btn active" data-filter="all">Все сценарии</button>
+      <button class="filter-btn" data-filter="csuite">C-level</button>
+      <button class="filter-btn" data-filter="team">Команда</button>
+      <button class="filter-btn" data-filter="dev">Развитие</button>
+      <button class="filter-btn" data-filter="transform">Трансформация</button>
+    </div>
+  </div>
+</nav>
+
+<!-- Flagship кейсы -->
+<section class="flagship-section">
+  <div class="container">
+    <div class="flagship-header" data-reveal>
+      <div>
+        <div class="eyebrow"><svg class="eyebrow-mark"><use href="#chev-mark"/></svg>Флагманские кейсы</div>
+        <h2 class="h-section">В деталях: контекст, действия, результат.</h2>
+      </div>
+      <p class="lead">Пять кейсов, в которых ЭРА работала на крупное управленческое решение. Контекст не всегда раскрывается полностью (NDA), но методика, цитаты и результаты — достоверны.</p>
+    </div>
+
+    <div class="flagship-list" id="flagship-list">
+
+      <!-- Кейс 1: Производственный холдинг — подбор преемника -->
+      <article class="flagship flagship-mod-pers" data-industry="industry" data-scenario="csuite" data-reveal>
+        <div class="flagship-meta">
+          <div class="flagship-num"><svg class="chev"><use href="#chev-mark"/></svg>01 / 05</div>
+          <div class="flagship-company">
+            <div class="flagship-logo">ПХ</div>
+            <div class="flagship-company-info">
+              <div class="name">Производственный холдинг</div>
+              <div class="industry">Металлургия · 12 000 чел.</div>
+            </div>
+          </div>
+          <div class="flagship-tags">
+            <div class="flagship-tags-row"><span class="label">Сценарий</span><span class="value">C-level</span></div>
+            <div class="flagship-tags-row"><span class="label">Отрасль</span><span class="value">Промышленность</span></div>
+            <div class="flagship-tags-row"><span class="label">Срок</span><span class="value">14 мес transition</span></div>
+            <div class="flagship-tags-row"><span class="label">Год</span><span class="value">2023–2025</span></div>
+          </div>
+        </div>
+
+        <div class="flagship-body">
+          <h3>Подбор преемника CEO. Четыре внутренних кандидата — выбор по данным, не по «ощущению».</h3>
+          <p class="summary">Уход CEO через 14 месяцев. Четыре директора с сопоставимыми track record. Оценка ЭРА для всех четверых + executive interview. Сведение в матрицу сравнения по 8 компетенциям CEO с весовыми коэффициентами под стратегию холдинга.</p>
+          <div class="flagship-quote">
+            Победивший кандидат — не тот, кого бы выбрали интуитивно. Стресс-профиль и мотивационная карта однозначно указали на устойчивость и готовность к масштабу. Три других — остались в команде с ИПР под конкретные зоны роста.
+            <span class="flagship-quote-source">— из методического разбора кейса (с разрешения клиента)</span>
+          </div>
+          <div class="flagship-results">
+            <div class="flagship-result"><div class="num">0</div><div class="desc">Уходов в&nbsp;C-level за&nbsp;период transition</div></div>
+            <div class="flagship-result"><div class="num">+18%</div><div class="desc">EBITDA за&nbsp;два&nbsp;года после назначения</div></div>
+            <div class="flagship-result"><div class="num">94%</div><div class="desc">NPS команды по&nbsp;оценке нового&nbsp;CEO</div></div>
+            <div class="flagship-result"><div class="num">×3</div><div class="desc">Скорость стратегических решений</div></div>
+          </div>
+        </div>
+
+        <div class="flagship-actions">
+          <a href="#" class="btn btn-secondary">Подробнее <svg class="btn-arrow" width="14" height="10"><use href="#chev-arrow"/></svg></a>
+        </div>
+      </article>
+
+      <!-- Кейс 2: АБЗ-1 -->
+      <article class="flagship flagship-mod-pers" data-industry="infra" data-scenario="dev" data-reveal>
+        <div class="flagship-meta">
+          <div class="flagship-num"><svg class="chev"><use href="#chev-mark"/></svg>02 / 05</div>
+          <div class="flagship-company">
+            <div class="flagship-logo">АБЗ<br>1</div>
+            <div class="flagship-company-info">
+              <div class="name">Группа АБЗ-1</div>
+              <div class="industry">Дорожное стр-во · СПб</div>
+            </div>
+          </div>
+          <div class="flagship-tags">
+            <div class="flagship-tags-row"><span class="label">Сценарий</span><span class="value">Развитие</span></div>
+            <div class="flagship-tags-row"><span class="label">Отрасль</span><span class="value">Инфраструктура</span></div>
+            <div class="flagship-tags-row"><span class="label">Формат</span><span class="value">Индивид. оценка</span></div>
+            <div class="flagship-tags-row"><span class="label">Год</span><span class="value">2025</span></div>
+          </div>
+        </div>
+
+        <div class="flagship-body">
+          <h3>Объективная картина профессионального поведения для развития руководителя.</h3>
+          <p class="summary">Фокусная индивидуальная оценка одного руководителя в составе группы АБЗ-1. Три опросника + сессия обратной связи с экспертом ЭРА. Результаты легли в основу индивидуального плана развития под бизнес-задачи дорожно-строительного направления.</p>
+          <div class="flagship-quote">
+            Удалось составить объективную картину профессионального поведения руководителя — подчеркнули основные сильные стороны и зоны развития.
+            <span class="flagship-quote-source">— АБЗ-Дорстрой, Носанова · 2025</span>
+          </div>
+          <div class="flagship-results">
+            <div class="flagship-result"><div class="num">3</div><div class="desc">Опросника + сессия обратной связи</div></div>
+            <div class="flagship-result"><div class="num">ИПР</div><div class="desc">Под конкретные бизнес-задачи</div></div>
+            <div class="flagship-result"><div class="num">90 мин</div><div class="desc">Сессия с&nbsp;экспертом ЭРА</div></div>
+            <div class="flagship-result"><div class="num">1:1</div><div class="desc">Формат — фокус на&nbsp;руководителе</div></div>
+          </div>
+        </div>
+
+        <div class="flagship-actions">
+          <a href="https://media.era-lider.ru/blagodarnosti/otzyv-abz-dorstroj-nosanova-01-2025.pdf" class="btn btn-secondary">Письмо (PDF) <svg class="btn-arrow" width="14" height="10"><use href="#chev-arrow"/></svg></a>
+        </div>
+      </article>
+
+      <!-- Кейс 3: Газпромнефть Снабжение -->
+      <article class="flagship flagship-mod-mot" data-industry="oilgas" data-scenario="team" data-reveal>
+        <div class="flagship-meta">
+          <div class="flagship-num"><svg class="chev"><use href="#chev-mark"/></svg>03 / 05</div>
+          <div class="flagship-company">
+            <div class="flagship-logo">ГПН<br>Снаб</div>
+            <div class="flagship-company-info">
+              <div class="name">Газпромнефть Снабжение</div>
+              <div class="industry">Нефтегаз · b2b закупки</div>
+            </div>
+          </div>
+          <div class="flagship-tags">
+            <div class="flagship-tags-row"><span class="label">Сценарий</span><span class="value">Команда</span></div>
+            <div class="flagship-tags-row"><span class="label">Отрасль</span><span class="value">Нефтегаз</span></div>
+            <div class="flagship-tags-row"><span class="label">Объём</span><span class="value">3 команды</span></div>
+            <div class="flagship-tags-row"><span class="label">Год</span><span class="value">2023</span></div>
+          </div>
+        </div>
+
+        <div class="flagship-body">
+          <h3>Командные отчёты как основа для перераспределения ответственности.</h3>
+          <p class="summary">Диагностика трёх управленческих команд внутри блока снабжения. Командные профили, тепловые карты мотивационной конгруэнтности, рекомендации по кросс-функциональному взаимодействию. Результаты легли в основу пересборки распределения зон ответственности.</p>
+          <div class="flagship-quote">
+            Итоговые командные отчёты дали детальную характеристику каждой из команд. Выявлен потенциал и зоны роста, рекомендации по работе с каждым сотрудником и кросс-функциональному взаимодействию. Считаем эту информацию очень ценной.
+            <span class="flagship-quote-source">— Газпромнефть Снабжение, Хакимова · 2023</span>
+          </div>
+          <div class="flagship-results">
+            <div class="flagship-result"><div class="num">3</div><div class="desc">Команды в&nbsp;одном проекте</div></div>
+            <div class="flagship-result"><div class="num">40+</div><div class="desc">Руководителей в&nbsp;оценке</div></div>
+            <div class="flagship-result"><div class="num">×</div><div class="desc">Кросс-функцион. рекомендации</div></div>
+            <div class="flagship-result"><div class="num">2x</div><div class="desc">Повторная оценка через год</div></div>
+          </div>
+        </div>
+
+        <div class="flagship-actions">
+          <a href="https://media.era-lider.ru/blagodarnosti/gazpromneft-snabzhenie-hakimova-14-12-2023.pdf" class="btn btn-secondary">Письмо (PDF) <svg class="btn-arrow" width="14" height="10"><use href="#chev-arrow"/></svg></a>
+        </div>
+      </article>
+
+      <!-- Кейс 4: i-Teco — развитие лидеров -->
+      <article class="flagship flagship-mod-destr" data-industry="it" data-scenario="dev" data-reveal>
+        <div class="flagship-meta">
+          <div class="flagship-num"><svg class="chev"><use href="#chev-mark"/></svg>04 / 05</div>
+          <div class="flagship-company">
+            <div class="flagship-logo">i-Teco</div>
+            <div class="flagship-company-info">
+              <div class="name">i-Teco</div>
+              <div class="industry">ИТ-интеграция · топ-10</div>
+            </div>
+          </div>
+          <div class="flagship-tags">
+            <div class="flagship-tags-row"><span class="label">Сценарий</span><span class="value">Развитие</span></div>
+            <div class="flagship-tags-row"><span class="label">Отрасль</span><span class="value">ИТ</span></div>
+            <div class="flagship-tags-row"><span class="label">Формат</span><span class="value">Группа лидеров</span></div>
+            <div class="flagship-tags-row"><span class="label">Год</span><span class="value">2024</span></div>
+          </div>
+        </div>
+
+        <div class="flagship-body">
+          <h3>Развитие бизнес-лидеров в условиях постоянных изменений рынка ИТ.</h3>
+          <p class="summary">Группа ключевых руководителей i-Teco прошла оценку ЭРА в рамках программы развития лидерского потенциала. Каждый получил полный отчёт + сессию обратной связи. Особое внимание — стресс-устойчивости в условиях частых изменений отрасли.</p>
+          <div class="flagship-quote">
+            В мире, где происходят постоянные изменения, важно найти эффективный инструмент, который вызовет уважение за счёт своей достоверности. ЭРА точно подходит под это описание. Бизнес-лидеры смогли взглянуть на себя со стороны, найти ресурс для новых прорывов и обнаружить зоны для возможного развития.
+            <span class="flagship-quote-source">— i-Teco</span>
+          </div>
+          <div class="flagship-results">
+            <div class="flagship-result"><div class="num">15</div><div class="desc">Лидеров в&nbsp;программе</div></div>
+            <div class="flagship-result"><div class="num">3</div><div class="desc">Опросника на&nbsp;каждого</div></div>
+            <div class="flagship-result"><div class="num">ИПР</div><div class="desc">У&nbsp;каждого участника</div></div>
+            <div class="flagship-result"><div class="num">12 мес</div><div class="desc">Программа развития</div></div>
+          </div>
+        </div>
+
+        <div class="flagship-actions">
+          <a href="https://media.era-lider.ru/blagodarnosti/i-teco.pdf" class="btn btn-secondary">Письмо (PDF) <svg class="btn-arrow" width="14" height="10"><use href="#chev-arrow"/></svg></a>
+        </div>
+      </article>
+
+      <!-- Кейс 5: Секретория — трансформация -->
+      <article class="flagship flagship-mod-destr" data-industry="industry" data-scenario="transform" data-reveal>
+        <div class="flagship-meta">
+          <div class="flagship-num"><svg class="chev"><use href="#chev-mark"/></svg>05 / 05</div>
+          <div class="flagship-company">
+            <div class="flagship-logo">Секр.</div>
+            <div class="flagship-company-info">
+              <div class="name">Секретория</div>
+              <div class="industry">B2B-производство</div>
+            </div>
+          </div>
+          <div class="flagship-tags">
+            <div class="flagship-tags-row"><span class="label">Сценарий</span><span class="value">Трансформация</span></div>
+            <div class="flagship-tags-row"><span class="label">Отрасль</span><span class="value">Промышленность</span></div>
+            <div class="flagship-tags-row"><span class="label">Цель</span><span class="value">Захват новых рынков</span></div>
+            <div class="flagship-tags-row"><span class="label">Год</span><span class="value">2024</span></div>
+          </div>
+        </div>
+
+        <div class="flagship-body">
+          <h3>Перераспределение зон ответственности при стратегическом плане захвата рынков.</h3>
+          <p class="summary">Несколько руководителей в команде блокировали стратегию выхода на новые рынки. Без понимания «почему» — типичная политическая интерпретация: «они против перемен». Оценка ЭРА показала картину иначе — конфликт оказался на уровне мотиваторов, а не лояльности.</p>
+          <div class="flagship-quote">
+            Выявленные деструкторы позволили увеличить скорость движения команды и снизить сопротивление управленцев. Работа с системой ЭРА дала возможность осознать, почему некоторые руководители были против стратегического плана по захвату рынков, и перераспределить зоны ответственности в команде.
+            <span class="flagship-quote-source">— Секретория</span>
+          </div>
+          <div class="flagship-results">
+            <div class="flagship-result"><div class="num">11</div><div class="desc">Деструкторов проанализированы</div></div>
+            <div class="flagship-result"><div class="num">↑</div><div class="desc">Скорость движения команды</div></div>
+            <div class="flagship-result"><div class="num">↓</div><div class="desc">Сопротивление управленцев</div></div>
+            <div class="flagship-result"><div class="num">⟲</div><div class="desc">Перераспределение ролей</div></div>
+          </div>
+        </div>
+
+        <div class="flagship-actions">
+          <a href="https://media.era-lider.ru/blagodarnosti/sekretoriya.pdf" class="btn btn-secondary">Письмо (PDF) <svg class="btn-arrow" width="14" height="10"><use href="#chev-arrow"/></svg></a>
+        </div>
+      </article>
+
+    </div>
+
+    <div class="empty-state" id="flagship-empty">По выбранным фильтрам флагманских кейсов пока нет. Посмотрите в стене благодарностей ниже — там часть отзывов представлена в более кратком формате.</div>
+  </div>
+</section>
+
+<!-- Стена благодарностей -->
+<section class="wall-section">
+  <div class="container">
+    <div class="wall-header" data-reveal>
+      <div>
+        <div class="eyebrow"><svg class="eyebrow-mark"><use href="#chev-mark"/></svg>Стена благодарностей</div>
+        <h2 class="h-section">12 писем от&nbsp;клиентов: фрагменты.</h2>
+      </div>
+      <p class="lead">Реальные благодарственные письма от клиентов ЭРА в краткой выжимке. Каждое письмо доступно полностью по запросу — пишите era@bitobe.ru.</p>
+    </div>
+
+    <div class="wall-grid" id="wall-grid">
+
+      <div class="wall-card" data-industry="oilgas" data-scenario="dev" data-reveal>
+        <div class="wall-tag"><span>Развитие</span><span class="industry">Нефтегаз</span></div>
+        <p class="wall-quote">Особо хотим подчеркнуть эффективность инструмента оценки ЭРА, который стал надёжным помощником. Несколько наших экспертов успешно прошли сертификацию по ЭРА.</p>
+        <div class="wall-source"><span class="name">Газпром Недра</span><span class="scenario">Писарев · 2025</span></div>
+      </div>
+
+      <div class="wall-card mod-mot" data-industry="industry" data-scenario="dev" data-reveal>
+        <div class="wall-tag"><span>Развитие</span><span class="industry">Промышленность</span></div>
+        <p class="wall-quote">Результаты тестирования легли в основу индивидуальных планов развития руководителей. Система ЭРА — качественный, инновационный продукт.</p>
+        <div class="wall-source"><span class="name">Азот</span><span class="scenario">Докучаева</span></div>
+      </div>
+
+      <div class="wall-card mod-mot" data-industry="oilgas" data-scenario="team" data-reveal>
+        <div class="wall-tag"><span>Команда</span><span class="industry">Нефтегаз</span></div>
+        <p class="wall-quote">С помощью опросников ЭРА удалось выявить сильные стороны команды и зоны её развития. Обсудили способы повышения продуктивности через личностные черты и деструктивные стратегии.</p>
+        <div class="wall-source"><span class="name">Газпромнефть Снабжение</span><span class="scenario">Журавлёв, Миняева</span></div>
+      </div>
+
+      <div class="wall-card" data-industry="infra" data-scenario="dev" data-reveal>
+        <div class="wall-tag"><span>Развитие</span><span class="industry">Стр-во</span></div>
+        <p class="wall-quote">Результаты онлайн-опросов продемонстрировали практическую ценность. Участники отметили удобный интерфейс и тот факт, что на прохождение всех трёх опросов затратили не более 60 минут.</p>
+        <div class="wall-source"><span class="name">ЛСР</span><span class="scenario">Голубева · 2023</span></div>
+      </div>
+
+      <div class="wall-card" data-industry="infra" data-scenario="dev" data-reveal>
+        <div class="wall-tag"><span>Развитие</span><span class="industry">Транспорт</span></div>
+        <p class="wall-quote">Отчёты содержат исчерпывающую информацию для построения трека развития. Результаты ЭРА позволили разработать индивидуальный подход к пост-программному сопровождению слушателей.</p>
+        <div class="wall-source"><span class="name">РЖД</span><span class="scenario">Корпоративная академия</span></div>
+      </div>
+
+      <div class="wall-card" data-industry="infra" data-scenario="dev" data-reveal>
+        <div class="wall-tag"><span>Развитие</span><span class="industry">Энергетика</span></div>
+        <p class="wall-quote">Инструмент позволяет оценивать руководителей разных уровней и давать комплексную обратную связь. Каждый из участников получил несколько развёрнутых, дополняющих друг друга отчётов.</p>
+        <div class="wall-source"><span class="name">Энергосбыт+</span><span class="scenario">HRD-команда</span></div>
+      </div>
+
+      <div class="wall-card" data-industry="it" data-scenario="dev" data-reveal>
+        <div class="wall-tag"><span>Развитие</span><span class="industry">Услуги</span></div>
+        <p class="wall-quote">Нам удалось быстро оценить руководителей целевого подразделения, чтобы скорректировать траекторию развития. Отдельно отмечаем порядок предоставления обратной связи (содержательной и приближенной к бизнесу).</p>
+        <div class="wall-source"><span class="name">Гемотест</span><span class="scenario">HR-департамент</span></div>
+      </div>
+
+      <div class="wall-card mod-destr" data-industry="industry" data-scenario="team" data-reveal>
+        <div class="wall-tag"><span>Команда</span><span class="industry">Промышленность</span></div>
+        <p class="wall-quote">Сложилось понимание, за счёт чего можно повышать свою эффективность и достигать других результатов. По результатам глубокой диагностики руководителей сформирована программа обучения.</p>
+        <div class="wall-source"><span class="name">АДМ</span><span class="scenario">Шумейко</span></div>
+      </div>
+
+      <div class="wall-card mod-destr" data-industry="it" data-scenario="dev" data-reveal>
+        <div class="wall-tag"><span>Развитие</span><span class="industry">ИТ</span></div>
+        <p class="wall-quote">Результаты онлайн-опросов позволили узнать особенности личностных черт участников, выявили деструктивные черты и мотивационные драйверы. Ценная информация для программы развития персонала.</p>
+        <div class="wall-source"><span class="name">DEFA</span><span class="scenario">HR-команда</span></div>
+      </div>
+
+      <div class="wall-card" data-industry="it" data-scenario="dev" data-reveal>
+        <div class="wall-tag"><span>Развитие</span><span class="industry">Услуги</span></div>
+        <p class="wall-quote">Удобный и лаконичный интерфейс, который позволяет сосредоточиться именно на заполнении опросников. Стоит отметить полноту предоставляемой информации.</p>
+        <div class="wall-source"><span class="name">Сотер</span><span class="scenario">Внутр. оценка</span></div>
+      </div>
+
+      <div class="wall-card" data-industry="infra" data-scenario="dev" data-reveal>
+        <div class="wall-tag"><span>Развитие</span><span class="industry">Стр-во</span></div>
+        <p class="wall-quote">Удалось составить объективную картину профессионального поведения руководителя. Подчеркнули основные сильные стороны и зоны развития.</p>
+        <div class="wall-source"><span class="name">АБЗ-Дорстрой</span><span class="scenario">Носанова · 2025</span></div>
+      </div>
+
+      <div class="wall-card mod-destr" data-industry="industry" data-scenario="transform" data-reveal>
+        <div class="wall-tag"><span>Трансформация</span><span class="industry">B2B</span></div>
+        <p class="wall-quote">Выявленные деструкторы позволили увеличить скорость движения команды и снизить сопротивление управленцев. Удалось перераспределить зоны ответственности в команде.</p>
+        <div class="wall-source"><span class="name">Секретория</span><span class="scenario">Топ-команда</span></div>
+      </div>
+
+    </div>
+
+    <div class="empty-state" id="wall-empty">По выбранным фильтрам отзывов нет — попробуйте сбросить фильтры или выбрать другую отрасль.</div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-block" id="cta">
+  <div class="container cta-grid">
+    <div data-reveal>
+      <div class="eyebrow on-dark" style="margin-bottom: 24px;">
+        <svg class="eyebrow-mark" style="color: var(--white)"><use href="#chev-mark"/></svg>
+        Под вашу задачу
+      </div>
+      <h2 class="h-section">Свежий кейс по&nbsp;<span class="accent-line" style="color:var(--white);">вашему сценарию</span> — на&nbsp;звонке.</h2>
+      <p class="lead">На сессии разбора кейса с экспертом ЭРА покажем релевантный пример с цифрами — обезличенный, под вашу отрасль и ваш сценарий. Не подборка для маркетинга, а реальная практика.</p>
+    </div>
+    <div class="cta-actions" data-reveal>
+      <a href="era-lider.html#cta" class="btn btn-primary">Записаться на разбор кейса <svg class="btn-arrow" width="14" height="10"><use href="#chev-arrow"/></svg></a>
+      <a href="era-scenarios.html" class="btn btn-secondary-inverse">Сценарии применения <svg class="btn-arrow" width="14" height="10"><use href="#chev-arrow"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col footer-brand">
+        <a href="era-lider.html" class="logo"><svg class="logo-mark"><use href="#chev-7"/></svg>ЭРА<span class="logo-sub">BITOBE</span></a>
+        <p>Система оценки руководителей. Продукт семейства BITOBE. Санкт-Петербург, 2026.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Продукт</h4>
+        <ul>
+          <li><a href="era-scenarios.html">Сценарии применения</a></li>
+          <li><a href="era-lider.html#how">Как работает</a></li>
+          <li><a href="era-methodology.html">Методология</a></li>
+          <li><a href="era-reports.html">Отчёты</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Компания</h4>
+        <ul>
+          <li><a href="#">Кейсы</a></li>
+          <li><a href="era-lider.html#experts">Эксперты</a></li>
+          <li><a href="era-certification.html">Сертификация</a></li>
+          <li><a href="era-materials.html">Исследования</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Контакты</h4>
+        <ul>
+          <li><a href="mailto:era@bitobe.ru">era@bitobe.ru</a></li>
+          <li><a href="https://t.me/era_lider">Telegram: @era_lider</a></li>
+          <li><a href="https://bitobe.ru">bitobe.ru ↗</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© ЭРА / BITOBE, 2026 · Реестр РПО №&nbsp;28543</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 40); }, { passive: true });
+
+  // Reveal
+  const rev = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); rev.unobserve(e.target); } });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('[data-reveal]').forEach(el => rev.observe(el));
+
+  // Filter logic
+  const state = { industry: 'all', scenario: 'all' };
+  const flagshipCards = document.querySelectorAll('.flagship');
+  const wallCards = document.querySelectorAll('.wall-card');
+  const flagshipEmpty = document.getElementById('flagship-empty');
+  const wallEmpty = document.getElementById('wall-empty');
+
+  function applyFilters() {
+    let visibleFlagship = 0, visibleWall = 0;
+    flagshipCards.forEach(card => {
+      const indMatch = state.industry === 'all' || card.dataset.industry === state.industry;
+      const scnMatch = state.scenario === 'all' || card.dataset.scenario === state.scenario;
+      const visible = indMatch && scnMatch;
+      card.classList.toggle('is-hidden', !visible);
+      if (visible) visibleFlagship++;
+    });
+    wallCards.forEach(card => {
+      const indMatch = state.industry === 'all' || card.dataset.industry === state.industry;
+      const scnMatch = state.scenario === 'all' || card.dataset.scenario === state.scenario;
+      const visible = indMatch && scnMatch;
+      card.classList.toggle('is-hidden', !visible);
+      if (visible) visibleWall++;
+    });
+    flagshipEmpty.classList.toggle('is-shown', visibleFlagship === 0);
+    wallEmpty.classList.toggle('is-shown', visibleWall === 0);
+  }
+
+  document.querySelectorAll('.filter-group').forEach(group => {
+    const groupName = group.dataset.filterGroup;
+    group.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        group.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        state[groupName] = btn.dataset.filter;
+        applyFilters();
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
