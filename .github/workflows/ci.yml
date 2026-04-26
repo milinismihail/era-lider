@@ -1,0 +1,67 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build & verify
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: site
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: site/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Astro check (typecheck .astro/.ts)
+        run: npx astro check
+        continue-on-error: true # типизация — soft-фейл пока
+
+      - name: Build
+        run: npm run build
+
+      - name: Verify sitemap and OG image
+        run: |
+          test -f dist/sitemap-index.xml || (echo "✗ sitemap-index.xml missing" && exit 1)
+          test -f dist/sitemap-0.xml || (echo "✗ sitemap-0.xml missing" && exit 1)
+          test -f dist/og-default.png || (echo "✗ og-default.png missing" && exit 1)
+          test -f dist/robots.txt || (echo "✗ robots.txt missing" && exit 1)
+          echo "✓ Required artifacts present"
+
+      - name: Verify no Google Fonts
+        run: |
+          if grep -r "fonts.googleapis.com" dist/ 2>/dev/null; then
+            echo "✗ Google Fonts found in dist (TZ 9.3 violation)"
+            exit 1
+          fi
+          echo "✓ No Google Fonts (TZ 9.3 OK)"
+
+      - name: Verify no broken anchor-only links
+        run: |
+          broken=$(grep -rE 'href="#"' dist/ --include="*.html" | wc -l)
+          if [ "$broken" -gt 0 ]; then
+            echo "✗ Found $broken broken href=\"#\" links"
+            exit 1
+          fi
+          echo "✓ No broken href=\"#\" links"
+
+      - name: Upload dist artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: site/dist
+          retention-days: 7
