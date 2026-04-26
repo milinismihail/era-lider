@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <style>
+      .bg { fill: #0A0A0A; }
+      .white { fill: #FFFFFF; }
+      .grey-line { fill: rgba(255,255,255,0.15); }
+      .meta { fill: rgba(255,255,255,0.55); font-family: 'Onest', 'Helvetica Neue', system-ui, sans-serif; font-size: 18px; font-weight: 500; letter-spacing: 4px; text-transform: uppercase; }
+      .h1 { fill: #FFFFFF; font-family: 'Onest', 'Helvetica Neue', system-ui, sans-serif; font-size: 84px; font-weight: 700; letter-spacing: -2.5px; }
+      .h1-accent { fill: #FFFFFF; font-family: 'Onest', 'Helvetica Neue', system-ui, sans-serif; font-size: 84px; font-weight: 700; letter-spacing: -2.5px; }
+      .lead { fill: rgba(255,255,255,0.72); font-family: 'Onest', 'Helvetica Neue', system-ui, sans-serif; font-size: 24px; font-weight: 400; }
+      .badge-text { fill: rgba(255,255,255,0.75); font-family: 'Onest', 'Helvetica Neue', system-ui, sans-serif; font-size: 16px; font-weight: 500; letter-spacing: 1px; }
+      .accent-pers { fill: #A8B3D9; }
+      .accent-mot { fill: #A5C0A5; }
+      .accent-destr { fill: #C2B299; }
+      .underline { stroke: #FFFFFF; stroke-width: 4; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect class="bg" width="1200" height="630"/>
+
+  <!-- Decorative chevron-7 в правой части (большой) -->
+  <g transform="translate(840, 100) scale(4.4)">
+    <path class="white" d="M 0 0 L 100 0 L 100 100 L 80 100 L 80 20 L 0 20 Z"/>
+  </g>
+
+  <!-- Малый chevron сверху-справа (сиреневый, личность) -->
+  <g transform="translate(1050, 60) scale(1.6)">
+    <path class="accent-pers" d="M 0 0 L 100 0 L 100 100 L 80 100 L 80 20 L 0 20 Z" opacity="0.9"/>
+  </g>
+
+  <!-- Микро-chevron снизу слева от большого (салатовый, мотивация) -->
+  <g transform="translate(820, 480) scale(0.9)">
+    <path class="accent-mot" d="M 0 0 L 100 0 L 100 100 L 80 100 L 80 20 L 0 20 Z"/>
+  </g>
+
+  <!-- Eyebrow + Logo top-left -->
+  <g transform="translate(80, 80)">
+    <!-- mini chevron mark -->
+    <g transform="translate(0, 0)">
+      <path class="white" d="M 0 0 H 22 V 4 H 4 V 14 H 0 Z"/>
+    </g>
+    <text class="meta" x="34" y="13">ЭРА · BITOBE</text>
+  </g>
+
+  <!-- Headline -->
+  <g transform="translate(80, 220)">
+    <text class="h1" x="0" y="0">Оценка для</text>
+    <text class="h1" x="0" y="100">решений, где</text>
+    <text class="h1-accent" x="0" y="200">нельзя ошибиться</text>
+    <line class="underline" x1="0" y1="216" x2="660" y2="216"/>
+    <text class="h1" x="660" y="200">.</text>
+  </g>
+
+  <!-- Lead -->
+  <g transform="translate(80, 470)">
+    <text class="lead" x="0" y="0">Российский стандарт диагностики руководителей и команд.</text>
+  </g>
+
+  <!-- Badge bottom-left: РПО -->
+  <g transform="translate(80, 530)">
+    <rect x="0" y="0" width="380" height="60" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+    <text class="badge-text" x="22" y="38">В РЕЕСТРЕ РПО · № 28543</text>
+  </g>
+
+  <!-- bitobe.ru bottom-right -->
+  <g transform="translate(950, 560)">
+    <text class="meta" x="0" y="0" text-anchor="start">era-lider.ru</text>
+  </g>
+</svg>

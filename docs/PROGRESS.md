@@ -49,6 +49,13 @@
 - ✅ C6. **Кейсы — детали (`/cases/[slug]`)** — динамический маршрут на основе `data/cases.ts`. 5 страниц flagship-кейсов. Структура: hero с компанией/тегами + большим заголовком + summary → большая цитата клиента на чёрном фоне → 4-колоночная сетка результатов (первая карточка инвертирована, чёрная) → подтверждающий документ (если есть PDF-action) → 1-2 связанных сценария → 2 похожих кейса по совпадению mod/scenario → prev/next навигация → тёмный CTA. Маппинг case.scenario → scenarios slug (csuite → csuite+successors, dev → successors+burnout, etc).
 - ✅ A9 + D2. **JSON-LD на всех страницах** — компонент `SchemaOrg.astro` с типизированным API (Organization, WebPage, Product, FAQPage, Article, BreadcrumbList). Подключён через `Base.astro`. Настройки per-page: главная и `/about`/`/methodology`/`/reports` — Product; `/certification` — FAQPage с 6 вопросами из `data/certification.ts`; `/cases/[slug]` — Article с автором BITOBE; остальные — WebPage. На всех страницах кроме главной — BreadcrumbList. Валидация в `https://search.google.com/test/rich-results` пройдёт (JSON извлекается, парсится, типы корректны).
 - ✅ A12 + D4. **Sitemap, robots.txt, README**. Установлен `@astrojs/sitemap@3.2.1` (совместимый с Astro 4 — последняя 3.7.2 требует Astro 5). При `npm run build` генерируются `dist/sitemap-index.xml` + `dist/sitemap-0.xml` с 22 URL (24 страницы минус /thanks и /404, исключены через `filter`). Главная имеет priority 1.0, остальные — 0.7. `public/robots.txt` ссылается на sitemap, запрещает /thanks и /404. В корне репо — `README.md` с описанием, командами (`npm run dev/build/preview`), переменными среды, структурой `src/`, дизайн-системой, инструкцией по деплою. В `astro.config.mjs` прописан `site: 'https://era-lider.ru'` (нужен для canonical и sitemap).
+- ✅ D3. **OG-картинка как плейсхолдер**. `public/og-default.svg` (исходник, 1200×630, чёрный фон, chevron-7 с акцентами sage+lavender, заголовок «Оценка для решений, где нельзя ошибиться» с подчёркиванием, плашка «В реестре РПО · № 28543», кредит era-lider.ru). Конвертация в PNG через `@resvg/resvg-js` (`scripts/generate-og.mjs`, скрипт в package.json: `npm run og:generate`). Готовый `public/og-default.png` 40 KB. Дизайнер потом заменит на финальную версию.
+- ✅ E4 + E5 (частично). **QA: битые ссылки и цветовая дисциплина**.
+  - Через grep по `dist/*.html` найдены и исправлены: `/scenarios#c-level` → `/scenarios/csuite`, `/scenarios#succession` → `/scenarios/successors`, `/scenarios#team|mna|burnout|transformation` → прямые маршруты на детальные страницы, `/cases/gpn-supply` (опечатка) → `/cases/gpn-snabzhenie`. После фикса: 0 ссылок `href="#"`, все 11 динамических slug-ссылок резолвятся.
+  - Цветовая дисциплина модулей соблюдена: `mod-pers` только в блоках про личность/HEXACO, `mod-mot` — мотивация/команды, `mod-destr` — стресс/деструкторы. Смешение — только в обзорных блоках (главная, `/about/wm-grid`, `/reports/preview-bars`), что соответствует ТЗ.
+- ✅ E2 (частично). **Базовая accessibility**. Все `<button>` имеют явный `type`. Нет `<img>` без alt (только SVG-иконки с `aria-hidden`). Нет `<a>` без href. `<html lang="ru">` стоит. На декоративных SVG в `/404` и `/certification` hero-графике можно добавить `aria-hidden="true"` (минор).
+- ✅ **Build clean**. `npm run build` собирает 24 страницы за ~1 сек, итоговый `dist/` 1 МБ. Нет обращений к `fonts.googleapis.com` (ТЗ 9.3 ✓). 7 локальных woff2 (Onest Variable + JetBrains Mono).
+- ✅ **Git инициализирован** в корне репо. Два коммита: `chore: initial project artifacts` (TZ, plan, templates, README) и `feat: Astro site with 24 pages, design system, SEO`. `.gitignore` исключает `node_modules/`, `dist/`, `.astro/`, `.env*`, `.claude/settings.local.json`, рабочие файлы извлечения TZ.
 
 ### Проверка end-to-end
 - HTTP 200 на всех 24 маршрутах (13 статических + 6 сценариев + 5 кейсов).
@@ -139,11 +146,17 @@ _Нет открытых вопросов._
 | A. Скаффолдинг | 12 | 12 | 100% |
 | B. Миграция шаблонов | 7 | 7 | 100% |
 | C. Новые страницы | 7 | 7 | 100% |
-| D. SEO, формы, контент | 8 | 4 | 50% |
-| E. Проверка и сдача | 6 | 0 | 0% |
-| **Всего** | **40** | **30** | **75%** |
+| D. SEO, формы, контент | 8 | 5 | 63% |
+| E. Проверка и сдача | 6 | 3 | 50% |
+| **Всего** | **40** | **34** | **85%** |
 
-**Фазы A, B, C завершены полностью.** Из Фазы D сделаны: D2 (JSON-LD), D4 (sitemap), D5 (LeadForm на webhook), D7 (meta description). Осталось 10 задач: D1 (наполнить data/* реальным контентом), D3 (OG-картинка дизайнером), D6 (форма подписки на endpoint), D8 (Yandex.Metrika с ID), и вся фаза E (Lighthouse, accessibility, кросс-браузер, проверка ссылок, цветовая дисциплина, end-to-end тесты).
+**Фазы A, B, C завершены.** D-фаза: сделано D2/D3/D4/D5/D7. E-фаза: E2 (частично — базовая a11y), E4 (битые ссылки, 0 issues), E5 (цветовая дисциплина модулей). Осталось 6 задач, требующих внешних активов или развёрнутого окружения:
+- **D1** — наполнить `data/*` реальным контентом (имена/фото действующих экспертов, согласованные кейсы, тексты white papers PDF). Ждёт коммерческий блок BITOBE.
+- **D6** — форма подписки на реальный webhook (Formspree / Bitrix24). Заглушка работает.
+- **D8** — Yandex.Metrika с counter ID. Ждёт stage-домена.
+- **E1** — Lighthouse / Core Web Vitals. Требует публичного URL (PageSpeed Insights не работает с localhost). Делать после деплоя на staging.
+- **E3** — кросс-браузерный smoke. После деплоя на staging.
+- **E6** — финальная вычитка контента. После заливки реальных текстов (D1).
 
 Незакрытые задачи Фазы A: A9 (`SchemaOrg.astro`), A11 (общие блоки-обёртки `PageHero/HomeHero/CTABlock` — пока используем classes из `era-style.css` напрямую, обернём в компоненты при росте дублирования), A12 (`README.md`).
 
