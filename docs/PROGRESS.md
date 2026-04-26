@@ -62,6 +62,7 @@
 - ✅ **Git инициализирован** в корне репо. Два коммита: `chore: initial project artifacts` (TZ, plan, templates, README) и `feat: Astro site with 24 pages, design system, SEO`. `.gitignore` исключает `node_modules/`, `dist/`, `.astro/`, `.env*`, `.claude/settings.local.json`, рабочие файлы извлечения TZ.
 - ✅ **CI и DEPLOY.md**. `.github/workflows/ci.yml` запускается на каждый push/PR: сборка под Node 20, проверки артефактов (sitemap, og, robots), failsafe против Google Fonts (ТЗ 9.3), failsafe против битых `href="#"`. Запасной workflow `deploy-pages.yml` — для GitHub Pages по запросу. `docs/DEPLOY.md` — инструкции для Vercel / Netlify / Cloudflare Pages / GitHub Pages / Selectel S3+CDN / Я.Облако.
 - ✅ **Деплой на Vercel staging**. Репо опубликован на https://github.com/milinismihail/era-lider, подключён к Vercel, доступен по https://era-lider.vercel.app. Все 24 маршрута отдают HTTP 200. HTTPS+HSTS, Vercel CDN cache HIT, prod-сборка оптимизирована (главная 39 KB против 74 KB в dev). Sitemap, robots.txt, og-default.png раздаются. JSON-LD валиден (Organization + Product на главной, Article на детальных кейсах, FAQPage на /certification, BreadcrumbList везде).
+- ✅ E1 + E2. **Lighthouse 100/100/100/100 на mobile**, 99/100/100/100 на desktop (после трёх фиксов от первого прогона: `inlineStylesheets: 'always'` устранил render-blocking external CSS chunks, замена footer `<h4>` → `<div class="footer-col-title">` исправила heading-order, `min-height: 24px` + `padding` на footer-ссылках довели target-size до WCAG-compliant). Core Web Vitals (mobile): LCP 1.2s, CLS 0, TBT 0ms, FCP 1.2s, TTFB 80ms — все в зелёной зоне ТЗ 9.2 с большим запасом. Accessibility 100 (WCAG 2.1 AA ✓). Best Practices 100 (HTTPS+HSTS, нет deprecated APIs). SEO 100 (полный набор meta, валидный JSON-LD, sitemap).
 
 ### Проверка end-to-end
 - HTTP 200 на всех 24 маршрутах (13 статических + 6 сценариев + 5 кейсов).
@@ -153,15 +154,16 @@ _Нет открытых вопросов._
 | B. Миграция шаблонов | 7 | 7 | 100% |
 | C. Новые страницы | 7 | 7 | 100% |
 | D. SEO, формы, контент | 8 | 5 | 63% |
-| E. Проверка и сдача | 6 | 3 | 50% |
-| **Всего** | **40** | **34** | **85%** |
+| E. Проверка и сдача | 6 | 5 | 83% |
+| **Всего** | **40** | **36** | **90%** |
 
-**Фазы A, B, C завершены.** D-фаза: сделано D2/D3/D4/D5/D7. E-фаза: E2 (частично — базовая a11y), E4 (битые ссылки, 0 issues), E5 (цветовая дисциплина модулей). Осталось 6 задач, требующих внешних активов или развёрнутого окружения:
-- **D1** — наполнить `data/*` реальным контентом (имена/фото действующих экспертов, согласованные кейсы, тексты white papers PDF). Ждёт коммерческий блок BITOBE.
+**Фазы A, B, C завершены. E-фаза почти полная (5/6).** Lighthouse прогон на staging (https://era-lider.vercel.app) показал 100/100/100/100 на mobile и 99/100/100/100 на desktop — закрыло E1 (Core Web Vitals) и E2 (WCAG 2.1 AA) с запасом.
+
+Осталось 4 задачи, все требующие внешних активов:
+- **D1** — наполнить `data/*` реальным контентом (имена/фото действующих экспертов, согласованные кейсы, white papers PDF). Ждёт коммерческий блок BITOBE.
 - **D6** — форма подписки на реальный webhook (Formspree / Bitrix24). Заглушка работает.
-- **D8** — Yandex.Metrika с counter ID. Ждёт stage-домена.
-- **E1** — Lighthouse / Core Web Vitals. Требует публичного URL (PageSpeed Insights не работает с localhost). Делать после деплоя на staging.
-- **E3** — кросс-браузерный smoke. После деплоя на staging.
+- **D8** — Yandex.Metrika с counter ID. Ждёт production-домена.
+- **E3** — кросс-браузерный smoke (Chrome/Firefox/Safari/Edge). Ручная проверка на реальных устройствах. Можно делать сейчас.
 - **E6** — финальная вычитка контента. После заливки реальных текстов (D1).
 
 Незакрытые задачи Фазы A: A9 (`SchemaOrg.astro`), A11 (общие блоки-обёртки `PageHero/HomeHero/CTABlock` — пока используем classes из `era-style.css` напрямую, обернём в компоненты при росте дублирования), A12 (`README.md`).
