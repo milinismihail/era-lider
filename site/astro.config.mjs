@@ -27,6 +27,7 @@ export default defineConfig({
     enabled: false,
   },
   build: {
-    inlineStylesheets: 'auto',
+    // 'always' — все CSS инлайнятся в <head>, нет render-blocking external CSS chunks
+    inlineStylesheets: 'always',
   },
 });

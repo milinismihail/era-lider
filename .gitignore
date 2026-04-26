@@ -28,3 +28,7 @@ Thumbs.db
 # Extracted TZ artifacts (рабочие файлы)
 docs/TZ_extracted/
 docs/TZ.txt
+
+# Lighthouse reports
+site/lh-*.json
+site/lh-*.html
